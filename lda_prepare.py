@@ -6,14 +6,17 @@ import shutil
 from utils.BinaryCorpus import BinaryCorpus
 
 #
-# Generate and save dictionary and three types of corpus (tfidf, bow, and binary) to prepare for LDA
-#
+# Prepare dictionary and three types of corpus (tfidf, bow, and binary) for LDA
+# By default, outputs are saved to <src>_LDA
+# <src> could be two forms:
+# 1. a corpus file with each line a document   (<src type> =0)
+# 2. a corpus directory with each file a document
 
 
-# syntax: python  LDAPreparator.py <input type> <directory name> <preprocess or not> <output directory name>
-#  <input type> 0: a file in which each line is a document.
-#              Anything else or missing: a directory in which each file is a document
-#  <directory/file name> input directory/file name
+# syntax: python  lda_prepare.py <src type> <src> <preprocess or not> <output directory name>
+#  <src type> 0: a file in which each line is a document.
+#             Anything else or missing: a directory in which each file is a document
+#  <src> input directory/file name
 #  <preprocess or not>:0 = no preprocessing. Anything else or missing: preprocessing
 #  <output directory name> output directory name
 

@@ -1,11 +1,13 @@
-# input a directory, each file is a document
-
 from utils.TopicIO import TopicIO
 from gensim import corpora, models
 import sys
 
+
 #
-# syntax: python  GenSimTweetTest1.py <input directory name> <corpus type> <# of topics> <alpha> <eta>
+# Run a specific LDA
+#
+
+# syntax: python lda_prepare.py <input directory name> <corpus type> <# of topics> <alpha> <eta>
 #  <dictionary name> the name of the input dictionary
 #  <corpus type> default to bag of words. b for binary, t for tf-idf, anything else or missing for bag of words
 #  <# of topics> number of topics. default to 8
@@ -56,6 +58,7 @@ print "# of topics : " + str(topics_count)
 print "alpha : " + str(alpha)
 print "eta: " + str(eta)
 print "\n"
+
 
 # Load directory
 dictionary = corpora.Dictionary.load(dname + "/dict.dict")

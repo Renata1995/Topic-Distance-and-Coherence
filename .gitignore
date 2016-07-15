@@ -1,0 +1,5 @@
+# ignore python compiled file
+*.pyc
+
+# ignore pycharm ide setting folder
+.idea

@@ -13,7 +13,7 @@ from similarity.SimTopicLists import SimTopicLists
 from utils.topic_coherenc import TopicCoherence
 
 #
-# syntax: python  GenSimTweetTest1.py <input directory> <corpus type> <# of topics>  <src> <src type> <alpha> <eta> <output dir>
+#  python lda_analyze.py <input directory> <corpus type> <# of topics> <src> <src type> <alpha> <eta> <output dir>
 #  <input directory> Directory that saves LDA, dictionary and corpora
 #  <corpus type> default to bag of words. b for binary, t for tf-idf, anything else or missing for bag of words
 #  <# of topics> default to 8
@@ -78,7 +78,8 @@ if len(sys.argv) <= 8:
     else:
         output = "LDA_" + src + "_" + corpus_type + "_t" + str(topics_count)
 else:
-    output = sys.argv[8];
+    output = sys.argv[8]
+
 
 print "input directory : " + dname
 print "# of topics : " + str(topics_count)
@@ -96,20 +97,18 @@ if eta_set:
     print "eta : " + eta
 print "\n"
 
+
+# Check the output directory
 if not os.path.exists(output):
     os.makedirs(output)
-
-# Check whether the directory exists or not
-if not exists(src):
-    print ("Input source does not exist")
-    exit()
 
 if input_type:
     # if input is a directory
     mdt = DirDocTokenizer()
     doc_list, token_list = mdt.orig(src)
 else:
-    print "file"
+    fdt = FileDocTokenizer()
+    doc_list, token_list = fdt.orig(src)
 
 # Load LDA
 if alpha_set:
