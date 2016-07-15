@@ -11,7 +11,7 @@ import numpy
 if len(sys.argv) <= 1:
     dname = "brown_LDA"
 else:
-    dname = sys.arg[1]
+    dname = sys.argv[1]
 
 if len(sys.argv) <= 2:
     word_count = 10
