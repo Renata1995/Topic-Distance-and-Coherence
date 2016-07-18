@@ -2,8 +2,9 @@ import sys
 from utils.topic_coherence import TopicCoherence
 from utils.TopicIO import TopicIO
 from gensim import corpora, models
+import os
 #
-# syntax: python  GenSimTweetTest1.py <input directory name> <corpus type> <# of topics> <src>
+# syntax: python  tcReader.py <input directory name> <corpus type> <# of topics> <src> <word count>
 #  <dictionary name> the name of the input dictionary
 #  <corpus type> default to bag of words. b for binary, t for tf-idf, anything else or missing for bag of words
 #  <# of topics> number of topics. default to 8
@@ -39,10 +40,17 @@ if len(sys.argv) <= 4:
 else:
     src = sys.argv[4]
 
+if len(sys.argv) <= 5:
+    max_wc =10
+else:
+    max_wc = int(sys.argv[5])
+
+
 print "input directory : " + dname
 print "corpus type :" + corpus_type
 print "# of topics : " + str(topics_count)
 print "src : " + src
+print "# of words used for topic coherence: " + str(max_wc)
 print "\n"
 
 # Load directory
@@ -63,28 +71,29 @@ output = "LDA_"+src+"_"+corpus_type+"_t"+str(topics_count)
 tc = TopicCoherence()
 
 # get all topics
-tlist = topics_io.read_topics_wp(output+"/topics_wp")
+tlist = topics_io.read_topics(output+"/topics")
 
+# sort all words by decreasing frequency
 tlist2 = []
 for topic in tlist:
-    tlist2.append(topic.words_dist)
+    tlist2.append(list(reversed(sorted(topic.words_dist, key=lambda x:x[1]))))
+
+# construct a dictionary that contains top max_wc words in each topic
+wdict = {}
+for topic in tlist2:
+    for num in range(max_wc):
+        if topic[num][0] not in wdict.keys():
+            wordkey = -1
+            for key, value in dictionary.iteritems():
+                if dictionary.get(key) == topic[num][0]:
+                    wordkey = key
+                    break
+            if wordkey > -1:
+                wdict[topic[num][0]] = wordkey
 
 
-ctlist = []
-for index, t in enumerate(tlist2):
-    t = t[:20]
-    subt = [wt[0] for wt in t]
-    subt2 = []
-    for w in subt:
-        for key, value in dictionary.iteritems():
-            if value == w:
-                subt2.append(key)
-    ctlist.append((index, tc.topic_coherence(subt2, corpus_dict), t))
+keylist = [value for key, value in wdict.iteritems()]
 
-ctlist = list(reversed(sorted(ctlist, key=lambda x:x[1])))
-ofile = open(output + "/wp_ct.txt", "w")
-for tctuple in ctlist:
-    ofile.write("Topic  "+ str(tctuple[0])+"   "+str(tctuple[1]) + "\n\n")
-    for item in tctuple[2]:
-        ofile.write(item[0]+" : "+ str(item[1])+"\n")
-    ofile.write("\n\n")
+tc.write_freqlist(tc.word_list_doc_freq(keylist, corpus_dict, dictionary), dname+"/wdoc_freq_"+corpus_type+"_t"+str(topics_count)+".txt")
+colist = tc.words_cooccur(keylist, corpus_dict, dictionary)
+tc.write_freqlist(colist, dname+"/cofreq_"+corpus_type+"_t"+str(topics_count)+".txt")

@@ -10,14 +10,18 @@ from time import time
 import os
 import shutil
 from similarity.SimTopicLists import SimTopicLists
-from utils.topic_coherenc import TopicCoherence
+from utils.topic_coherence import TopicCoherence
 
 #
+#  Analyze a specific LDA file and output results
+#  Assume the existence of the LDA file, the corpus, src for the corpus, and the dictionary
+#
+
 #  python lda_analyze.py <input directory> <corpus type> <# of topics> <src> <src type> <alpha> <eta> <output dir>
 #  <input directory> Directory that saves LDA, dictionary and corpora
 #  <corpus type> default to bag of words. b for binary, t for tf-idf, anything else or missing for bag of words
 #  <# of topics> default to 8
-#  <src> the original corpus src name
+#  <src> the original corpus src name. used for name conventions
 #  <src type> 0: a file in which each line is a document.
 #              Anything else or missing: a directory in which each file is a document
 #  <output dir> results output directory
@@ -135,15 +139,12 @@ corpus_dict = [dict(doc) for doc in corpus]
 dictionary = lda.id2word
 print dictionary
 
+# Write topics
 topics_io = TopicIO()
-#
-# print "======"
-# topic = lda.print_topics(topics_count, 10)
-# for x in topic:
-#     print x
 topics_output = output + "/topics"
-# topics_io.write_topics(model=lda, orig_dir=src, num_topics=topics_count, num_words=len(dictionary.keys()),
-#                        output_dir=topics_output)
+topics_io.write_topics(model=lda, orig_dir=src, num_topics=topics_count, num_words=len(dictionary.keys()),
+                       output_dir=topics_output)
+
 
 # For each document, print the probability that the document being to each topic
 # (Here we just print the original document file name)
@@ -222,34 +223,34 @@ length = len(max([fname for fname in doc_list]))
 # swt.write("\nTopic Count: " + str(topics_count))
 
 #length = 30
-wt = WordCounter()
-total_words = wt.totalWords(corpus)
-
-# Build a dictionary with word frequency in the corpus and write it to a file
-freqlist = {}
-time1 = time()
-for word in dictionary:
-    word_freq = float(wt.countWords3(corpus_dict, word))/total_words
-    freqlist[dictionary.get(word)] = word_freq
-
-# ofile = open(output + "/words_freq_"+corpus_type+".txt","w")
-# for key, value in freqlist.iteritems():
-#     ofile.write(str(key) + ": " + str(value)+"\n")
-
-
-# Sort words in topics by word frequency difference from the baseline frequency
-# os.makedirs(output+"/topics_wp")
-for i in range(topics_count):
-    ofile = open(output+"/topics_wp/Topic"+str(i)+".txt", "w")
-
-    wtlist = []
-    for wtuple in lda.show_topic(i, len(dictionary.keys())):
-        freq_diff = wtuple[1] - freqlist[wtuple[0]]
-        wtlist.append((wtuple[0], freq_diff, wtuple[1], freqlist[wtuple[0]]))
-    wtlist = list(reversed(sorted(wtlist, key=lambda x: x[1])))
-
-    for ftuple in wtlist:
-        ofile.write(str(ftuple[0])+" "+str(ftuple[1])+" "+str(ftuple[2])+" "+str(ftuple[3])+"\n")
+# wt = WordCounter()
+# total_words = wt.totalWords(corpus)
+#
+# # Build a dictionary with word frequency in the corpus and write it to a file
+# freqlist = {}
+# time1 = time()
+# for word in dictionary:
+#     word_freq = float(wt.countWords3(corpus_dict, word))/total_words
+#     freqlist[dictionary.get(word)] = word_freq
+#
+# # ofile = open(output + "/words_freq_"+corpus_type+".txt","w")
+# # for key, value in freqlist.iteritems():
+# #     ofile.write(str(key) + ": " + str(value)+"\n")
+#
+#
+# # Sort words in topics by word frequency difference from the baseline frequency
+# # os.makedirs(output+"/topics_wp")
+# for i in range(topics_count):
+#     ofile = open(output+"/topics_wp/Topic"+str(i)+".txt", "w")
+#
+#     wtlist = []
+#     for wtuple in lda.show_topic(i, len(dictionary.keys())):
+#         freq_diff = wtuple[1] - freqlist[wtuple[0]]
+#         wtlist.append((wtuple[0], freq_diff, wtuple[1], freqlist[wtuple[0]]))
+#     wtlist = list(reversed(sorted(wtlist, key=lambda x: x[1])))
+#
+#     for ftuple in wtlist:
+#         ofile.write(str(ftuple[0])+" "+str(ftuple[1])+" "+str(ftuple[2])+" "+str(ftuple[3])+"\n")
 
 
 

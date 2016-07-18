@@ -1,4 +1,4 @@
-from utils.topic_coherenc import TopicCoherence
+from utils.topic_coherence import TopicCoherence
 from unittest import TestCase
 
 class TestTopicCoherence(TestCase):

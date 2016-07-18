@@ -1,6 +1,6 @@
 from gensim import corpora
 import random
-from utils.topic_coherenc import TopicCoherence
+from utils.topic_coherence import TopicCoherence
 import sys
 import numpy
 
@@ -9,7 +9,7 @@ import numpy
 # <sample_times>: the repetition times of the topic coherence calculation
 
 if len(sys.argv) <= 1:
-    dname = "brown_LDA"
+    dname = "reuters_LDA"
 else:
     dname = sys.argv[1]
 
@@ -19,7 +19,7 @@ else:
     word_count = int(sys.argv[2])
 
 if len(sys.argv) <= 3:
-    sample_times = 20
+    sample_times = 5
 else:
     sample_times = int(sys.argv[3])
 
@@ -39,16 +39,22 @@ dictlen = len(dictionary)
 tc = TopicCoherence()
 
 tc_results = []
+words_list = []
 ofile = open(dname+"/tc_rand_"+str(word_count)+".txt", "w")
 
 for i in range(sample_times):
     random_words = []
     # generate random numbers
     for n in range(word_count):
-        word = random.randint(1, dictlen)
+        word = random.randint(1, dictlen-1)
         while word in random_words:
-            word = random.randint(1, dictlen)
+            word = random.randint(0, dictlen-1)
         random_words.append(word)
+
+    keylist = []
+    for key in random_words:
+        keylist.append(dictionary[key])
+    words_list.append(keylist)
 
     # calculate topic coherence based on randomly generated words
     result = tc.topic_coherence(random_words, corpus_dict)
@@ -57,5 +63,8 @@ for i in range(sample_times):
 ofile.write("AVG: " + str(numpy.average(tc_results))+"\n")
 ofile.write("SD: "+ str(numpy.std(tc_results))+"\n\n")
 for item in tc_results:
+    ofile.write(str(item)+"\n")
+
+for item in words_list:
     ofile.write(str(item)+"\n")
 

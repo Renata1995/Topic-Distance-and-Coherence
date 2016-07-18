@@ -23,4 +23,5 @@ for i in range(1):
     dist_output.write(str(i+1) + " Topics: T_List 2\n")
     stl.show_results(stl.kl_divergence(t_list1, t_list2), dist_output)
     # stl.show_results(stl.bc_distance(t_list1,t_list2), dist_output)
-    #stl.show_results(stl.cos_distance(t_list1, t_list2), dist_output)
+    # stl.show_results(stl.cos_distance(t_list1, t_list2), dist_output)
+

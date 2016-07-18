@@ -5,3 +5,13 @@ __pycache__/
 
 # ignore pycharm ide setting folder
 .idea
+
+# ignore data files and directories
+test
+pp_*
+LDA_*
+reuters
+brown
+newsarchive
+inaugural
+data

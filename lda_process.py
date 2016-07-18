@@ -5,6 +5,7 @@ import sys
 
 #
 # Run a specific LDA
+# Assume the existence of the corpus and the dictionary file
 #
 
 # syntax: python lda_prepare.py <input directory name> <corpus type> <# of topics> <alpha> <eta>
@@ -76,6 +77,7 @@ corpus = corpora.MmCorpus(corpus_fname)
 
 topics_io = TopicIO()
 
+# Perform LDA and store the results to an output file
 print "=========== start LDA"
 if alpha_set:
     lda = models.LdaModel(corpus, id2word=dictionary, num_topics=topics_count, minimum_probability=-1, alpha=alpha)

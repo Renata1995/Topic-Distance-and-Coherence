@@ -1,5 +1,5 @@
 import sys
-from utils.topic_coherenc import TopicCoherence
+from utils.topic_coherence import TopicCoherence
 from utils.TopicIO import TopicIO
 from gensim import corpora, models
 import os
