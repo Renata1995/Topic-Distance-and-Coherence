@@ -11,8 +11,14 @@ test
 *_LDA
 pp_*
 LDA_*
-reuters
-brown
-newsarchive
-inaugural
-data
+reuters*
+brown*
+newsarchive*
+inaugural*
+data*
+*.txt
+*.html
+
+# ignore compressed files
+*.zip
+*.rar
