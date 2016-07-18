@@ -8,6 +8,7 @@ __pycache__/
 
 # ignore data files and directories
 test
+*_LDA
 pp_*
 LDA_*
 reuters
