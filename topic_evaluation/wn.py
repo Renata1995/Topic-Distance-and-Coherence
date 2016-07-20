@@ -44,8 +44,9 @@ class WordNetEvaluator:
             for l in tlist[:m_index]:
                 results.append(self.sim_words(m, l, func))
         rsum = sum(results)
-        rmean = np.average(results)
-        rmedian = np.median(results)
+        r_nozero = [v for v in results if v > 0]
+        rmean = np.average(r_nozero)
+        rmedian = np.median(r_nozero)
 
         return rsum, rmean, rmedian, results
 
