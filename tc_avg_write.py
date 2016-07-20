@@ -20,20 +20,20 @@ ofile = open(ofname, "w")
     
 length = 30
 for tc in range(10, 270, 20):
-    for type in ["Word Counts: "+str(tc), "Topic id", "TC", "AVG", "SD"]:
+    for type in ["Word Counts: "+str(tc), "topic id", "TC", "AVG", "SD"]:
         ofile.write("{:{l}}".format(type, l=length))
     ofile.write("\n")
     
-    ifile = open("LDA_pp_reuters_"+corpus_type+"_t3/tc_freq_"+str(tc)+".txt","r")
+    ifile = open("LDA_pp_reuters_"+corpus_type+"_t"+topics_count+"/tc_freq_"+str(tc)+".txt","r")
 
     tlist = []
     tclist = []
     alist = []
     sdlist = []
     for line in ifile:
-        if line.startswith("Topic coherence"):
+        if line.startswith("topic coherence"):
             tclist.append(line.split()[2])
-        elif line.startswith("Topic"):
+        elif line.startswith("topic"):
             tlist.append(line.split()[1])
         elif line.startswith("AVG"):
             alist.append(line.split()[1])

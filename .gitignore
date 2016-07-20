@@ -22,3 +22,6 @@ data*
 # ignore compressed files
 *.zip
 *.rar
+
+# ignore batch files
+*.bat

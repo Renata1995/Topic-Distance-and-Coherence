@@ -1,7 +1,9 @@
+from unittest import TestCase
+
+from topic.topicio import Topic
 from similarity.CosDistance import CosDistance
 from utils.DistsDifferException import DistsDiffer
-from unittest import TestCase
-from utils.TopicIO import Topic
+
 
 class TestCosSim(TestCase):
     def setUp(self):

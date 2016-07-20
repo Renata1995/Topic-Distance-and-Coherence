@@ -1,7 +1,8 @@
-from similarity.BCDistance import BCDistance
-from utils.TopicIO import Topic
-from utils.DistsDifferException import DistsDiffer
 import unittest
+
+from topic.topicio import Topic
+from similarity.BCDistance import BCDistance
+from utils.DistsDifferException import DistsDiffer
 
 
 class TestBCDistance(unittest.TestCase):

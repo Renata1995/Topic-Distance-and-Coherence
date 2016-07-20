@@ -1,16 +1,16 @@
 # input a directory, each file is a document
 
-from utils.TopicIO import TopicIO
-from utils.BinaryCorpus import BinaryCorpus
-from preprocess.DocTokenizer import DirDocTokenizer, FileDocTokenizer
-from gensim import corpora, models, similarities, matutils
-import numpy as np
 import sys
-from os.path import isfile, getmtime, exists
 from os import listdir
+from os.path import isfile, getmtime, exists
 from time import time
-from utils.WordCounter import WordCounter
-import os
+
+import numpy as np
+from gensim import corpora, models, matutils
+
+from topic.topicio import TopicIO
+from preprocess.DocTokenizer import DirDocTokenizer, FileDocTokenizer
+from utils.BinaryCorpus import BinaryCorpus
 
 #
 # syntax: python  GenSimTweetTest1.py <input type> <directory name> <# of topics> <corpus type> <preprocess or not> <topics output>

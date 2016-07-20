@@ -1,9 +1,5 @@
-from similarity.BCDistance import BCDistance
-from utils.TopicIO import TopicIO
+from topic.topicio import TopicIO
 from similarity.SimTopicLists import SimTopicLists
-import os
-import shutil
-import sys
 
 # Calculate the similarity between two topics
 topics_io = TopicIO()

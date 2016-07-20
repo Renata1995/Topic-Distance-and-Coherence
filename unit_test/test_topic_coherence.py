@@ -1,5 +1,7 @@
-from utils.topic_coherence import TopicCoherence
 from unittest import TestCase
+
+from topic_evaluation.topic_coherence import TopicCoherence
+
 
 class TestTopicCoherence(TestCase):
     def setUp(self):

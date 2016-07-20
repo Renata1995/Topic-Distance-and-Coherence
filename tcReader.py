@@ -1,8 +1,10 @@
 import sys
-from utils.topic_coherence import TopicCoherence
-from utils.TopicIO import TopicIO
-from gensim import corpora, models
-import os
+
+from gensim import corpora
+
+from topic.topicio import TopicIO
+from topic_evaluation.topic_coherence import TopicCoherence
+
 #
 # syntax: python  tcReader.py <input directory name> <corpus type> <# of topics> <src> <word count>
 #  <dictionary name> the name of the input dictionary
@@ -94,7 +96,7 @@ ctlist = list(reversed(sorted(ctlist, key=lambda x:x[1])))
 
 ofile = open(output + "/top_topics_"+str(word_count)+".txt", "w")
 for tctuple in ctlist:
-    ofile.write("Topic  "+ str(tctuple[0])+"   "+str(tctuple[1]) + "\n\n")
+    ofile.write("topic  "+ str(tctuple[0])+"   "+str(tctuple[1]) + "\n\n")
     for item in tctuple[2]:
         ofile.write(item[0]+" : "+ str(item[1])+"\n")
     ofile.write("\n\n")

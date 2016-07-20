@@ -36,7 +36,7 @@ for num in range(start_wc, stop_wc, step_wc):
     ifile = open("LDA_pp_reuters_tfidf_t" + str(topics_count) + "/top_topics_" + str(num) + ".txt")
     sub_tclist = []
     for line in ifile:
-        if "Topic" in line:
+        if "topic" in line:
             # format in the ifile: Topic num tc_value
             sub_tclist.append(float(line.split()[2]))
     # tuple: (most positive, most negative, avg, sd)
@@ -47,7 +47,7 @@ for num in range(start_wc, stop_wc, step_wc):
     ifile = open("LDA_pp_reuters_binary_t" + str(topics_count) + "/top_topics_" + str(num) + ".txt")
     sub_tclist = []
     for line in ifile:
-        if "Topic" in line:
+        if "topic" in line:
             # format in the ifile: Topic num tc_value
             sub_tclist.append(float(line.split()[2]))
     # tuple: (most positive, most negative, avg, sd)
@@ -58,7 +58,7 @@ for num in range(start_wc, stop_wc, step_wc):
     ifile = open("LDA_pp_reuters_bow_t" + str(topics_count) + "/top_topics_" + str(num) + ".txt")
     sub_tclist = []
     for line in ifile:
-        if "Topic" in line:
+        if "topic" in line:
             # format in the ifile: Topic num tc_value
             sub_tclist.append(float(line.split()[2]))
     # tuple: (most positive, most negative, avg, sd)

@@ -1,27 +1,11 @@
 import os
 from shutil import rmtree
 from exceptions import Exception
-
-class Topic:
-    """
-    A Topic object is a list of tuples. Each tuple contains a word and its distribution
-    """
-    def __init__(self):
-        self.words_dist = []
-
-    def add(self,word_dist_tuple):
-        self.words_dist.append(word_dist_tuple)
-
-    def get(self,index):
-        return self.words_dist[index]
-
-    def size(self):
-        return len(self.words_dist)
-
+from topic import Topic
 
 class TopicMissing(Exception):
     """
-    Topic Missing Exception
+    topic Missing Exception
     """
     def __init__(self, message=""):
         print "One or several topics are missing "

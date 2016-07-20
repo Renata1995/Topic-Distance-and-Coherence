@@ -1,4 +1,3 @@
-from utils.TopicIO import Topic
 import numpy
 
 
@@ -14,13 +13,15 @@ class TopicCoherence:
         """
         csum = 0
         for index, m in enumerate(sub_topic[1:]):
-            sublist = sub_topic[:index]
+            m_index = index + 1
+            sublist = sub_topic[:m_index]
 
-            for l in sublist:
-                dl = self.word_doc_freq(l, corpus_bow)
-                dml = self.words_doc_cofreq(m, l, corpus_bow)
-                if dl > 0:
-                    csum += numpy.log(float(dml + 1) / dl)
+        for l in sublist:
+            dl = self.word_doc_freq(l, corpus_bow)
+            dml = self.words_doc_cofreq(m, l, corpus_bow)
+            if dl > 0:
+                csum += numpy.log(float(dml + 1) / dl)
+
         return csum
 
     def tc_dict(self, sub_topic, doc_freq_list, cofreq_list, ofile):
@@ -41,12 +42,12 @@ class TopicCoherence:
                     ftc = numpy.log(float(dml + 1) / float(dl))
                     csum += ftc
                     flist.append((mlstr, ftc))
-        flist = list(sorted(flist, key = lambda x:x[1]))
-        ofile.write("Topic coherence: "+str(csum)+"\n")
-        ofile.write("AVG: " + str(numpy.average([v[1] for v in flist]))+"\n")
+        flist = list(sorted(flist, key=lambda x: x[1]))
+        ofile.write("topic coherence: " + str(csum) + "\n")
+        ofile.write("AVG: " + str(numpy.average([v[1] for v in flist])) + "\n")
         ofile.write("SD:  " + str(numpy.std([v[1] for v in flist])) + "\n")
         for ftuple in flist:
-            ofile.write(ftuple[0]+"  "+str(ftuple[1]/csum)+"     "+str(ftuple[1])+"/"+str(csum)+"\n")
+            ofile.write(ftuple[0] + "  " + str(ftuple[1] / csum) + "     " + str(ftuple[1]) + "/" + str(csum) + "\n")
         return csum
 
     def word_doc_freq(self, word, corpus_bow):
@@ -72,7 +73,7 @@ class TopicCoherence:
     def words_cooccur(self, wlist, corpus, dict):
         flist = {}
         for index, w in enumerate(wlist[1:]):
-            sublist = wlist[:index+1]
+            sublist = wlist[:index + 1]
             for l in sublist:
                 wl = list(sorted([dict.get(w), dict.get(l)]))
                 wlstr = wl[0] + " " + wl[1]
@@ -80,11 +81,10 @@ class TopicCoherence:
                     flist[wlstr] = self.words_doc_cofreq(w, l, corpus)
         return flist
 
-
     def write_freqlist(self, freq_list, ofile):
         ofile = open(ofile, "w")
         for key, value in freq_list.iteritems():
-            ofile.write(str(key)+"+"+str(value)+"\n")
+            ofile.write(str(key) + "+" + str(value) + "\n")
 
     def read_flist(self, ifile):
         ifile = open(ifile)
@@ -93,4 +93,3 @@ class TopicCoherence:
             linelist = line.split("+")
             fdict[linelist[0]] = int(linelist[1])
         return fdict
-

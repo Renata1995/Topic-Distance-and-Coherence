@@ -1,6 +1,7 @@
 import numpy
-from utils import TopicIO
+
 from BCDistance import BCDistance
+from topic import topicio
 
 
 class BCInterpreter:
@@ -78,7 +79,7 @@ class BCInterpreter:
         :param dist: a distribution list
         :return: a topic object
         """
-        topic = TopicIO.Topic()
+        topic = topicio.Topic()
         topic.words_dist = [(index,num) for index, num in enumerate(dist)]
         return topic
 

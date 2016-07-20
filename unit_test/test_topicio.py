@@ -1,7 +1,9 @@
-from utils.TopicIO import TopicIO, Topic
-from unittest import TestCase
-from gensim import models
 import os
+from unittest import TestCase
+
+from gensim import models
+
+from topic.topicio import TopicIO, Topic
 
 
 class TestTopic(TestCase):

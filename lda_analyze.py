@@ -1,16 +1,12 @@
 # input a directory, each file is a document
 
-from utils.TopicIO import TopicIO
-from preprocess.DocTokenizer import DirDocTokenizer, FileDocTokenizer
-from gensim import corpora, models
-import sys
-from os.path import exists
-from utils.WordCounter import WordCounter
-from time import time
 import os
-import shutil
-from similarity.SimTopicLists import SimTopicLists
-from utils.topic_coherence import TopicCoherence
+import sys
+
+from gensim import corpora, models
+
+from topic.topicio import TopicIO
+from preprocess.DocTokenizer import DirDocTokenizer, FileDocTokenizer
 
 #
 #  Analyze a specific LDA file and output results
@@ -181,7 +177,7 @@ length = len(max([fname for fname in doc_list]))
 # For each topic, output documents illustrate the highest probability on it
 # tdoc = open(output + "/" + "td_cluster.txt", "w")
 # for index, sublist in enumerate(doctlist):
-#     tdoc.write("Topic " + str(index) + ":  ")
+#     tdoc.write("topic " + str(index) + ":  ")
 #     tdoc.write(str(len(sublist)))
 #     for value in sublist:
 #         tdoc.write("  "+value)
@@ -241,7 +237,7 @@ length = len(max([fname for fname in doc_list]))
 # # Sort words in topics by word frequency difference from the baseline frequency
 # # os.makedirs(output+"/topics_wp")
 # for i in range(topics_count):
-#     ofile = open(output+"/topics_wp/Topic"+str(i)+".txt", "w")
+#     ofile = open(output+"/topics_wp/topic"+str(i)+".txt", "w")
 #
 #     wtlist = []
 #     for wtuple in lda.show_topic(i, len(dictionary.keys())):

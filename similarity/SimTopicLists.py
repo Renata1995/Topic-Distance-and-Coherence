@@ -151,21 +151,21 @@ class SimTopicLists:
         :param distance_list: a 2D list of data
         """
         width = 14
-        file.write("\nTopic List 1 is vertical and Topic List 2 is horizontal\n")
+        file.write("\ntopic List 1 is vertical and topic List 2 is horizontal\n")
 
         # calculate smallest results
         # show row labels
         file.write("<style>table, th, td {border: 1px solid black;}</style>")
         file.write("<table><thead><tr><th></th>")
         for value in range(len(distance_list[0])):
-            file.write("<th> Topic" + str(value) + "</th>")
+            file.write("<th> topic" + str(value) + "</th>")
         file.write("</tr></thead><tbody>")
 
         colordiff = int(16777215 / (len(distance_list[0])))
 
         for index, sublist in enumerate(distance_list):
             # show column labels
-            file.write("<tr><td> Topic" + str(index) + "</td>")
+            file.write("<tr><td> topic" + str(index) + "</td>")
             # rank
             sublist = self.rank(sublist)
             for sub_i, value in enumerate(sublist):
@@ -184,21 +184,21 @@ class SimTopicLists:
         :param distance_list: a 2D list of data
         """
         width = 14
-        file.write("\nTopic List 1 is vertical and Topic List 2 is horizontal\n")
+        file.write("\ntopic List 1 is vertical and topic List 2 is horizontal\n")
 
         # calculate smallest results
         # show row labels
         file.write("<style>table, th, td {border: 1px solid black;}</style>")
         file.write("<table><thead><tr><th></th>")
         for value in range(len(distance_list[0])):
-            file.write("<th> Topic" + str(value) + "</th>")
+            file.write("<th> topic" + str(value) + "</th>")
         file.write("</tr></thead><tbody>")
 
         colordiff = int(255 / (len(distance_list[0])))
 
         for index, sublist in enumerate(distance_list):
             # show column labels
-            file.write("<tr><td> Topic" + str(index) + "</td>")
+            file.write("<tr><td> topic" + str(index) + "</td>")
             # rank
             sublist = self.rank(sublist)
             for sub_i, value in enumerate(sublist):
@@ -217,18 +217,18 @@ class SimTopicLists:
         :param distance_list: a 2D list of data
         """
         width = 14
-        file.write("\nTopic List 1 is vertical and Topic List 2 is horizontal\n")
+        file.write("\ntopic List 1 is vertical and topic List 2 is horizontal\n")
 
         # calculate smallest results
         # show row labels
         file.write("{:{w}}".format("T_List1/T_List2", w=width))
         for value in range(len(distance_list[0])):
-            file.write('{:{w}}'.format("     Topic" + str(value), w=width))
+            file.write('{:{w}}'.format("     topic" + str(value), w=width))
         file.write("\n")
 
         for index, sublist in enumerate(distance_list):
             # show column labels
-            file.write('{:{w}}'.format("    Topic" + str(index), w=width))
+            file.write('{:{w}}'.format("    topic" + str(index), w=width))
             # find row and col max
             rmax = self.find_largest_one(sublist)
             cmax_list = []
@@ -254,18 +254,18 @@ class SimTopicLists:
         :param distance_list: a 2D list of data
         """
         width = 14
-        file.write("\nTopic List 1 is vertical and Topic List 2 is horizontal\n")
+        file.write("\ntopic List 1 is vertical and topic List 2 is horizontal\n")
 
         # calculate smallest results
         # show row labels
         file.write("{:{w}}".format("T_List1/T_List2", w=width))
         for value in range(len(distance_list[0])):
-            file.write('{:{w}}'.format("     Topic" + str(value), w=width))
+            file.write('{:{w}}'.format("     topic" + str(value), w=width))
         file.write("\n")
 
         for index, sublist in enumerate(distance_list):
             # show column labels
-            file.write('{:{w}}'.format("    Topic" + str(index), w=width))
+            file.write('{:{w}}'.format("    topic" + str(index), w=width))
             # find row and col max
             rmax = self.find_largest_one(sublist)
 
@@ -284,17 +284,17 @@ class SimTopicLists:
         :param distance_list: a 2D list of data
         """
         width = 14
-        file.write("\nTopic List 1 is vertical and Topic List 2 is horizontal\n")
+        file.write("\ntopic List 1 is vertical and topic List 2 is horizontal\n")
 
         # show row labels
         file.write("{:{w}}".format("T_List1/T_List2", w=width))
         for value in range(len(distance_list[0])):
-            file.write('{:{w}}'.format("     Topic" + str(value), w=width))
+            file.write('{:{w}}'.format("     topic" + str(value), w=width))
         file.write("\n")
 
         for index, sublist in enumerate(distance_list):
             # show column labels
-            file.write('{:{w}}'.format("    Topic" + str(index), w=width))
+            file.write('{:{w}}'.format("    topic" + str(index), w=width))
             # show data in each cell
             min_1, min_2 = self.find_smallest(sublist)
             for sub_i, value in enumerate(sublist):
@@ -314,17 +314,17 @@ class SimTopicLists:
         :param distance_list: a 2D list of data
         """
         width = 14
-        file.write("\nTopic List 1 is vertical and Topic List 2 is horizontal\n")
+        file.write("\ntopic List 1 is vertical and topic List 2 is horizontal\n")
 
         # show row labels
         file.write("{:{w}}".format("T_List1/T_List2", w=width))
         for value in range(len(distance_list[0])):
-            file.write('{:{w}}'.format("     Topic" + str(value), w=width))
+            file.write('{:{w}}'.format("     topic" + str(value), w=width))
         file.write("\n")
 
         for index, sublist in enumerate(distance_list):
             # show column labels
-            file.write('{:{w}}'.format("    Topic" + str(index), w=width))
+            file.write('{:{w}}'.format("    topic" + str(index), w=width))
             # show data in each cell
             max_1, max_2 = self.find_largest_two(sublist)
             for sub_i, value in enumerate(sublist):

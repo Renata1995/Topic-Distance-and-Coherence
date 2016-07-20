@@ -1,7 +1,8 @@
-from utils.TopicIO import TopicIO
-from gensim import corpora, models
 import sys
 
+from gensim import corpora, models
+
+from topic.topicio import TopicIO
 
 #
 # Run a specific LDA

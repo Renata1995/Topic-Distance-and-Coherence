@@ -1,8 +1,10 @@
-from gensim import corpora
 import random
-from utils.topic_coherence import TopicCoherence
 import sys
+
 import numpy
+from gensim import corpora
+
+from topic_evaluation.topic_coherence import TopicCoherence
 
 # python random_tc.py <dname> <word_count> <sample_times> <output>
 # <word_count>: the number of words that need to be randomly generated

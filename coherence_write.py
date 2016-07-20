@@ -13,15 +13,15 @@ for tc in [3, 4, 5, 6, 7, 8, 9, 10, 15, 20, 30, 50, 80, 100]:
 
     tlist = []
     for line in tfile:
-        if line.startswith("Topic"):
+        if line.startswith("topic"):
             tlist.append(line.strip())
     blist = []
     for line in bfile:
-        if line.startswith("Topic"):
+        if line.startswith("topic"):
             blist.append(line.strip())
     clist = []
     for line in cfile:
-        if line.startswith("Topic"):
+        if line.startswith("topic"):
             clist.append(line.strip())
 
     for index, line in enumerate(tlist):
