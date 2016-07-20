@@ -105,11 +105,10 @@ class WordNetEvaluator:
             for s2 in w2_synsets:
                 simlist.append(func(s1, s2))
 
-        if len(simlist)== 0:
-            print w1+"  "+w2
+        if len(simlist) == 0:
             return 0.0
 
-        if max(simlist)== None:
+        if max(simlist) is None:
             smax = 0.0
         else:
             smax = max(simlist)
