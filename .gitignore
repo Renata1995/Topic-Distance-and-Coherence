@@ -25,3 +25,6 @@ data*
 
 # ignore batch files
 *.bat
+
+# ignore all files for writing
+*write*.py
