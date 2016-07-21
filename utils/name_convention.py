@@ -13,5 +13,11 @@ def get_output_dir(corpus_type, topics_count, src, model="LDA"):
 def get_model_dir(src, model="LDA"):
     return src+model
 
+
 def topics_dir():
     return "/topics"
+
+
+def te_preprocess(te, max_words):
+    return "/pre_" + te + "_w" + str(max_words) + ".txt"
+
