@@ -181,7 +181,9 @@ class WordNetEvaluator:
         simlist = []
         for s1 in w1_synsets:
             for s2 in w2_synsets:
-                if s1.pos() == s2.pos():
+                if s1.pos() == "s" or s2.pos() == "s":
+                    simlist.append(0.0)
+                elif s1.pos() == s2.pos():
                     simlist.append(func(s1, s2, ic))
         if len(simlist) == 0:
             # if the word does not exist in the wordnet

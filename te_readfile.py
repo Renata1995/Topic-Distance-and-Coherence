@@ -4,6 +4,7 @@ import utils.name_convention as name
 from topic.topicio import TopicIO
 from nltk.corpus import wordnet as wn
 from nltk.corpus import reuters
+import os
 
 if len(sys.argv) <= 1:
     corpus_type = "bow"
@@ -59,7 +60,10 @@ for index, topic in enumerate(tlist):
 tclist = list(reversed(sorted(tclist, key=lambda x: x[1][1])))
 
 # output results
-ofname = dname + "/" + tc + "_we" + str(words_count) + ".txt"
+if not os.path.exists(dname+"/"+tc):
+    os.makedirs(dname+"/"+tc)
+    
+ofname = dname + "/" + tc + "/w" + str(words_count) + ".txt"
 ofile = open(ofname, "w")
 for value in tclist:
     ofile.write("Topic " + str(value[0]) + "\n")
