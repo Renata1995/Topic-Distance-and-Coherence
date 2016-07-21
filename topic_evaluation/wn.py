@@ -45,6 +45,62 @@ class WordNetEvaluator:
 
         return rsum, rmean, rmedian, results
 
+    def evaluate(self, topic, words_num, tc):
+        # Choose an evaluation method
+        if tc == "lch":
+            func = self.lch
+        elif tc == "wup":
+            func = self.wup
+        else:
+            tc = "path"
+            func = self.path
+        print "topic evaluation method: " + tc
+
+        # Get the <word_num>-word sub-list from the topic
+        topic.sort()
+        tlist = topic.list_words(words_num)
+
+        # Calculate results
+        results = []
+        for index, m in enumerate(tlist[1:]):
+            m_index = index + 1
+            for l in tlist[:m_index]:
+                results.append(self.sim_words(m, l, func))
+        rsum = sum(results)
+        r_nozero = [v for v in results if v > 0]
+        rmean = np.average(r_nozero)
+        rmedian = np.median(r_nozero)
+
+        return rsum, rmean, rmedian, results
+
+    def evaluate_ic(self, topic, words_num, ic, tc):
+        # Choose an evaluation method
+        if tc == "lin":
+            func = self.lin
+        elif tc == "jcn":
+            func = self.jcn
+        else:
+            tc = "res"
+            func = self.res
+        print "topic evaluation method: " + tc
+
+        # Get the <word_num>-word sub-list from the topic
+        topic.sort()
+        tlist = topic.list_words(words_num)
+
+        # Calculate results
+        results = []
+        for index, m in enumerate(tlist[1:]):
+            m_index = index + 1
+            for l in tlist[:m_index]:
+                results.append(self.sim_words_ic(m, l, ic, func))
+        rsum = sum(results)
+        r_nozero = [v for v in results if v > 0]
+        rmean = np.average(r_nozero)
+        rmedian = np.median(r_nozero)
+
+        return rsum, rmean, rmedian, results
+
     def evaluate_write(self, topic, words_num, tc, ofile):
         """
         Evaluate a topic by calculating a similarity score for each word pair in the topic
