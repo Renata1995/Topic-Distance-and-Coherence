@@ -222,3 +222,5 @@ class WordNetEvaluator:
 
         intersection = set(d1_tokens).intersection(set(d2_tokens))
         return len(intersection)
+
+

@@ -22,8 +22,9 @@ class TestTopicEvaluator(TestCase):
         reuters_ic = wn.ic(reuters, False, 0.0)
         # self.assertTrue(isinstance(self.te.sim_words_ic("dog", "cat", reuters_ic, self.te.res), float))
         topic = Topic()
-        topic.words_dist =  [("dog", 0.3), ("cat",0.2), ("rabbit", 0.15), ("table", 0.35)]
-        rsum, rmean, rmedian, rlist = self.te.evaluate_ic_write(topic, 3, reuters_ic, "lin", "test_ic.txt")
+        topic.words_dist =  [("xxxxxxxxxxxxxxxxxxxxxxxxx.", 0.3), ("cat",0.2), ("rabbit", 0.15), ("table", 0.35)]
+        ofile = open("test_ic.txt","w")
+        rsum, rmean, rmedian, rlist = self.te.evaluate_ic_write(topic, 4, reuters_ic, "lin", ofile)
         self.assertTrue(isinstance(rsum, float))
         # self.assertTrue(isinstance(rmean, float))
         # self.assertTrue(isinstance(rmedian, float))
