@@ -4,6 +4,7 @@ from gensim import corpora
 
 from topic.topicio import TopicIO
 from topic_evaluation.topic_coherence import TopicCoherence
+from topic_evaluation.tc_tfidf import TfidfTC
 
 #
 # syntax: python  tcReader.py <input directory name> <corpus type> <# of topics> <src> <word count>
@@ -47,6 +48,13 @@ if len(sys.argv) <= 5:
 else:
     max_wc = int(sys.argv[5])
 
+if len(sys.argv) <= 6:
+    tfidf = False
+else:
+    if sys.argv[6] == "t":
+        tfidf = True
+    else:
+        tfidf = False
 
 print "input directory : " + dname
 print "corpus type :" + corpus_type
@@ -60,7 +68,10 @@ dictionary = corpora.Dictionary.load(dname + "/dict.dict")
 print(dictionary)
 
 # Load corpus
-corpus_fname = dname + '/bow_corpus.mm'
+if tfidf:
+    corpus_fname =  dname + '/tfidf_corpus.mm'
+else:
+    corpus_fname = dname + '/bow_corpus.mm'
 print "Load Corpus File " + corpus_fname
 corpus = corpora.MmCorpus(corpus_fname)
 
@@ -71,6 +82,7 @@ for doc in corpus:
 topics_io = TopicIO()
 output = "LDA_"+src+"_"+corpus_type+"_t"+str(topics_count)
 tc = TopicCoherence()
+tct = TfidfTC()
 
 # get all topics
 tlist = topics_io.read_topics(output+"/topics")
@@ -78,7 +90,8 @@ tlist = topics_io.read_topics(output+"/topics")
 # sort all words by decreasing frequency
 tlist2 = []
 for topic in tlist:
-    tlist2.append(list(reversed(sorted(topic.words_dist, key=lambda x:x[1]))))
+    topic.sort()
+    tlist2.append(topic.list())
 
 # construct a dictionary that contains top max_wc words in each topic
 wdict = {}
@@ -96,6 +109,12 @@ for topic in tlist2:
 
 keylist = [value for key, value in wdict.iteritems()]
 
-tc.write_freqlist(tc.word_list_doc_freq(keylist, corpus_dict, dictionary), dname+"/wdoc_freq_"+corpus_type+"_t"+str(topics_count)+".txt")
-colist = tc.words_cooccur(keylist, corpus_dict, dictionary)
-tc.write_freqlist(colist, dname+"/cofreq_"+corpus_type+"_t"+str(topics_count)+".txt")
+if tfidf:
+    tct.write_freqlist(tct.word_list_doc_freq(keylist, corpus_dict, dictionary),
+                      dname + "/wdoc_freq_tfidf_" + corpus_type + "_t" + str(topics_count) + ".txt")
+    colist = tct.words_cooccur(keylist, corpus_dict, dictionary)
+    tct.write_freqlist(colist, dname + "/cofreq_tfidf_" + corpus_type + "_t" + str(topics_count) + ".txt")
+else:
+    tc.write_freqlist(tc.word_list_doc_freq(keylist, corpus_dict, dictionary), dname+"/wdoc_freq_"+corpus_type+"_t"+str(topics_count)+".txt")
+    colist = tc.words_cooccur(keylist, corpus_dict, dictionary)
+    tc.write_freqlist(colist, dname+"/cofreq_"+corpus_type+"_t"+str(topics_count)+".txt")

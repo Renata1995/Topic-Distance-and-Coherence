@@ -4,6 +4,7 @@ from gensim import corpora
 
 from topic.topicio import TopicIO
 from topic_evaluation.topic_coherence import TopicCoherence
+from topic_evaluation.tc_tfidf import TfidfTC
 
 #
 # syntax: python  tcReader.py <input directory name> <corpus type> <# of topics> <src> <word count>
@@ -43,9 +44,18 @@ else:
     src = sys.argv[4]
 
 if len(sys.argv) <= 5:
-    word_count =10
+    word_count = 10
 else:
     word_count = int(sys.argv[5])
+
+if len(sys.argv) <= 6:
+    tfidf = False
+else:
+    if sys.argv[6] == "t":
+        tfidf = True
+    else:
+        tfidf = False
+
 
 print "input directory : " + dname
 print "corpus type :" + corpus_type
@@ -59,7 +69,10 @@ dictionary = corpora.Dictionary.load(dname + "/dict.dict")
 print(dictionary)
 
 # Load corpus
-corpus_fname = dname + '/bow_corpus.mm'
+if tfidf:
+    corpus_fname =  dname + '/tfidf_corpus.mm'
+else:
+    corpus_fname = dname + '/bow_corpus.mm'
 print "Load Corpus File " + corpus_fname
 corpus = corpora.MmCorpus(corpus_fname)
 
@@ -67,41 +80,62 @@ corpus_dict = []
 for doc in corpus:
     corpus_dict.append(dict(doc))
 
-
 topics_io = TopicIO()
-output = "LDA_"+src+"_"+corpus_type+"_t"+str(topics_count)
+output = "LDA_" + src + "_" + corpus_type + "_t" + str(topics_count)
 tc = TopicCoherence()
+tct = TfidfTC()
 
 # get all topics
-tlist = topics_io.read_topics(output+"/topics")
+tlist = topics_io.read_topics(output + "/topics")
 
 # sort all words by decreasing frequency
 tlist2 = []
 for topic in tlist:
-    tlist2.append(list(reversed(sorted(topic.words_dist, key=lambda x:x[1]))))
+    tlist2.append(list(reversed(sorted(topic.words_dist, key=lambda x: x[1]))))
 
+if tfidf:
+    wd_dict = tct.read_flist(dname + "/wdoc_freq_tfidf_" + corpus_type + "_t" + str(topics_count) + ".txt")
+    cofreq_dict = tct.read_flist(dname + "/cofreq_tfidf_" + corpus_type + "_t" + str(topics_count) + ".txt")
 
-wd_dict = tc.read_flist(dname+"/wdoc_freq_"+corpus_type+"_t"+str(topics_count)+".txt")
-cofreq_dict = tc.read_flist(dname+"/cofreq_"+corpus_type+"_t"+str(topics_count)+".txt")
+    # calculate topic coherence values for each topic with a specific number of words
+    ofile = open(output + "/tc_tfidf_freq_" + str(word_count) + ".txt", "w")
+    ctlist = []
+    for index, t in enumerate(tlist2):
+        t = t[:word_count]
+        subt = [wt[0] for wt in t]
+        ofile.write("topic " + str(index) + "\n")
+        ctlist.append((index, tct.tc_dict(subt, wd_dict, cofreq_dict, ofile), t))
+        ofile.write("\n")
 
+    # sort all topics by topic coherence
+    ctlist = list(reversed(sorted(ctlist, key=lambda x: x[1])))
 
-# calculate topic coherence values for each topic with a specific number of words
-ofile = open(output+"/tc_freq_"+str(word_count)+".txt", "w")
-ctlist = []
-for index, t in enumerate(tlist2):
-    t = t[:word_count]
-    subt = [wt[0] for wt in t]
-    ofile.write("topic "+str(index)+"\n")
-    ctlist.append((index, tc.tc_dict(subt, wd_dict, cofreq_dict, ofile), t))
-    ofile.write("\n")
+    ofile = open(output + "/top_topics_tfidf_" + str(word_count) + ".txt", "w")
+    for tctuple in ctlist:
+        ofile.write("topic  " + str(tctuple[0]) + "   " + str(tctuple[1]) + "\n\n")
+        for item in tctuple[2]:
+            ofile.write(item[0] + " : " + str(item[1]) + "\n")
+        ofile.write("\n\n")
+else:
+    wd_dict = tc.read_flist(dname + "/wdoc_freq_" + corpus_type + "_t" + str(topics_count) + ".txt")
+    cofreq_dict = tc.read_flist(dname + "/cofreq_" + corpus_type + "_t" + str(topics_count) + ".txt")
 
-# sort all topics by topic coherence
-ctlist = list(reversed(sorted(ctlist, key=lambda x:x[1])))
+    # calculate topic coherence values for each topic with a specific number of words
+    ofile = open(output + "/tc_freq_" + str(word_count) + ".txt", "w")
+    ctlist = []
+    for index, t in enumerate(tlist2):
+        t = t[:word_count]
+        subt = [wt[0] for wt in t]
+        ofile.write("topic " + str(index) + "\n")
+        ctlist.append((index, tc.tc_dict(subt, wd_dict, cofreq_dict, ofile), t))
+        ofile.write("\n")
 
-ofile = open(output + "/top_topics_"+str(word_count)+".txt", "w")
-for tctuple in ctlist:
-    ofile.write("topic  "+ str(tctuple[0])+"   "+str(tctuple[1]) + "\n\n")
-    for item in tctuple[2]:
-        ofile.write(item[0]+" : "+ str(item[1])+"\n")
-    ofile.write("\n\n")
+    # sort all topics by topic coherence
+    ctlist = list(reversed(sorted(ctlist, key=lambda x: x[1])))
 
+    ofile = open(output + "/top_topics_" + str(word_count) + ".txt", "w")
+    for tctuple in ctlist:
+        ofile.write("topic  " + str(tctuple[0]) + "   " + str(tctuple[1]) + "\n\n")
+        for item in tctuple[2]:
+            ofile.write(item[0] + " : " + str(item[1]) + "\n")
+        ofile.write("\n\n")

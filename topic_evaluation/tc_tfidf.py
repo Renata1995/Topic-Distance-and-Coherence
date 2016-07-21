@@ -2,13 +2,13 @@ import numpy
 
 
 class TfidfTC:
-    def topic_coherence(self, sub_topic, corpus_bow):
+    def topic_coherence(self, sub_topic, corpus_t):
         """
 
-        Notice: This method assumes that each doc in the corpus_bow is a dictionary
+        Notice: This method assumes that each doc in the corpus_t is a dictionary
 
         :param sub_topic: a list of words
-        :param corpus_bow: a list of doc. each doc is a word freqency dictionary
+        :param corpus_t: a list of doc. each doc is a word freqency dictionary
         :return:
         """
         csum = 0
@@ -17,10 +17,10 @@ class TfidfTC:
             sublist = sub_topic[:m_index]
 
         for l in sublist:
-            dl = self.word_doc_freq(l, corpus_bow)
-            dml = self.words_doc_cofreq(m, l, corpus_bow)
+            dl = self.word_doc_freq(l, corpus_t)
+            dml = self.words_doc_cofreq(m, l, corpus_t)
             if dl > 0:
-                csum += numpy.log(float(dml + 1) / dl)
+                csum += numpy.log(float(dml + 0.0001) / dl)
 
         return csum
 
@@ -39,7 +39,7 @@ class TfidfTC:
                 dml = cofreq_list[mlstr]
 
                 if dl > 0:
-                    ftc = numpy.log(float(dml + 1) / float(dl))
+                    ftc = numpy.log(float(dml + 0.0001) / float(dl))
                     csum += ftc
                     flist.append((mlstr, ftc))
         flist = list(sorted(flist, key=lambda x: x[1]))
@@ -50,18 +50,18 @@ class TfidfTC:
             ofile.write(ftuple[0] + "  " + str(ftuple[1] / csum) + "     " + str(ftuple[1]) + "/" + str(csum) + "\n")
         return csum
 
-    def word_doc_freq(self, word, corpus_bow):
+    def word_doc_freq(self, word, corpus_t):
         freq = 0
-        for doc in corpus_bow:
+        for doc in corpus_t:
             if word in doc.keys():
-                freq += 1
+                freq += doc[word]
         return freq
 
-    def words_doc_cofreq(self, word1, word2, corpus_bow):
+    def words_doc_cofreq(self, word1, word2, corpus_t):
         freq = 0
-        for doc in corpus_bow:
+        for doc in corpus_t:
             if word1 in doc.keys() and word2 in doc.keys():
-                freq += 1
+                freq += doc[word1]*doc[word2]
         return freq
 
     def word_list_doc_freq(self, wlist, corpus, dict):
@@ -91,5 +91,5 @@ class TfidfTC:
         fdict = {}
         for line in ifile:
             linelist = line.split("+")
-            fdict[linelist[0]] = int(linelist[1])
+            fdict[linelist[0]] = float(linelist[1])
         return fdict
