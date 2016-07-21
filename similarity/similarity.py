@@ -8,21 +8,38 @@ class Similarity:
         """
         Calculate the Bhattacharyya Coefficient between two topics
         """
-        wset1 = set([w[0] for w in topic1.words_dist if w[1] > threshold])
-        wset2 = set([w[0] for w in topic2.words_dist if w[1] > threshold])
-
-        intersection =  wset1.intersection(wset2)
-        union = wset1.intersection(wset2)
-        return float(intersection)/float(union)
-
-    def kendall_tau(self, topic1, topic2):
-        return stats.kendalltau(topic1.list(), topic2.list())
-
-    def dcg(self, topic1, topic2):
         topic1.sort()
         topic2.sort()
 
-        wlist1 = topic1.list()
-        wlist2 = topic2.list()
+        wset1 = set(topic1.list_words(threshold))
+        wset2 = set(topic2.list_words(threshold))
+
+        intersection = wset1.intersection(wset2)
+        print len(intersection)
+        union = wset1.union(wset2)
+        print len(union)
+        return float(len(intersection))/float(len(union))
+
+    def kendall_tau(self, topic1, topic2):
+        topic1.sort()
+        topic2.sort()
+        return stats.kendalltau(topic1.list_words(), topic2.list_words())[0]
+
+    def dcg(self, topic, word_limit = 0):
+        topic.sort()
+        wlist2 = [v[1] for v in topic.list(word_limit)]
+
+        dcg = float(wlist2[0])
+        for index, value in enumerate(wlist2[1:]):
+            i = index+2
+            add = value/np.log2(i)
+            dcg += add
+        return dcg
+
+    def dcg_similarity(self, topic1, topic2, word_limit):
+        dcg_diff = np.absolute(self.dcg(topic1, word_limit) - self.dcg(topic2,word_limit))
+        return dcg_diff
+
+
 
 

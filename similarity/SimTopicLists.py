@@ -1,6 +1,7 @@
 from BCDistance import BCDistance
 from KLDivergence import KLDivergence
 from CosDistance import CosDistance
+from similarity import Similarity
 
 
 class SimTopicLists:
@@ -12,6 +13,7 @@ class SimTopicLists:
         self.bha = BCDistance()
         self.kl = KLDivergence()
         self.cs = CosDistance()
+        self.sim = Similarity()
 
     # def cross_comp(self, topic_num1, topic_num2, dname, fnum=5):
     #     tm_list1 = []
@@ -72,6 +74,51 @@ class SimTopicLists:
 
         for value1 in t_list1:
             sub_list = [self.cs.distance(value1, value2) for value2 in t_list2]
+            distance_list.append(sub_list)
+
+        return distance_list
+
+    def kendall(self, t_list1, t_list2):
+        """
+            Compare the KL Divergence between each of two topics in two topic lists and store the results
+            in a 2D list
+            :return: a 2D list stores the results
+            """
+        distance_list = []
+
+        for value1 in t_list1:
+            sub_list = [self.sim.kendall_tau(value1, value2) for value2 in t_list2]
+            distance_list.append(sub_list)
+
+        return distance_list
+
+    def dcg(self, t_list1, t_list2, word_limit=0):
+        """
+            Compare the KL Divergence between each of two topics in two topic lists and store the results
+            in a 2D list
+            :return: a 2D list stores the results
+            """
+        distance_list = []
+
+        if word_limit == 0:
+            word_limit = len(t_list1)
+
+        for value1 in t_list1:
+            sub_list = [self.sim.dcg_similarity(value1, value2, word_limit) for value2 in t_list2]
+            distance_list.append(sub_list)
+
+        return distance_list
+
+    def jaccard(self, t_list1, t_list2, threshold):
+        """
+            Compare the KL Divergence between each of two topics in two topic lists and store the results
+            in a 2D list
+            :return: a 2D list stores the results
+            """
+        distance_list = []
+
+        for value1 in t_list1:
+            sub_list = [self.sim.jaccard_coeff(value1, value2, threshold) for value2 in t_list2]
             distance_list.append(sub_list)
 
         return distance_list
@@ -237,6 +284,7 @@ class SimTopicLists:
                 cmax_list.append(self.find_largest_one(col_list))
 
             for sub_i, value in enumerate(sublist):
+                print value
                 value = '{0:.6f}'.format(value)
                 if sub_i == rmax and index != cmax_list[sub_i]:
                     file.write('{:{w}}'.format("|  **" + value, w=width))
