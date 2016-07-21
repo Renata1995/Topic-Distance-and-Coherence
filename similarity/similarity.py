@@ -15,9 +15,7 @@ class Similarity:
         wset2 = set(topic2.list_words(threshold))
 
         intersection = wset1.intersection(wset2)
-        print len(intersection)
         union = wset1.union(wset2)
-        print len(union)
         return float(len(intersection))/float(len(union))
 
     def kendall_tau(self, topic1, topic2):
