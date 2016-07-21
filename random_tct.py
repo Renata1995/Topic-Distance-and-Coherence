@@ -4,7 +4,7 @@ import sys
 import numpy
 from gensim import corpora
 
-from topic_evaluation.topic_coherence import TopicCoherence
+from topic_evaluation.tc_tfidf import TfidfTC
 
 # python random_tc.py <dname> <word_count> <sample_times> <output>
 # <word_count>: the number of words that need to be randomly generated
@@ -25,18 +25,11 @@ if len(sys.argv) <= 3:
 else:
     sample_times = int(sys.argv[3])
 
-if len(sys.argv) <= 4:
-    tfidf = False
-else:
-    if sys.argv[4] == "t":
-        tfidf = True
-    else:
-        tfidf = False
 
 dictionary = corpora.Dictionary.load(dname + "/dict.dict")
 print "Load dictionary",
 print dictionary
-corpus_fname = dname + '/bow_corpus.mm'
+corpus_fname = dname + '/tfidf_corpus.mm'
 print "Load Corpus File " + corpus_fname
 corpus = corpora.MmCorpus(corpus_fname)
 
@@ -46,11 +39,11 @@ for doc in corpus:
     corpus_dict.append(dict(doc))
 dictlen = len(dictionary)
 
-tc = TopicCoherence()
+tc = TfidfTC()
 
 tc_results = []
 words_list = []
-ofile = open(dname+"/tc_rand_"+str(word_count)+".txt", "w")
+ofile = open(dname+"/tc_rand_tfidf_"+str(word_count)+".txt", "w")
 
 for i in range(sample_times):
     random_words = []
