@@ -74,8 +74,8 @@ ofile = open(ofname, "w")
 for value in tclist:
     ofile.write("Topic " + str(value[0]) + "\n")
     ofile.write("Mean " + str(value[1][1]) + "\n")
-    ofile.write("Sum " + str(value[1][0]) + "\n")
     ofile.write("Median "+ str(value[1][2]) + "\n")
+    ofile.write("Sum " + str(value[1][0]) + "\n")
     for tcnum in value[1][3]:
         ofile.write(str(tcnum)+"\n")
     ofile.write("\n")
