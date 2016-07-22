@@ -90,7 +90,7 @@ for i in range(sample_times):
     if ic:
         result = tc.evaluate_ic(randt, word_count, reuters_ic, tcmethod)
     else:
-        result = tc.evaluate(randt, word_count, tc)
+        result = tc.evaluate(randt, word_count, tcmethod)
 
     tc_means.append(result[1])
     tc_medians.append(result[2])
