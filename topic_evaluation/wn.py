@@ -3,6 +3,8 @@ import numpy as np
 from nltk import word_tokenize
 import utils.name_convention as name
 from exceptions import Exception
+from Queue import Queue
+
 
 class DuplicationKey(Exception):
     def __init__(self, message=""):
@@ -14,6 +16,7 @@ class WordNetEvaluator:
     """
     The WordNetEvaluator class includes different methods based on wordnet to evaluate topics
     """
+
     def read_file_into_dict(self, ifname):
         ifile = open(ifname, "r")
         tcdict = {}
@@ -36,7 +39,7 @@ class WordNetEvaluator:
         for index, m in enumerate(tlist[1:]):
             m_index = index + 1
             for l in tlist[:m_index]:
-                mlstr = ''. join(list(sorted([m, l])))
+                mlstr = ''.join(list(sorted([m, l])))
                 results.append(float(tcdict[mlstr]))
         rsum = sum(results)
         r_nozero = [v for v in results if v > 0]
@@ -51,6 +54,10 @@ class WordNetEvaluator:
             func = self.lch
         elif tc == "wup":
             func = self.wup
+        elif tc == "lesk":
+            func = self.lesk
+        elif tc == "hso":
+            func = self.hso
         else:
             tc = "path"
             func = self.path
@@ -123,6 +130,10 @@ class WordNetEvaluator:
             func = self.lch
         elif tc == "wup":
             func = self.wup
+        elif tc == "lesk":
+            func = self.lesk
+        elif tc == "hso":
+            func = self.hso
         else:
             tc = "path"
             func = self.path
@@ -142,7 +153,7 @@ class WordNetEvaluator:
                     results_dict[mlstr] = self.sim_words(m, l, func)
 
         for key, value in results_dict.iteritems():
-            ofile.write(key+" "+str(value)+"\n")
+            ofile.write(key + " " + str(value) + "\n")
 
         results = [value for key, value in results_dict.iteritems()]
         rsum = sum(results)
@@ -281,4 +292,157 @@ class WordNetEvaluator:
         intersection = set(d1_tokens).intersection(set(d2_tokens))
         return len(intersection)
 
+    def hso(self, s1, s2):
+        if s1 == s2:
+            return self.hso_cal(0, 0)
 
+        # Init queue
+        # Each item in squeue is a list of synsets
+        squeue = Queue()
+        # Element in squeue: [no_hyper(bool), direction, turns(int), path, last synset]
+        squeue.put([False, 0, 0, 0, s1])
+
+        while not squeue.empty():
+            # get the last synsets list in the queue
+            slist = squeue.get()
+            no_hyper, direction, turns, path, last = slist[0], slist[1], slist[2], slist[3], slist[4]
+
+            if path > 5 or turns > 1:
+                return 0
+
+            # If hypernyms are allowed
+            if not no_hyper:
+                if direction < 0: # go downwards before
+                    new_turns = turns + 1
+                else:
+                    new_turns = turns
+
+                new_direction = 1
+                has_s2, hypers = self.hyper(last, s2)
+                if has_s2:
+                    return self.hso_cal(path+1, new_turns)
+                else:
+                    for synset in hypers:
+                        slist_new = [False, new_direction, new_turns, path+1, synset]
+                        squeue.put(slist_new)
+
+            # get all related synsets of s1
+            has_s2, hori = self.horizontal(last, s2)
+            new_direction = 0
+            if has_s2:
+                return self.hso_cal(path+1, turns)
+            else:
+                # if any related nodes of <last> is not s2, revise the queue and start over
+                for synset in hori:
+                    slist_new = [True,new_direction, turns, path+1, synset]
+                    squeue.put(slist_new)
+
+
+            if direction > 0:
+                new_turns = turns + 1
+            else:
+                new_turns = turns
+            new_direction = -1
+            hao_s2, hypos = self.hypos(last, s2)
+            if hao_s2:
+                return self.hso_cal(path+1, new_turns)
+            else:
+                for synset in hypos:
+                    slist_new = [True,new_direction, new_turns, path+1, synset]
+                    squeue.put(slist_new)
+
+
+    def hso_cal(self, path, turns):
+        sim = 6 - path - 1 * turns
+        return sim
+
+    def hyper(self, s1, s2):
+        hypers = s1.hypernyms()
+        if s2 in hypers:
+            return True, []
+        else:
+            return False, hypers
+
+    def horizontal(self, s1, s2):
+        # horizontal relation
+        horizontal = self.antonym(s1) + (self.pertainym(s1)) + (self.pertainym(s1))
+        if s2 in horizontal:
+            return True, []
+        else:
+            return False, horizontal
+
+    def hypos(self, s1, s2):
+        # down direction
+        hypos = s1.hyponyms()
+        if s2 in hypos:
+            return True, []
+        else:
+            return False, hypos
+
+    def antonym(self, s1):
+        lemmas = s1.lemmas()
+        antonyms = []
+        for lemma in lemmas:
+            antonyms.extend([l.synset() for l in lemma.antonyms()])
+        return antonyms
+
+    def pertainym(self, s):
+        lemmas = s.lemmas()
+        pertainyms = []
+        for lemma in lemmas:
+            pertainyms.extend([l.synset() for l in lemma.pertainyms()])
+        return pertainyms
+
+    def synonym(self, s):
+        lemmas = s.lemmas()
+        synonyms = []
+        for lemma in lemmas:
+            synonyms.extend([l.synset() for l in lemma.similar_tos()])
+        return synonyms
+
+        # def antonym(self, s1, s2):
+        #     # Get all lemmas in each synset
+        #     lemma_set1 = set(s1.lemmas())
+        #     lemma_set2 = set(s2.lemmas())
+        #
+        #     # Compare whether a lemma in synset1 and a lemma in synset2 are antonym
+        #     for lemma_s1 in lemma_set1:
+        #         # Get all antonyms of the a lemma in synset1
+        #         anto1 = set(lemma_s1.antonyms())
+        #         # check whether any lemma in synset2 exist in this antonym set
+        #         if set(anto1.intersection(lemma_set2))!= 0:
+        #             return True
+        #     return False
+        #
+        # def pertainym(self, s1, s2):
+        #     # Get all lemmas in each synset
+        #     lemma_set1 = set(s1.lemmas())
+        #     lemma_set2 = set(s2.lemmas())
+        #
+        #     # Compare whether a lemma in synset1 and a lemma in synset2 are antonym
+        #     for lemma_s1 in lemma_set1:
+        #         # Get all antonyms of the a lemma in synset1
+        #         anto1 = set(lemma_s1.pertainyms())
+        #         # check whether any lemma in synset2 exist in this antonym set
+        #         if set(anto1.intersection(lemma_set2)) != 0:
+        #             return True
+        #     return False
+        #
+        # def similarity(self, s1, s2):
+        #     # Get all lemmas in each synset
+        #     lemma_set1 = set(s1.lemmas())
+        #     lemma_set2 = set(s2.lemmas())
+        #
+        #     # Compare whether a lemma in synset1 and a lemma in synset2 are antonym
+        #     for lemma_s1 in lemma_set1:
+        #         # Get all antonyms of the a lemma in synset1
+        #         anto1 = set(lemma_s1.similar_tos())
+        #         # check whether any lemma in synset2 exist in this antonym set
+        #         if set(anto1.intersection(lemma_set2)) != 0:
+        #             return True
+        #     return False
+        #
+        #
+        #
+        #
+        #
