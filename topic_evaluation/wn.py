@@ -365,7 +365,8 @@ class WordNetEvaluator:
 
     def horizontal(self, s1, s2):
         # horizontal relation
-        horizontal = self.antonym(s1) + (self.pertainym(s1)) + (self.pertainym(s1))
+        horizontal = self.antonym(s1) + (self.pertainym(s1)) + (self.pertainym(s1)) + self.see_also(s1)
+        print horizontal
         if s2 in horizontal:
             return True, []
         else:
@@ -393,56 +394,16 @@ class WordNetEvaluator:
             pertainyms.extend([l.synset() for l in lemma.pertainyms()])
         return pertainyms
 
+    def see_also(self, s):
+        lemmas = s.lemmas()
+        sa = []
+        for lemma in lemmas:
+            sa.extend([l.synset() for l in lemma.also_sees()])
+        return sa
+
     def synonym(self, s):
         lemmas = s.lemmas()
         synonyms = []
         for lemma in lemmas:
             synonyms.extend([l.synset() for l in lemma.similar_tos()])
         return synonyms
-
-        # def antonym(self, s1, s2):
-        #     # Get all lemmas in each synset
-        #     lemma_set1 = set(s1.lemmas())
-        #     lemma_set2 = set(s2.lemmas())
-        #
-        #     # Compare whether a lemma in synset1 and a lemma in synset2 are antonym
-        #     for lemma_s1 in lemma_set1:
-        #         # Get all antonyms of the a lemma in synset1
-        #         anto1 = set(lemma_s1.antonyms())
-        #         # check whether any lemma in synset2 exist in this antonym set
-        #         if set(anto1.intersection(lemma_set2))!= 0:
-        #             return True
-        #     return False
-        #
-        # def pertainym(self, s1, s2):
-        #     # Get all lemmas in each synset
-        #     lemma_set1 = set(s1.lemmas())
-        #     lemma_set2 = set(s2.lemmas())
-        #
-        #     # Compare whether a lemma in synset1 and a lemma in synset2 are antonym
-        #     for lemma_s1 in lemma_set1:
-        #         # Get all antonyms of the a lemma in synset1
-        #         anto1 = set(lemma_s1.pertainyms())
-        #         # check whether any lemma in synset2 exist in this antonym set
-        #         if set(anto1.intersection(lemma_set2)) != 0:
-        #             return True
-        #     return False
-        #
-        # def similarity(self, s1, s2):
-        #     # Get all lemmas in each synset
-        #     lemma_set1 = set(s1.lemmas())
-        #     lemma_set2 = set(s2.lemmas())
-        #
-        #     # Compare whether a lemma in synset1 and a lemma in synset2 are antonym
-        #     for lemma_s1 in lemma_set1:
-        #         # Get all antonyms of the a lemma in synset1
-        #         anto1 = set(lemma_s1.similar_tos())
-        #         # check whether any lemma in synset2 exist in this antonym set
-        #         if set(anto1.intersection(lemma_set2)) != 0:
-        #             return True
-        #     return False
-        #
-        #
-        #
-        #
-        #
