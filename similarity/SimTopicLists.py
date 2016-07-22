@@ -258,6 +258,39 @@ class SimTopicLists:
             file.write("</tr>")
         file.write("</tbody></table>")
 
+    def show_results_rank_reverse(self, distance_list, file):
+        """
+        Show the results from the comp_topic_lists method
+        :param distance_list: a 2D list of data
+        """
+        width = 14
+        file.write("\ntopic List 1 is vertical and topic List 2 is horizontal\n")
+
+        # calculate smallest results
+        # show row labels
+        file.write("<style>table, th, td {border: 1px solid black;}</style>")
+        file.write("<table><thead><tr><th></th>")
+        for value in range(len(distance_list[0])):
+            file.write("<th> topic" + str(value) + "</th>")
+        file.write("</tr></thead><tbody>")
+
+        colordiff = int(255 / (len(distance_list[0])))
+
+        for index, sublist in enumerate(distance_list):
+            # show column labels
+            file.write("<tr><td> topic" + str(index) + "</td>")
+            # rank
+            sublist = self.rank(sublist)
+            for sub_i, value in enumerate(sublist):
+                ranknum = int(value.split()[0])
+                colornum = str(ranknum * colordiff)
+                rgbstr = "rgb(" + colornum + "," + colornum + "," + colornum + ")"
+                file.write("<td><span style='background-color: " + rgbstr + "'>")
+                file.write(value.split()[1])
+                file.write("</span></td>")
+            file.write("</tr>")
+        file.write("</tbody></table>")
+
     def show_results(self, distance_list, file):
         """
         Show the results from the comp_topic_lists method

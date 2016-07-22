@@ -17,19 +17,13 @@ else:
     else:
         corpus_type = "bow"
 
-if len(sys.argv) <= 3:
-    tc = "path"
-else:
-    tc = sys.argv[3]
-
-
 start_wc = 10
 stop_wc = 270
 step_wc = 20
 # get tc values based on randomly generated numbers
 randlist = []
 for num in range(start_wc, stop_wc, step_wc):
-    ifile = open("reuters_LDA/tc_rand_"+str(num)+".txt")
+    ifile = open("reuters_LDA/tc_rand_tfidf_"+str(num)+".txt")
     avg = float(ifile.readline().split()[1])
     sd = float(ifile.readline().split()[1])
     randlist.append((avg, sd))
@@ -37,11 +31,11 @@ for num in range(start_wc, stop_wc, step_wc):
 rand_avglist = [value[0] for value in randlist]
 log_rand = [np.log(-v) for v in rand_avglist]
 
-
+output = "LDA_pp_reuters_"+corpus_type+"_t"+str(topics_count)
 # get tc values from topics
 tclist = []  
 for num in range(start_wc, stop_wc, step_wc):
-    ifile = open("LDA_pp_reuters_"+corpus_type+"_t"+str(topics_count)+"/top_topics_"+str(num)+".txt")
+    ifile = open(output+"/top_topics_tfidf_"+str(num)+".txt")
     sub_tclist = []
     for line in ifile:
         if "topic" in line:
@@ -86,4 +80,6 @@ for x, y in zip(log_x,log_avg):
 
 plt.legend([line_rand, line_pos, line_neg, line_avg], ["random words", "most positive", "most negative", "avg"],loc='lower right')
 
-plt.show()
+fig = plt.gcf()
+fig.set_size_inches(16,12)
+plt.savefig(output + "/tfidf_tc_"+corpus_type+"_"+topics_count+".png")
