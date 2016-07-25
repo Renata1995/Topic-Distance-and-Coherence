@@ -313,16 +313,17 @@ class SimTopicLists:
 
         max_value = max([max(v) for v in distance_list])
         min_value = min([min(v) for v in distance_list])
-        colordiff = int(255.0/(max_value - min_value))
 
         for index, sublist in enumerate(distance_list):
             # show column labels
             file.write("<tr><td> topic" + str(index) + "</td>")
             for sub_i, value in enumerate(sublist):
-                colornum = str(255 - value * colordiff)
+                percent = (value - min_value)/(max_value - min_value)
+                colornum = str(int(255 * (1 - percent)))
                 rgbstr = "rgb(" + colornum + "," + colornum + "," + colornum + ")"
                 file.write("<td><span style='background-color: " + rgbstr + "'>")
-                file.write(value.split()[1])
+                value = '{0:.6f}'.format(value)
+                file.write(str(value))
                 file.write("</span></td>")
             file.write("</tr>")
         file.write("</tbody></table>")

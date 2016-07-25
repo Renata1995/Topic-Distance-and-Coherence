@@ -33,6 +33,6 @@ t_1 = dtw + "/topics"
 t_list1 = topics_io.read_topics(t_1)
 bc_list = stl.bc_distance(t_list1, t_list1)
 
-ofname = dtw + "/self-comp_bc_values.txt"
+ofname = dtw + "/self-comp_bc_values.html"
 dist_output = open(ofname, "w")
 stl.show_results_value(bc_list, dist_output)
