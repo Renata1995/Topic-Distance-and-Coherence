@@ -18,6 +18,10 @@ def topics_dir():
     return "/topics"
 
 
-def te_preprocess(te, max_words):
-    return "/pre_" + te + "_w" + str(max_words) + ".txt"
+def te_preprocess(te, max_words, startw=0):
+    if startw <= 0:
+        fname = "/pre_" + te + "_w" + str(max_words) + ".txt"
+    else:
+        fname = "/pre_" + te + "_w" + str(max_words) + "_start" + str(startw) + ".txt"
+    return fname
 

@@ -57,6 +57,7 @@ else:
         tfidf = False
 
 
+
 print "input directory : " + dname
 print "corpus type :" + corpus_type
 print "# of topics : " + str(topics_count)

@@ -23,8 +23,16 @@ class TestTopic(TestCase):
 
     def test_sort(self):
         self.topic.sort()
-        print self.topic.words_dist
         self.assertEqual(self.topic.words_dist, [(2,0.5), (1, 0.3)])
+
+    def test_list_words(self):
+        self.topic.add((3, 0.1))
+        self.topic.add((4, 0.5))
+        self.topic.add((5, 0.25))
+        self.topic.add((5, 0.25))
+        self.assertTrue(self.topic.list_words(3),[1,2,3])
+        self.assertTrue(self.topic.list_words(3,1), [2, 3,4])
+        self.assertTrue(self.topic.list_words(3,2), [3,4,5])
 
 
 mock_t0 = Topic()

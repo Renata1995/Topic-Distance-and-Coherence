@@ -41,20 +41,25 @@ if len(sys.argv) <= 6:
 else:
     max_words = int(sys.argv[6])
 
+if len(sys.argv) <= 7:
+    startw = 0
+else:
+    startw = int(sys.argv[7])
+
 dname = name.get_output_dir(corpus_type, topics_count, src)
 
 # read topics
 tio = TopicIO()
 tlist = tio.read_topics(dname + name.topics_dir())
 
-ifname = dname + name.te_preprocess(tc, max_words)
+ifname = dname + name.te_preprocess(tc, max_words, startw=startw)
 
 # calculate topic evaluation values
 tclist = []
 te = WordNetEvaluator()
 
 for index, topic in enumerate(tlist):
-    tclist.append([index, te.get_values(topic, words_count, ifname)])
+    tclist.append([index, te.get_values(topic, words_count, ifname, startw=startw)])
 
 # sort the list by a descending order
 tclist = list(reversed(sorted(tclist, key=lambda x: x[1][2])))
@@ -63,7 +68,7 @@ tclist = list(reversed(sorted(tclist, key=lambda x: x[1][2])))
 if not os.path.exists(dname+"/"+tc):
     os.makedirs(dname+"/"+tc)
     
-ofname = dname + "/" + tc + "/w" + str(words_count) + ".txt"
+ofname = dname + "/" + tc + "/w" + str(words_count) + "_start"+str(startw) + ".txt"
 ofile = open(ofname, "w")
 for value in tclist:
     ofile.write("Topic " + str(value[0]) + "\n")

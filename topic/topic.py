@@ -23,7 +23,7 @@ class Topic:
             words_count = len(self.words_dist)
         return self.words_dist[:words_count]
 
-    def list_words(self, words_count=0):
+    def list_words(self, words_count=0, start=0):
         if words_count <= 0:
             words_count = len(self.words_dist)
-        return [v[0] for v in self.words_dist[:words_count]]
+        return [v[0] for v in self.words_dist[start:start+words_count]]

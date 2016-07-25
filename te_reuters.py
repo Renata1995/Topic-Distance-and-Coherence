@@ -44,6 +44,11 @@ if len(sys.argv) <= 6:
 else:
     words_count = int(sys.argv[6])
 
+if len(sys.argv) <= 7:
+    startw = 0
+else:
+    startw = int(sys.argv[7])
+
 dname = name.get_output_dir(corpus_type, topics_count, src)
 
 # read topics
@@ -51,7 +56,7 @@ tio = TopicIO()
 tlist = tio.read_topics(dname + name.topics_dir())
 
 # generate te file name
-fname = dname + name.te_preprocess(tc, words_count)
+fname = dname + name.te_preprocess(tc, words_count, startw)
 prefile = open(fname, "w")
 
 # calculate topic evaluation values
@@ -59,18 +64,18 @@ tclist = []
 te = WordNetEvaluator()
 if not need_ic:
     for index, topic in enumerate(tlist):
-        tclist.append([index, te.evaluate_write(topic, words_count, tc, prefile)])
+        tclist.append([index, te.evaluate_write(topic, words_count, tc, prefile, startw=startw)])
 else:
     reuters_ic = wn.ic(reuters, False, 0.0)
     for index, topic in enumerate(tlist):
-        tclist.append([index, te.evaluate_ic_write(topic, words_count, reuters_ic, tc, prefile)])
+        tclist.append([index, te.evaluate_ic_write(topic, words_count, reuters_ic, tc, prefile, startw=startw)])
 
 # sort the list by a descending order
 tclist = list(reversed(sorted(tclist, key=lambda x: x[1][1])))
 
 
 # output results
-ofname = dname + "/" + tc + "_w" + str(words_count)+".txt"
+ofname = dname + "/" + tc + "_w" + str(words_count)+"_start"+str(startw)+".txt"
 ofile = open(ofname, "w")
 for value in tclist:
     ofile.write("Topic " + str(value[0]) + "\n")

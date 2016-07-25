@@ -26,10 +26,10 @@ class WordNetEvaluator:
                 tcdict[value[0]] = value[1]
         return tcdict
 
-    def get_values(self, topic, words_num, ifname):
+    def get_values(self, topic, words_num, ifname, startw=0):
         # Get the <word_num>-word sub-list from the topic
         topic.sort()
-        tlist = topic.list_words(words_num)
+        tlist = topic.list_words(words_num, start=startw)
 
         # prepare the dictionary
         tcdict = self.read_file_into_dict(ifname)
@@ -108,7 +108,7 @@ class WordNetEvaluator:
 
         return rsum, rmean, rmedian, results
 
-    def evaluate_write(self, topic, words_num, tc, ofile):
+    def evaluate_write(self, topic, words_num, tc, ofile, startw=0):
         """
         Evaluate a topic by calculating a similarity score for each word pair in the topic
         :param topic: A topic including word distribution pairs
@@ -141,7 +141,7 @@ class WordNetEvaluator:
 
         # Get the <word_num>-word sub-list from the topic
         topic.sort()
-        tlist = topic.list_words(words_num)
+        tlist = topic.list_words(words_num, start=startw)
 
         # Calculate results
         results_dict = {}
@@ -163,7 +163,7 @@ class WordNetEvaluator:
 
         return rsum, rmean, rmedian, results
 
-    def evaluate_ic_write(self, topic, words_num, ic, tc, ofile):
+    def evaluate_ic_write(self, topic, words_num, ic, tc, ofile, startw=0):
         """
             Evaluate a topic by calculating a similarity score for each word pair in the topic
             An information content file is needed
@@ -195,7 +195,7 @@ class WordNetEvaluator:
 
         # Get the <word_num>-word sub-list from the topic
         topic.sort()
-        tlist = topic.list_words(words_num)
+        tlist = topic.list_words(words_num, start=startw)
 
         # Calculate results
         results_dict = {}
