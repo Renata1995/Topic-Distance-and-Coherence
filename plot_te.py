@@ -26,8 +26,8 @@ print corpus_type
 
 
 start_wc = 10
-stop_wc = 270
-step_wc = 20
+stop_wc = 260
+step_wc = 10
 # get tc values based on randomly generated numbers
 randlist = []
 for num in range(start_wc, stop_wc, step_wc):
@@ -60,11 +60,16 @@ x_axis = range(start_wc, stop_wc, step_wc)
 
 line_rand, = plt.plot(x_axis, randlist, color=(0,0,0), marker = "^")
 for x, y in zip(x_axis, randlist):
-    plt.annotate("{:.2f}".format(float(y)), xy=(x,y))
+    plt.annotate("{:.3f}".format(float(y)), xy=(x,y), xytext =(5,0), textcoords='offset points')
     
 line_avg, = plt.plot(x_axis, tclist, "g", marker = "o")
 for x, y in zip(x_axis, tclist):
-    plt.annotate("("+str(x)+", "+str("{:.2f}".format(float(y)))+")", xy=(x,y), xytext=(10,-10), textcoords='offset points')
+    if (x/10)%2 == 0:
+        yoffset = 10
+    else:
+        yoffset = -30
+    
+    plt.annotate("("+str(x)+",\n"+str("{:.3f}".format(float(y)))+")", xy=(x,y), xytext=(-10,yoffset), textcoords='offset points')
 
 plt.legend([line_rand, line_avg], ["random words", "avg of mean"],loc='lower right')
 

@@ -31,8 +31,15 @@ dtw = name.get_output_dir(corpus_type, topics_count, src)
 
 t_1 = dtw + "/topics"
 t_list1 = topics_io.read_topics(t_1)
-bc_list = stl.bc_distance(t_list1, t_list1)
+jlist = stl.jaccard(t_list1, t_list1, 500)
 
-ofname = dtw + "/self-comp_bc_values.html"
+kprepare = []
+for topic in t_list1:
+    topic.sort()
+    kprepare.append(topic.list_words())
+    
+klist = stl.kendall(kprepare,kprepare)
+
+ofname = dtw + "/self-comp_jaccard_values.html"
 dist_output = open(ofname, "w")
-stl.show_results_value(bc_list, dist_output)
+stl.show_results_value_reverse(klist, dist_output)
