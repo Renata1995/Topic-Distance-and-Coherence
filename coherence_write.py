@@ -1,5 +1,5 @@
 length = 30
-for te in ["path", "lch", "wup","res","lin","jcn"]:
+for te in ["lesk"]:
     ofname = "reuters_coherence_"+te+".txt"
     ofile = open(ofname, "w")
 
@@ -16,19 +16,19 @@ for te in ["path", "lch", "wup","res","lin","jcn"]:
         for line in tfile:
             if line.startswith("Topic"):
                 tlist.append(line.strip())
-            if line.startswith("Median"):
+            if line.startswith("Mean"):
                 tlist.append(line.strip())
         blist = []
         for line in bfile:
             if line.startswith("Topic"):
                 blist.append(line.strip())
-            if line.startswith("Median"):
+            if line.startswith("Mean"):
                 blist.append(line.strip())
         clist = []
         for line in cfile:
             if line.startswith("Topic"):
                 clist.append(line.strip())
-            if line.startswith("Median"):
+            if line.startswith("Mean"):
                 clist.append(line.strip())
 
         for index, line in enumerate(tlist):

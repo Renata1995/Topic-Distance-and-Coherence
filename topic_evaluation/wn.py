@@ -366,7 +366,6 @@ class WordNetEvaluator:
     def horizontal(self, s1, s2):
         # horizontal relation
         horizontal = self.antonym(s1) + (self.pertainym(s1)) + (self.pertainym(s1)) + self.see_also(s1)
-        print horizontal
         if s2 in horizontal:
             return True, []
         else:
