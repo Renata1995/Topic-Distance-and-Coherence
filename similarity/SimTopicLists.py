@@ -328,6 +328,46 @@ class SimTopicLists:
             file.write("</tr>")
         file.write("</tbody></table>")
 
+    def show_results_value_reverse(self, distance_list, file):
+        """
+        Show the results from the comp_topic_lists method
+        :param distance_list: a 2D list of data
+        """
+        width = 14
+        file.write("\ntopic List 1 is vertical and topic List 2 is horizontal\n")
+
+        # calculate smallest results
+        # show row labels
+        file.write("<style>table, th, td {border: 1px solid black;}</style>")
+        file.write("<table><thead><tr><th></th>")
+        for value in range(len(distance_list[0])):
+            file.write("<th> topic" + str(value) + "</th>")
+        file.write("</tr></thead><tbody>")
+
+        max_list = []
+        for sub in distance_list:
+            max_list.append(max([v for v in sub if round(v, 6) != 1.000000]))
+        max_value = max(max_list)
+        min_value = min([min(v) for v in distance_list])
+
+        for index, sublist in enumerate(distance_list):
+            # show column labels
+            file.write("<tr><td> topic" + str(index) + "</td>")
+            for sub_i, value in enumerate(sublist):
+                if round(value,6) == 1.000000:
+                    colornum = "255"
+                else:
+                    percent = (value - min_value)/(max_value - min_value)
+                    colornum = str(int(255 * percent))
+
+                rgbstr = "rgb(" + colornum + "," + colornum + "," + colornum + ")"
+                file.write("<td><span style='background-color: " + rgbstr + "'>")
+                value = '{0:.6f}'.format(value)
+                file.write(str(value))
+                file.write("</span></td>")
+            file.write("</tr>")
+        file.write("</tbody></table>")
+
 
     def show_results(self, distance_list, file):
         """
