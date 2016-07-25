@@ -61,8 +61,8 @@ tc_means = []
 tc_medians = []
 words_list = []
 
-ofilemean = open(dname + "/te_mean_rand.txt", "w")
-ofilemedian = open(dname + "/te_median_rand.txt", "w")
+ofilemean = open(dname + "/"+tcmethod+"_mean_rand_"+str(word_count)+".txt", "w")
+ofilemedian = open(dname + "/"+tcmethod+"_median_rand_"+str(word_count)+".txt", "w")
 
 if ic:
     reuters_ic = reuters_ic = wordnet.ic(reuters, False, 0.0)
@@ -90,7 +90,7 @@ for i in range(sample_times):
     if ic:
         result = tc.evaluate_ic(randt, word_count, reuters_ic, tcmethod)
     else:
-        result = tc.evaluate(randt, word_count, tc)
+        result = tc.evaluate(randt, word_count, tcmethod)
 
     tc_means.append(result[1])
     tc_medians.append(result[2])

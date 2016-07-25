@@ -307,7 +307,7 @@ class WordNetEvaluator:
             slist = squeue.get()
             no_hyper, direction, turns, path, last = slist[0], slist[1], slist[2], slist[3], slist[4]
 
-            if path > 5 or turns > 1:
+            if path > 7 or turns > 1:
                 return 0
 
             # If hypernyms are allowed
@@ -353,7 +353,7 @@ class WordNetEvaluator:
 
 
     def hso_cal(self, path, turns):
-        sim = 6 - path - 1 * turns
+        sim = 8 - path - 1 * turns
         return sim
 
     def hyper(self, s1, s2):
@@ -366,7 +366,6 @@ class WordNetEvaluator:
     def horizontal(self, s1, s2):
         # horizontal relation
         horizontal = self.antonym(s1) + (self.pertainym(s1)) + (self.pertainym(s1)) + self.see_also(s1)
-        print horizontal
         if s2 in horizontal:
             return True, []
         else:

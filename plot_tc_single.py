@@ -94,4 +94,4 @@ plt.legend(linelist, legendlist,loc='lower right')
 
 fig = plt.gcf()
 fig.set_size_inches(16,12)
-plt.savefig(output + "/plot_eachtc.png")
+plt.savefig("plot_eachtc_"+corpus_type+"_"+str(topics_count)+".png")

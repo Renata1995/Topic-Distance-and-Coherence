@@ -18,6 +18,7 @@ inaugural*
 data*
 *.txt
 *.html
+*.png
 
 # ignore compressed files
 *.zip

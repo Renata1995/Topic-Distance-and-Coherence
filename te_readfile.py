@@ -57,7 +57,7 @@ for index, topic in enumerate(tlist):
     tclist.append([index, te.get_values(topic, words_count, ifname)])
 
 # sort the list by a descending order
-tclist = list(reversed(sorted(tclist, key=lambda x: x[1][1])))
+tclist = list(reversed(sorted(tclist, key=lambda x: x[1][2])))
 
 # output results
 if not os.path.exists(dname+"/"+tc):

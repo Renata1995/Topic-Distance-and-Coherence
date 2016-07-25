@@ -15,15 +15,11 @@ class Similarity:
         wset2 = set(topic2.list_words(threshold))
 
         intersection = wset1.intersection(wset2)
-        print len(intersection)
         union = wset1.union(wset2)
-        print len(union)
         return float(len(intersection))/float(len(union))
 
-    def kendall_tau(self, topic1, topic2):
-        topic1.sort()
-        topic2.sort()
-        return stats.kendalltau(topic1.list_words(), topic2.list_words())[0]
+    def kendall_tau(self, t1words, t2words):
+        return stats.kendalltau(t1words,t2words)[0]
 
     def dcg(self, topic, word_limit = 0):
         topic.sort()

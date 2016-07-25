@@ -86,8 +86,11 @@ class SimTopicLists:
             """
         distance_list = []
 
-        for value1 in t_list1:
-            sub_list = [self.sim.kendall_tau(value1, value2) for value2 in t_list2]
+        for index1, value1 in enumerate(t_list1):
+            sub_list = []
+            for index2, value2 in enumerate(t_list2):
+                result = self.sim.kendall_tau(value2, value1)
+                sub_list.append(result)
             distance_list.append(sub_list)
 
         return distance_list
@@ -258,7 +261,11 @@ class SimTopicLists:
             file.write("</tr>")
         file.write("</tbody></table>")
 
+<<<<<<< HEAD
     def show_results_values(self, distance_list, file):
+=======
+    def show_results_rank_reverse(self, distance_list, file):
+>>>>>>> c0bd379ba5dc846ac9d61bb4c627bc32a09ca49e
         """
         Show the results from the comp_topic_lists method
         :param distance_list: a 2D list of data
@@ -274,12 +281,24 @@ class SimTopicLists:
             file.write("<th> topic" + str(value) + "</th>")
         file.write("</tr></thead><tbody>")
 
+<<<<<<< HEAD
+=======
+        colordiff = int(255.0 / (len(distance_list[0])))
+
+>>>>>>> c0bd379ba5dc846ac9d61bb4c627bc32a09ca49e
         for index, sublist in enumerate(distance_list):
             # show column labels
             file.write("<tr><td> topic" + str(index) + "</td>")
             # rank
+<<<<<<< HEAD
             for sub_i, value in enumerate(sublist):
                 colornum = str(int(255 * float(value)))
+=======
+            sublist = self.rank(sublist)
+            for sub_i, value in enumerate(sublist):
+                ranknum = int(value.split()[0])
+                colornum = str(ranknum * colordiff)
+>>>>>>> c0bd379ba5dc846ac9d61bb4c627bc32a09ca49e
                 rgbstr = "rgb(" + colornum + "," + colornum + "," + colornum + ")"
                 file.write("<td><span style='background-color: " + rgbstr + "'>")
                 file.write(value.split()[1])
@@ -287,7 +306,10 @@ class SimTopicLists:
             file.write("</tr>")
         file.write("</tbody></table>")
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> c0bd379ba5dc846ac9d61bb4c627bc32a09ca49e
     def show_results(self, distance_list, file):
         """
         Show the results from the comp_topic_lists method
@@ -378,7 +400,7 @@ class SimTopicLists:
             for sub_i, value in enumerate(sublist):
                 value = '{0:.6f}'.format(value)
                 if sub_i == min_1:
-                    file.write('{:{w}}'.format("|   " + value, w=width))
+                    file.write('{:{w}}'.format("|##" + value, w=width))
                 elif sub_i == min_2:
                     file.write('{:{w}}'.format("| #" + value, w=width))
                 else:

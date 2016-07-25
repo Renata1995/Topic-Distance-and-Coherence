@@ -14,8 +14,20 @@ if len(sys.argv)<=2:
     topics_count = 3
 else:
     topics_count = sys.argv[2]
+
+if len(sys.argv) <= 3:
+    tfidf = False
+else:
+    if sys.argv[3] == "t":
+        tfidf = True
+    else:
+        tfidf = False
         
-ofname = "reuters_tc_avg_"+corpus_type+"_t"+topics_count+".txt"
+if tfidf:
+    ofname = "reuters_tfidftc_avg_"+corpus_type+"_t"+topics_count+".txt"
+else:
+    ofname = "reuters_tc_avg_"+corpus_type+"_t"+topics_count+".txt"
+    
 ofile = open(ofname, "w")
     
 length = 30
@@ -23,8 +35,11 @@ for tc in range(10, 270, 20):
     for type in ["Word Counts: "+str(tc), "topic id", "TC", "AVG", "SD"]:
         ofile.write("{:{l}}".format(type, l=length))
     ofile.write("\n")
-    
-    ifile = open("LDA_pp_reuters_"+corpus_type+"_t"+topics_count+"/tc_freq_"+str(tc)+".txt","r")
+
+    if tfidf:
+        ifile = open("LDA_pp_reuters_"+corpus_type+"_t"+topics_count+"/tc_tfidf_freq_"+str(tc)+".txt","r")
+    else:
+        ifile = open("LDA_pp_reuters_"+corpus_type+"_t"+topics_count+"/tc_freq_"+str(tc)+".txt","r")
 
     tlist = []
     tclist = []

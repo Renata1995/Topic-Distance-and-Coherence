@@ -31,7 +31,7 @@ dtw = name.get_output_dir(corpus_type, topics_count, src)
 
 t_1 = dtw + "/topics"
 t_list1 = topics_io.read_topics(t_1)
-jlist = stl.jaccard(t_list1, t_list1, 200)
+jlist = stl.jaccard(t_list1, t_list1, 500)
 klist = stl.kendall(t_list1, t_list1)
 dlist = stl.dcg(t_list1, t_list1)
 
