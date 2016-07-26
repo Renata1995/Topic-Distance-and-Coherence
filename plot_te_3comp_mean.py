@@ -18,20 +18,31 @@ step_wc = 10
 # get tc values based on randomly generated numbers
 randlist = []
 for num in range(start_wc, stop_wc, step_wc):
-    ifile = open("reuters_LDA/"+tc+"_median_rand_"+str(num)+".txt")
+    ifile = open("reuters_LDA/"+tc+"_mean_rand_"+str(num)+".txt")
     avg = float(ifile.readline().split()[1])
     randlist.append(avg)
 
+output = "LDA_pp_reuters_binary_t"+str(topics_count)
+# get tc values from topics
+blist = []  
+for num in range(start_wc, stop_wc, step_wc):
+    ifile = open(output+"/"+tc+"/w"+str(num)+"_start50.txt")
+    sub_blist = []
+    for line in ifile:
+        if "Mean" in line:
+            sub_blist.append(float(line.split()[1]))
+    blist.append(np.average(sub_blist))
+
 typelist = [] 
-for corpus_type in ("binary","bow","tfidf"):
+for corpus_type in ("tfidf","bow","binary"):
     output = "LDA_pp_reuters_"+corpus_type+"_t"+str(topics_count)
     # get tc values from topics
     tclist = []  
     for num in range(start_wc, stop_wc, step_wc):
-        ifile = open(output+"/"+tc+"/w"+str(num)+"_start0.txt")
+        ifile = open(output+"/"+tc+"/w"+str(num)+".txt")
         sub_tclist = []
         for line in ifile:
-            if "Median" in line:
+            if "Mean" in line:
                 sub_tclist.append(float(line.split()[1]))
         tclist.append(np.average(sub_tclist))
     typelist.append(tclist)
@@ -39,9 +50,9 @@ for corpus_type in ("binary","bow","tfidf"):
                  
 # plot
 fig = plt.figure()
-fig.suptitle(tc.upper()+" Topic Coherence\nReuters 3 Corpus Type Comparison ("+str(topics_count)+ " topics)" ,fontsize=15)
+fig.suptitle(tc.title()+" Similarity\nReuters 3 Corpus Type Comparison ("+str(topics_count)+ " topics)" ,fontsize=15)
 
-plt.ylabel(tc.upper())
+plt.ylabel(tc)
 plt.xlabel("# of words")
 
 
@@ -50,6 +61,10 @@ x_axis = range(start_wc, stop_wc, step_wc)
 
 line_rand, = plt.plot(x_axis, randlist, color=(0,0,0), marker = "^")
 for x, y in zip(x_axis, randlist):
+    plt.annotate("{:.3f}".format(float(y)), xy=(x,y), xytext =(5,0), textcoords='offset points')
+
+b50list, = plt.plot(x_axis, blist, color = (1,0,1), marker = "^")
+for x, y in zip(x_axis, blist):
     plt.annotate("{:.3f}".format(float(y)), xy=(x,y), xytext =(5,0), textcoords='offset points')
 
 linelist = [0,0,0]
@@ -65,8 +80,8 @@ for index, tclist in enumerate(typelist):
         
         plt.annotate(str("{:.3f}".format(float(y))), xy=(x,y),color = (color[0],color[1],color[2]), xytext=(-10,yoffset), textcoords='offset points')
 
-plt.legend([line_rand, linelist[0], linelist[1], linelist[2]], ["random words", "binary", "bow", "tfidf"],bbox_to_anchor=(1,-0.05), ncol=4)
+plt.legend([line_rand, b50list, linelist[0], linelist[1], linelist[2]], ["random words", "binary -50", "tfidf", "bow", "binary"],loc='lower right')
 
 fig = plt.gcf()
 fig.set_size_inches(16,12)
-plt.savefig("plot_3comp_"+topics_count+"_"+tc+".png")
+plt.savefig("plot_b50_3comp_mean_"+topics_count+"_"+tc+".png")

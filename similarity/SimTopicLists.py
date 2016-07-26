@@ -489,9 +489,9 @@ class SimTopicLists:
             for sub_i, value in enumerate(sublist):
                 value = '{0:.6f}'.format(value)
                 if sub_i == max_1:
-                    file.write('{:{w}}'.format("| **" + value, w=width))
+                    file.write('{:{w}}'.format("|   " + value, w=width))
                 elif sub_i == max_2:
-                    file.write('{:{w}}'.format("|  ^" + value, w=width))
+                    file.write('{:{w}}'.format("| **" + value, w=width))
                 else:
                     file.write('{:{w}}'.format("|   " + value, w=width))
             file.write("\n" + "-" * width * (len(distance_list[0]) + 1) + "\n")

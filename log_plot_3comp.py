@@ -7,19 +7,10 @@ if len(sys.argv) <= 1:
     topics_count = 3
 else:
     topics_count = sys.argv[1]
-if len(sys.argv) <= 2:
-    corpus_type = "bow"
-else:
-    if sys.argv[2] == "t":
-        corpus_type = "tfidf"
-    elif sys.argv[2] == "b":
-        corpus_type = "binary"
-    else:
-        corpus_type = "bow"
 
 start_wc = 10
-stop_wc = 270
-step_wc = 20
+stop_wc = 260
+step_wc = 10
 # get tc values based on randomly generated numbers
 randlist = []
 for num in range(start_wc, stop_wc, step_wc):
@@ -36,7 +27,7 @@ for num in range(start_wc, stop_wc, step_wc):
     ifile = open("LDA_pp_reuters_tfidf_t" + str(topics_count) + "/top_topics_" + str(num) + ".txt")
     sub_tclist = []
     for line in ifile:
-        if "topic" in line:
+        if "Topic" in line:
             # format in the ifile: Topic num tc_value
             sub_tclist.append(float(line.split()[2]))
     # tuple: (most positive, most negative, avg, sd)
@@ -47,7 +38,7 @@ for num in range(start_wc, stop_wc, step_wc):
     ifile = open("LDA_pp_reuters_binary_t" + str(topics_count) + "/top_topics_" + str(num) + ".txt")
     sub_tclist = []
     for line in ifile:
-        if "topic" in line:
+        if "Topic" in line:
             # format in the ifile: Topic num tc_value
             sub_tclist.append(float(line.split()[2]))
     # tuple: (most positive, most negative, avg, sd)
@@ -58,7 +49,7 @@ for num in range(start_wc, stop_wc, step_wc):
     ifile = open("LDA_pp_reuters_bow_t" + str(topics_count) + "/top_topics_" + str(num) + ".txt")
     sub_tclist = []
     for line in ifile:
-        if "topic" in line:
+        if "Topic" in line:
             # format in the ifile: Topic num tc_value
             sub_tclist.append(float(line.split()[2]))
     # tuple: (most positive, most negative, avg, sd)
@@ -66,7 +57,7 @@ for num in range(start_wc, stop_wc, step_wc):
 
 # plot
 fig = plt.figure()
-fig.suptitle("Reuters topic coherence value comparison(3 topics)", fontsize=15)
+fig.suptitle("UMass Topic Coherence \nReuters 3 Corpus Type Comparison(3 topics)", fontsize=15)
 
 plt.ylabel("log( - topic coherence)")
 plt.xlabel("log(# of words)")

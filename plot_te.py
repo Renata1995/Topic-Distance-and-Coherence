@@ -24,6 +24,11 @@ else:
 
 print corpus_type
 
+if len(sys.argv) <= 4:
+    startw = 0
+else:
+    startw = int(sys.argv[4])
+
 
 start_wc = 10
 stop_wc = 260
@@ -31,7 +36,7 @@ step_wc = 10
 # get tc values based on randomly generated numbers
 randlist = []
 for num in range(start_wc, stop_wc, step_wc):
-    ifile = open("reuters_LDA/"+tc+"_mean_rand_"+str(num)+".txt")
+    ifile = open("reuters_LDA/"+tc+"_median_rand_"+str(num)+".txt")
     avg = float(ifile.readline().split()[1])
     randlist.append(avg)
 
@@ -39,10 +44,14 @@ output = "LDA_pp_reuters_"+corpus_type+"_t"+str(topics_count)
 # get tc values from topics
 tclist = []  
 for num in range(start_wc, stop_wc, step_wc):
-    ifile = open(output+"/"+tc+"/w"+str(num)+".txt")
+    if startw == 0:
+        ifile = open(output+"/"+tc+"/w"+str(num)+".txt")
+    else:
+        ifile = open(output+"/"+tc+"/w"+str(num)+ "_start"+str(startw)+".txt")
+
     sub_tclist = []
     for line in ifile:
-        if "Mean" in line:
+        if "Median" in line:
             sub_tclist.append(float(line.split()[1]))
     tclist.append(np.average(sub_tclist))
 
@@ -71,8 +80,11 @@ for x, y in zip(x_axis, tclist):
     
     plt.annotate("("+str(x)+",\n"+str("{:.3f}".format(float(y)))+")", xy=(x,y), xytext=(-10,yoffset), textcoords='offset points')
 
-plt.legend([line_rand, line_avg], ["random words", "avg of mean"],loc='lower right')
+plt.legend([line_rand, line_avg], ["random words", "avg of median"],loc='lower right')
 
 fig = plt.gcf()
 fig.set_size_inches(16,12)
-plt.savefig(output + "/plot_mean_"+corpus_type+"_"+topics_count+"_"+tc+".png")
+if startw == 0:
+    plt.savefig(output + "/plot_median_"+corpus_type+"_"+topics_count+"_"+tc+".png")
+else:
+    plt.savefig(output + "/plot_median_"+corpus_type+"_"+topics_count+"_"+tc+"_start"+str(startw)+".png")
