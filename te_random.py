@@ -92,10 +92,20 @@ for i in range(sample_times):
     else:
         result = tc.evaluate(randt, word_count, tcmethod)
 
-    tc_means.append(result[1])
-    tc_medians.append(result[2])
+    if not numpy.isnan(result[1]):
+        rmean = result[1]
+    else:
+        rmean = 0.0
 
-ofilemean.write("AVG: " + str(numpy.average(tc_means)) + "\n")
+    if not numpy.isnan(result[2]):
+        rmedian = result[2]
+    else:
+        rmedian = 0.0
+        
+    tc_means.append(rmean)
+    tc_medians.append(rmedian)
+
+ofilemean.write("Median: " + str(numpy.median(tc_means)) + "\n")
 ofilemean.write("SD: " + str(numpy.std(tc_means)) + "\n\n")
 for item in tc_means:
     ofilemean.write(str(item) + "\n")
@@ -103,7 +113,7 @@ for item in tc_means:
 for item in words_list:
     ofilemean.write(str(item) + "\n")
 
-ofilemedian.write("AVG: " + str(numpy.average(tc_medians)) + "\n")
+ofilemedian.write("Median: " + str(numpy.median(tc_medians)) + "\n")
 ofilemedian.write("SD: " + str(numpy.std(tc_medians)) + "\n\n")
 for item in tc_medians:
     ofilemedian.write(str(item) + "\n")

@@ -19,6 +19,10 @@ data*
 *.txt
 *.html
 *.png
+binary*
+tfidf*
+bow*
+20newsgroup
 
 # ignore compressed files
 *.zip

@@ -85,7 +85,7 @@ tc = TopicCoherence()
 tct = TfidfTC()
 
 # get all topics
-tlist = topics_io.read_topics(output+"/topics")
+tlist = topics_io.read_topics_wp(output+"/topics_maxnorm")
 
 # sort all words by decreasing frequency
 tlist2 = []
@@ -111,10 +111,10 @@ keylist = [value for key, value in wdict.iteritems()]
 
 if tfidf:
     tct.write_freqlist(tct.word_list_doc_freq(keylist, corpus_dict, dictionary),
-                      dname + "/wdoc_freq_tfidf_" + corpus_type + "_t" + str(topics_count) + ".txt")
+                      dname + "/wpdoc_freq_tfidf_" + corpus_type + "_t" + str(topics_count) + ".txt")
     colist = tct.words_cooccur(keylist, corpus_dict, dictionary)
-    tct.write_freqlist(colist, dname + "/cofreq_tfidf_" + corpus_type + "_t" + str(topics_count) + ".txt")
+    tct.write_freqlist(colist, dname + "/wpcofreq_tfidf_" + corpus_type + "_t" + str(topics_count) + ".txt")
 else:
-    tc.write_freqlist(tc.word_list_doc_freq(keylist, corpus_dict, dictionary), dname+"/wdoc_freq_"+corpus_type+"_t"+str(topics_count)+".txt")
+    tc.write_freqlist(tc.word_list_doc_freq(keylist, corpus_dict, dictionary), dname+"/wpdoc_freq_"+corpus_type+"_t"+str(topics_count)+".txt")
     colist = tc.words_cooccur(keylist, corpus_dict, dictionary)
-    tc.write_freqlist(colist, dname+"/cofreq_"+corpus_type+"_t"+str(topics_count)+".txt")
+    tc.write_freqlist(colist, dname+"/wpcofreq_"+corpus_type+"_t"+str(topics_count)+".txt")

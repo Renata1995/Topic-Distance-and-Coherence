@@ -211,8 +211,14 @@ class WordNetEvaluator:
 
         results = [value for key, value in results_dict.iteritems() if value > 0]
         rsum = sum(results)
+        
         rmean = np.average(results)
+        if np.isnan(rmean):
+            rmean = 0.0
+       
         rmedian = np.median(results)
+        if np.isnan(rmedian):
+            rmedian = 0.0
 
         return rsum, rmean, rmedian, results
 
@@ -234,7 +240,7 @@ class WordNetEvaluator:
         if len(simlist) == 0:
             # if the word does not exist in the wordnet
             smax = 0.0
-        elif max(simlist) is None:
+        elif max(simlist) is None or np.isnan(max(simlist)):
             smax = 0.0
         else:
             smax = max(simlist)
