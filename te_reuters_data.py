@@ -50,10 +50,12 @@ else:
     startw = int(sys.argv[7])
 
 dname = corpus_type+str(topics_count)
+print dname
 
 # read topics
 tio = TopicIO()
-tlist = tio.read_topics(dname + name.topics_dir())
+print dname
+tlist = tio.read_topics(dname + "/topics")
 
 # generate te file name
 fname = dname + name.te_preprocess(tc, words_count, startw)

@@ -18,10 +18,10 @@ class Topic:
     def sort(self):
         self.words_dist = list(reversed(sorted(self.words_dist, key=lambda x: x[1])))
 
-    def list(self, words_count=0):
+    def list(self, words_count=0, start=0):
         if words_count <= 0:
             words_count = len(self.words_dist)
-        return self.words_dist[:words_count]
+        return self.words_dist[start:start+words_count]
 
     def list_words(self, words_count=0, start=0):
         if words_count <= 0:

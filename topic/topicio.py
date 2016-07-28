@@ -94,7 +94,7 @@ class TopicIO:
 
         return topic
 
-    def read_topics_wp(self, pctotal, input_dir="topic_list"):
+    def read_topics_wp(self, pctotal, input_dir="topic_list", words_count=0):
         """
         Read all topics for a corpus from a directory named <input_directory>
         :param input_dir: the name of the input directory
@@ -104,7 +104,7 @@ class TopicIO:
         ofile = open("wptest.txt","w")
         for index, fname in enumerate(os.listdir(input_dir)):
             fname = input_dir + "/" + fname
-            topic_i = self.read_topic_wp_norm(pctotal, fname, ofile)
+            topic_i = self.read_topic_wp_norm(pctotal, fname, ofile, words_count)
             # i = fname.split('_')[-1].replace(".txt|topic", "")
             # if int(i) != index:
             #     raise TopicMissing()
@@ -142,7 +142,7 @@ class TopicIO:
         newtopic.sort()
         return newtopic
     
-    def read_topic_wp_norm(self, pctotal, input_file, ofile):
+    def read_topic_wp_norm(self, pctotal, input_file, ofile, words_count=0):
         """
         Read in a specific topic from a file named <input_file>
         :param input_file: the name of the file that stores the topic
@@ -167,9 +167,12 @@ class TopicIO:
         maxpc = max([t[2] for t in tuplelist])
         print "maxpc " + str(maxpc)
         print "maxpt "+ str(maxpt)
+
+        if words_count == 0:
+            words_count = topic.size()
         
         newtopic = Topic()
-        for wtuple in topic.list():
+        for wtuple in topic.list()[:words_count]:
             ptipc = self.ptipc_log_norm(wtuple[1], wtuple[2], maxpc, maxpt, pctotal, ofile)
             wt = (wtuple[0], ptipc, wtuple[1], wtuple[2])
             newtopic.add(wt)            
@@ -182,7 +185,7 @@ class TopicIO:
 
     def ptipc_log_norm(self, pt, pc, maxpc, maxpt, pctotal, ofile):
         ptnorm = pt
-        ipcnorm = np.log(maxpc/pc)
+        ipcnorm = np.log(pctotal/pc)
         value = ptnorm * ipcnorm
 
         ofile.write(str(ptnorm)+" "+str(ipcnorm)+" "+str(value)+"\n")

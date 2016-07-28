@@ -26,7 +26,7 @@ for corpus_type in ("binary","bow","tfidf"):
     # get tc values from topics
     tclist = []  
     for num in range(start_wc, stop_wc, step_wc):
-        ifile = open(output+"/"+tc+"/w"+str(num)+"_start0.txt")
+        ifile = open(output+"/"+tc+"/w0"+str(num)+"_start0.txt")
         sub_tclist = []
         for line in ifile:
             if "Median" in line:
@@ -36,13 +36,13 @@ for corpus_type in ("binary","bow","tfidf"):
 
 notoplist = []
 #topwords = [20, 30, 40, 50, 60, 70]
-topwords = [20,30,50]
+topwords = [25]
 for startw in topwords:
     output = "LDA_pp_reuters_binary_t"+str(topics_count)
     # get tc values from topics
     tclist = []  
     for num in range(start_wc, stop_wc, step_wc):
-        ifile = open(output+"/"+tc+"/w"+str(num)+"_start"+str(startw)+".txt")
+        ifile = open(output+"/"+tc+"/w0"+str(num)+"_start"+str(startw)+".txt")
         sub_tclist = []
         for line in ifile:
             if "Median" in line:

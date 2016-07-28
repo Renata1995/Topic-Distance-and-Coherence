@@ -19,7 +19,7 @@ step_wc = 10
 output = "LDA_pp_reuters_binary_t"+str(topics_count)
 blist = []
 for num in range(start_wc, stop_wc, step_wc):
-    ifile = open(output+"/"+tc+"/norm"+str(num)+"_start0.txt")
+    ifile = open(output+"/"+tc+"/norm2"+str(num)+"_start0.txt")
     sub_blist = []
     for line in ifile:
         if "Median" in line:
@@ -32,7 +32,7 @@ for corpus_type in ("binary","bow","tfidf"):
     # get tc values from topics
     tclist = []  
     for num in range(start_wc, stop_wc, step_wc):
-        ifile = open(output+"/"+tc+"/w"+str(num)+"_start0.txt")
+        ifile = open(output+"/"+tc+"/w0"+str(num)+"_start0.txt")
         sub_tclist = []
         for line in ifile:
             if "Median" in line:

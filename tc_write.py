@@ -49,18 +49,26 @@ else:
     max_wc = int(sys.argv[5])
 
 if len(sys.argv) <= 6:
+    startw = 0
+else:
+    startw = int(sys.argv[6])
+    
+if len(sys.argv) <= 7:
     tfidf = False
 else:
-    if sys.argv[6] == "t":
+    if sys.argv[7] == "t":
         tfidf = True
     else:
         tfidf = False
+
+output = "LDA_"+src+"_"+corpus_type+"_t"+str(topics_count)
 
 print "input directory : " + dname
 print "corpus type :" + corpus_type
 print "# of topics : " + str(topics_count)
 print "src : " + src
 print "# of words used for topic coherence: " + str(max_wc)
+print "output : " + output
 print "\n"
 
 # Load directory
@@ -75,46 +83,48 @@ else:
 print "Load Corpus File " + corpus_fname
 corpus = corpora.MmCorpus(corpus_fname)
 
+# Transfer each doc(list) in the corpus into a dic
 corpus_dict = []
 for doc in corpus:
     corpus_dict.append(dict(doc))
 
+# Init all helpers
 topics_io = TopicIO()
-output = "LDA_"+src+"_"+corpus_type+"_t"+str(topics_count)
 tc = TopicCoherence()
 tct = TfidfTC()
 
 # get all topics
-tlist = topics_io.read_topics_wp(output+"/topics_maxnorm")
+tlist = topics_io.read_topics(output+"/topics")
 
 # sort all words by decreasing frequency
 tlist2 = []
 for topic in tlist:
     topic.sort()
-    tlist2.append(topic.list())
+    tlist2.append(topic.list_words(max_wc, start=startw))
+    print str(topic.list_words(max_wc, start=startw))
 
-# construct a dictionary that contains top max_wc words in each topic
+# construct a dictionary that contains top startw - max_wc words and their ids in each topic
 wdict = {}
 for topic in tlist2:
-    for num in range(max_wc):
-        if topic[num][0] not in wdict.keys():
+    for word in topic:
+        if word not in wdict.keys(): # check whether the key already exists
             wordkey = -1
-            for key, value in dictionary.iteritems():
-                if dictionary.get(key) == topic[num][0]:
+            for key, value in dictionary.iteritems():  # key-id value-word
+                if dictionary.get(key) == word:
                     wordkey = key
                     break
             if wordkey > -1:
-                wdict[topic[num][0]] = wordkey
+                wdict[word] = wordkey
 
-
+# id list
 keylist = [value for key, value in wdict.iteritems()]
 
 if tfidf:
     tct.write_freqlist(tct.word_list_doc_freq(keylist, corpus_dict, dictionary),
-                      dname + "/wpdoc_freq_tfidf_" + corpus_type + "_t" + str(topics_count) + ".txt")
+                      dname + "/wdoc_freq_tfidf_" + corpus_type + "_t" + str(topics_count) + "_start" + str(startw) + ".txt")
     colist = tct.words_cooccur(keylist, corpus_dict, dictionary)
-    tct.write_freqlist(colist, dname + "/wpcofreq_tfidf_" + corpus_type + "_t" + str(topics_count) + ".txt")
+    tct.write_freqlist(colist, dname + "/cofreq_tfidf_" + corpus_type + "_t" + str(topics_count) + "_start" + str(startw) + ".txt")
 else:
-    tc.write_freqlist(tc.word_list_doc_freq(keylist, corpus_dict, dictionary), dname+"/wpdoc_freq_"+corpus_type+"_t"+str(topics_count)+".txt")
+    tc.write_freqlist(tc.word_list_doc_freq(keylist, corpus_dict, dictionary), dname+"/wdoc_freq_"+corpus_type+"_t"+str(topics_count)+"_start"+str(startw)+".txt")
     colist = tc.words_cooccur(keylist, corpus_dict, dictionary)
-    tc.write_freqlist(colist, dname+"/wpcofreq_"+corpus_type+"_t"+str(topics_count)+".txt")
+    tc.write_freqlist(colist, dname+"/cofreq_"+corpus_type+"_t"+str(topics_count)+"_start"+str(startw)+".txt")
