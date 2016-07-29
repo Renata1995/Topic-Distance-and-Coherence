@@ -42,9 +42,8 @@ class WordNetEvaluator:
                 mlstr = ''.join(list(sorted([m, l])))
                 results.append(float(tcdict[mlstr]))
         rsum = sum(results)
-        r_nozero = [v for v in results if v > 0]
-        rmean = np.average(r_nozero)
-        rmedian = np.median(r_nozero)
+        rmean = np.average(results)
+        rmedian = np.median(results)
 
         return rsum, rmean, rmedian, results
 
@@ -74,9 +73,8 @@ class WordNetEvaluator:
             for l in tlist[:m_index]:
                 results.append(self.sim_words(m, l, func))
         rsum = sum(results)
-        r_nozero = [v for v in results if v > 0]
-        rmean = np.average(r_nozero)
-        rmedian = np.median(r_nozero)
+        rmean = np.average(results)
+        rmedian = np.median(results)
 
         return rsum, rmean, rmedian, results
 
@@ -102,9 +100,8 @@ class WordNetEvaluator:
             for l in tlist[:m_index]:
                 results.append(self.sim_words_ic(m, l, ic, func))
         rsum = sum(results)
-        r_nozero = [v for v in results if v > 0]
-        rmean = np.average(r_nozero)
-        rmedian = np.median(r_nozero)
+        rmean = np.average(results)
+        rmedian = np.median(results)
 
         return rsum, rmean, rmedian, results
 
@@ -155,14 +152,6 @@ class WordNetEvaluator:
         for key, value in results_dict.iteritems():
             ofile.write(key + " " + str(value) + "\n")
 
-        results = [value for key, value in results_dict.iteritems()]
-        rsum = sum(results)
-        r_nozero = [v for v in results if v > 0]
-        rmean = np.average(r_nozero)
-        rmedian = np.median(r_nozero)
-
-        return rsum, rmean, rmedian, results
-
     def evaluate_ic_write(self, topic, words_num, ic, tc, ofile, startw=0):
         """
             Evaluate a topic by calculating a similarity score for each word pair in the topic
@@ -209,19 +198,6 @@ class WordNetEvaluator:
         for key, value in results_dict.iteritems():
             ofile.write(key + " " + str(value) + "\n")
 
-        results = [value for key, value in results_dict.iteritems() if value > 0]
-        rsum = sum(results)
-        
-        rmean = np.average(results)
-        if np.isnan(rmean):
-            rmean = 0.0
-       
-        rmedian = np.median(results)
-        if np.isnan(rmedian):
-            rmedian = 0.0
-
-        return rsum, rmean, rmedian, results
-
     def sim_words(self, w1, w2, func):
         w1_synsets = wn.synsets(w1)
         w2_synsets = wn.synsets(w2)
@@ -262,6 +238,8 @@ class WordNetEvaluator:
             # if the word does not exist in the wordnet
             smax = 0.0
         elif max(simlist) is None:
+            smax = 0.0
+        elif max(simlist)>10000:
             smax = 0.0
         else:
             smax = max(simlist)

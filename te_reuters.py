@@ -70,20 +70,3 @@ else:
     for index, topic in enumerate(tlist):
         tclist.append([index, te.evaluate_ic_write(topic, words_count, reuters_ic, tc, prefile, startw=startw)])
 
-# sort the list by a descending order
-tclist = list(reversed(sorted(tclist, key=lambda x: x[1][1])))
-
-
-# output results
-ofname = dname + "/" + tc + "_w" + str(words_count)+"_start"+str(startw)+".txt"
-ofile = open(ofname, "w")
-for value in tclist:
-    ofile.write("Topic " + str(value[0]) + "\n")
-    ofile.write("Mean " + str(value[1][1]) + "\n")
-    ofile.write("Median "+ str(value[1][2]) + "\n")
-    ofile.write("Sum " + str(value[1][0]) + "\n")
-    for tcnum in value[1][3]:
-        ofile.write(str(tcnum)+"\n")
-    ofile.write("\n")
-
-

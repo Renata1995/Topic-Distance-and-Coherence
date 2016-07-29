@@ -68,7 +68,7 @@ tclist = list(reversed(sorted(tclist, key=lambda x: x[1][2])))
 if not os.path.exists(dname+"/"+tc):
     os.makedirs(dname+"/"+tc)
     
-ofname = dname + "/" + tc + "/w" + str(words_count) + "_start"+str(startw) + ".txt"
+ofname = dname + "/" + tc + "/w0" + str(words_count) + "_start"+str(startw) + ".txt"
 ofile = open(ofname, "w")
 for value in tclist:
     ofile.write("Topic " + str(value[0]) + "\n")

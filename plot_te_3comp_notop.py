@@ -17,9 +17,17 @@ if len(sys.argv) <= 3:
 else:
     startw = sys.argv[3]
 
+if len(sys.argv) <=4:
+    measure = "mean"
+else:
+    if sys.argv[4] == "md":
+        measure = "median"
+    else:
+        measure = "mean"
+
 start_wc = 10
-stop_wc = 260
-step_wc = 10
+stop_wc = 155
+step_wc = 5
 
 
 # get tc values from topics
@@ -29,10 +37,10 @@ for corpus_type in ("binary","bow","tfidf"):
     # get tc values from topics
     tclist = []  
     for num in range(start_wc, stop_wc, step_wc):
-        ifile = open(output+"/"+tc+"/w"+str(num)+"_start0.txt")
+        ifile = open(output+"/"+tc+"/w0"+str(num)+"_start0.txt")
         sub_tclist = []
         for line in ifile:
-            if "Median" in line:
+            if measure.title() in line:
                 sub_tclist.append(float(line.split()[1]))
         tclist.append(np.average(sub_tclist))
     typelist.append(tclist)
@@ -43,10 +51,10 @@ for corpus_type in ("binary","bow","tfidf"):
     # get tc values from topics
     tclist = []  
     for num in range(start_wc, stop_wc, step_wc):
-        ifile = open(output+"/"+tc+"/w"+str(num)+"_start"+str(startw)+".txt")
+        ifile = open(output+"/"+tc+"/w0"+str(num)+"_start"+str(startw)+".txt")
         sub_tclist = []
         for line in ifile:
-            if "Median" in line:
+            if measure.title() in line:
                 sub_tclist.append(float(line.split()[1]))
         tclist.append(np.average(sub_tclist))
     notoplist.append(tclist)
@@ -95,4 +103,4 @@ plt.legend([linelist[0], linelist[1], linelist[2],linelist2[0], linelist2[1], li
 
 fig = plt.gcf()
 fig.set_size_inches(16,12)
-plt.savefig("plot_3comp_"+topics_count+"_"+tc+"_start"+str(startw)+".png")
+plt.savefig("plot_3comp_"+measure+"_"+topics_count+"_"+tc+"_start"+str(startw)+".png")

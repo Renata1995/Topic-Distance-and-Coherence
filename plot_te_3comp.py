@@ -12,13 +12,24 @@ if len(sys.argv) <= 2:
 else:
     tc = sys.argv[2]
 
+if len(sys.argv) <= 3:
+    mean = False
+else:
+    mean = True
+
+if mean:
+    measure = "mean"
+else:
+    measure = "median"
+print measure
+
 start_wc = 10
-stop_wc = 260
-step_wc = 10
+stop_wc = 155
+step_wc = 5
 # get tc values based on randomly generated numbers
 randlist = []
-for num in range(start_wc, stop_wc, step_wc):
-    ifile = open("reuters_LDA/"+tc+"_median_rand_"+str(num)+".txt")
+for num in range(10,160,10):
+    ifile = open("reuters_LDA/"+tc+"_"+measure+"_rand_"+str(num)+".txt")
     avg = float(ifile.readline().split()[1])
     randlist.append(avg)
 
@@ -28,10 +39,10 @@ for corpus_type in ("binary","bow","tfidf"):
     # get tc values from topics
     tclist = []  
     for num in range(start_wc, stop_wc, step_wc):
-        ifile = open(output+"/"+tc+"/w"+str(num)+"_start0.txt")
+        ifile = open(output+"/"+tc+"/w0"+str(num)+"_start0.txt")
         sub_tclist = []
         for line in ifile:
-            if "Median" in line:
+            if measure.title() in line:
                 sub_tclist.append(float(line.split()[1]))
         tclist.append(np.average(sub_tclist))
     typelist.append(tclist)
@@ -47,9 +58,9 @@ plt.xlabel("# of words")
 
 # red dashes, blue squares and green triangles
 x_axis = range(start_wc, stop_wc, step_wc)
-
-line_rand, = plt.plot(x_axis, randlist, color=(0,0,0), marker = "^")
-for x, y in zip(x_axis, randlist):
+rand_x = range(10,160,10)
+line_rand, = plt.plot(rand_x, randlist, color=(0,0,0), marker = "^")
+for x, y in zip(rand_x, randlist):
     plt.annotate("{:.3f}".format(float(y)), xy=(x,y), xytext =(5,0), textcoords='offset points')
 
 linelist = [0,0,0]
@@ -69,4 +80,4 @@ plt.legend([line_rand, linelist[0], linelist[1], linelist[2]], ["random words", 
 
 fig = plt.gcf()
 fig.set_size_inches(16,12)
-plt.savefig("plot_3comp_"+topics_count+"_"+tc+".png")
+plt.savefig("plot_3comp_"+measure+"_"+topics_count+"_"+tc+".png")
