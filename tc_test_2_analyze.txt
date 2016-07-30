@@ -1,0 +1,89 @@
+Topic 0
+lt: pct acquire group stock 4
+company: acquire stock group 3
+share: acquire group 2
+pct: lt corp acquire stock group 5
+corp: pct acquire stock group 4
+dlrs: acquire stock group 3
+acquire: all except mln
+stock: lt company pct corp dlrs group 6
+group: lt company share pct corp dlrs acquire stock
+mln - cooccur with all of them
+
+mln
+group acquire stock pct
+
+lt company share corp dlrs mln
+
+
+
+Topic 1
+lt: shr qtr year note loss 
+ct: year note loss
+net: loss
+mln: qtr loss note shr
+shr: lt mln 
+qtr: lt mln year loss
+year:lt ct qtr note loss
+dlrs: note loss
+note: lt ct mln year dlrs loss
+loss: all except shr
+
+net
+loss note year lt
+
+ct net mln shr qtr dlrs
+
+
+Topic 2
+u.s.: export tonne country state price official
+year: all except u.s.
+export: us year
+trade: year tonne 
+tonne: us year trade country state official
+country: us year tonne 
+price: us year state official 
+state: us year export tonne price 
+market: year official
+official:us year tonne price market
+
+export, market, trade
+year us tonne official
+
+export trade country price state market
+
+
+Topic 3:
+dlrs:oil gas report
+lt: oil gas report
+company: oil gas report 
+mln: oil gas report
+oil:
+pct:gas report
+corp: oil gas report
+year: gas report
+gas: 
+report:
+
+oil gas report year
+
+dlrs(dollars) lt company mln(million) pct corp
+
+
+Topic 4:
+pct: bank rise billion market rate expect
+bank: pct rise expect
+rise: pct bank rate expect
+billion: pct market rate expect
+year: market rate expect
+market: pct billion year rate expect
+rate: pct rise billion year market mln dlrs expect
+mln: rate expect
+dlrs: rate expect
+expect:   
+
+mln dlrs
+expect rate pct market
+
+bank rise billion year rate mln(million) dlrs(dollar)
+
