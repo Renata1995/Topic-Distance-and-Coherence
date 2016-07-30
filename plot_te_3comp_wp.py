@@ -12,17 +12,22 @@ if len(sys.argv) <= 2:
 else:
     tc = sys.argv[2]
 
-start_wc = 10
-stop_wc = 260
-step_wc = 10
+if len(sys.argv) <= 3:
+    measure = "mean"
+else:
+    measure = "median"
+
+start_wc = 5
+stop_wc = 155
+step_wc = 5
 # get tc values based on randomly generated numbers
-output = "LDA_pp_reuters_binary_t"+str(topics_count)
+output = "LDA_pp_reuters_bow_t"+str(topics_count)
 blist = []
 for num in range(start_wc, stop_wc, step_wc):
-    ifile = open(output+"/"+tc+"/norm"+str(num)+"_0_start0.txt")
+    ifile = open(output+"/"+tc+"/tfidf_"+str(num)+"_0_start0.txt")
     sub_blist = []
     for line in ifile:
-        if "Median" in line:
+        if measure.title() in line:
             sub_blist.append(float(line.split()[1]))
     blist.append(np.average(sub_blist))
         
@@ -35,7 +40,7 @@ for corpus_type in ("binary","bow","tfidf"):
         ifile = open(output+"/"+tc+"/w0"+str(num)+"_start0.txt")
         sub_tclist = []
         for line in ifile:
-            if "Median" in line:
+            if measure.title() in line:
                 sub_tclist.append(float(line.split()[1]))
         tclist.append(np.average(sub_tclist))
     typelist.append(tclist)

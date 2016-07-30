@@ -70,6 +70,9 @@ print "# of topics : " + str(topics_count)
 print "src : " + src
 print "# of words used for topic coherence: " + str(word_count)
 print "output : " + output
+print "word count : " + str(word_count)
+print "startw : "+ str(startw)
+print "Tfidf : " + str(tfidf)
 print "\n"
 
 # Load directory
@@ -105,8 +108,8 @@ for topic in tlist:
     tlist2.append(topic.list(word_count, start=startw))
 
 if tfidf:
-    wd_dict = tct.read_flist(dname + "/wdoc_freq_tfidf_" + corpus_type + "_t" + str(topics_count) + "_start" + str(startw) + ".txt")
-    cofreq_dict = tct.read_flist(dname + "/cofreq_tfidf_" + corpus_type + "_t" + str(topics_count) + "_start" + str(startw) + ".txt")
+    wd_dict = tct.read_flist(dname + "/wdoc_freq_tfidf_" + corpus_type + "_t" + str(topics_count) + ".txt")
+    cofreq_dict = tct.read_flist(dname + "/cofreq_tfidf_" + corpus_type + "_t" + str(topics_count) + ".txt")
 
     # calculate topic coherence values for each topic with a specific number of words
     ofile = open(output + "/tc_tfidf_freq_" + str(word_count) + "_start" + str(startw) + ".txt", "w")
@@ -127,8 +130,8 @@ if tfidf:
             ofile.write(item[0] + " : " + str(item[1]) + "\n")
         ofile.write("\n\n")
 else:
-    wd_dict = tc.read_flist(dname + "/wdoc_freq_" + corpus_type + "_t" + str(topics_count) + "_start" + str(startw) + ".txt")
-    cofreq_dict = tc.read_flist(dname + "/cofreq_" + corpus_type + "_t" + str(topics_count) + "_start" + str(startw) + ".txt")
+    wd_dict = tc.read_flist(dname + "/wdoc_freq_" + corpus_type + "_t" + str(topics_count) + ".txt")
+    cofreq_dict = tc.read_flist(dname + "/cofreq_" + corpus_type + "_t" + str(topics_count) + ".txt")
 
     # calculate topic coherence values for each topic with a specific number of words
     ofile = open(output + "/tc_freq_" + str(word_count) + "_start" + str(startw) + ".txt", "w")

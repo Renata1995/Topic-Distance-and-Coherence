@@ -50,9 +50,9 @@ dname = name.get_output_dir(corpus_type, topics_count, src)
 
 # read topics
 tio = TopicIO()
-tlist = tio.read_topics(dname + "/topics_ptipc_norm2")
+tlist = tio.read_topics(dname + "/topics_doc_tfidf")
 
-ifname = dname + "/" + tc + "/pre_norm2_"+str(max_words)+"_start"+str(startw)+".txt"
+ifname = dname + "/" + tc + "/pre_doctfidf_"+str(max_words)+"_start"+str(startw)+".txt"
 
 # calculate topic evaluation values
 tclist = []
@@ -68,7 +68,7 @@ tclist = list(reversed(sorted(tclist, key=lambda x: x[1][2])))
 if not os.path.exists(dname+"/"+tc):
     os.makedirs(dname+"/"+tc)
     
-ofname = dname + "/" + tc + "/norm2_" + str(words_count) + "_0_start"+str(startw) + ".txt"
+ofname = dname + "/" + tc + "/tfidf_" + str(words_count) + "_0_start"+str(startw) + ".txt"
 ofile = open(ofname, "w")
 for value in tclist:
     ofile.write("Topic " + str(value[0]) + "\n")

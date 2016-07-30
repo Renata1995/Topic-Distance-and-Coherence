@@ -13,9 +13,9 @@ else:
     tc = sys.argv[2]
 
 if len(sys.argv) <= 3:
-    mean = False
-else:
     mean = True
+else:
+    mean = False
 
 if mean:
     measure = "mean"

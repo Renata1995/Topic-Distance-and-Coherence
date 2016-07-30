@@ -3,6 +3,7 @@ import sys
 from gensim import corpora, models
 from utils.WordCounter import WordCounter
 from topic.topicio import TopicIO
+from topic.topic import Topic
 
 if len(sys.argv) <= 1:
     dname = "reuters_LDA"
@@ -96,27 +97,56 @@ corpus_dict = [dict(doc) for doc in corpus]
 # load dictionary
 dictionary = lda.id2word
 
-# a list that include top documents for each topic
+# a list that include top document index for each topic
 tdoc_list = []
 for n in range(topics_count):
     tdoc_list.append([])
     
-for index, doc in enumerate(corpus_lda)
+for index, doc in enumerate(corpus_lda):
     for t in doc:  # t: (tid, pt/d)
         if t[1]>0.1: # if pt/d is larger than 0.1, add this doc to the topic doc list
             tdoc_list[t[0]].append(index)
             
 tio = TopicIO()
-tlist = tio.read_topics(pctotal, output + "/topics")
+tlist = tio.read_topics(output + "/topics")
 
 top = 300
 
-newtlist = []
-for topic in tlist:
-    dist = topic.list(300)
-    
+print "read topics"
 
-#tio.write_topics_from_tlist(tlist, output+"/topics_ptipc")
+newtlist = []
+for tindex, topic in enumerate(tlist):
+    print tindex
+    topic.sort()
+    # get top 300 words distribution
+    dist = topic.list(300)
+    # Create a new topic according to tfidf values in topic-related document
+    newt = Topic()
+
+    # collect all word ids
+    widlist = []
+    for wtuple in dist:
+        for key, value in dictionary.iteritems():
+            if value == wtuple[0]:
+                widlist.append(key)
+                break
+
+    # calculate the sum of tfidf for each word
+    for wid in widlist:
+        word = dictionary.get(wid)
+         
+        wtfidf = 0
+        for docindex in tdoc_list[tindex]:
+            doc_dict = corpus_dict[docindex]
+            if wid in doc_dict.keys():
+                wtfidf += doc_dict[wid]
+        newt.add((word, wtfidf))
+
+    newt.sort()
+    newtlist.append(newt)
+
+
+tio.write_topics_from_tlist(newtlist, output+"/topics_doc_tfidf")
 
 
 

@@ -23,7 +23,7 @@ else:
     measure = "median"
 print measure
 
-start_wc = 10
+start_wc = 5
 stop_wc = 155
 step_wc = 5
 
