@@ -1,4 +1,4 @@
-from utils.BinaryCorpus import BinaryCorpus
+from utils.corpus import BinaryCorpus
 from unittest import TestCase
 
 

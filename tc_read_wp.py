@@ -118,8 +118,8 @@ if tfidf:
             ofile.write(item[0] + " : " + str(item[1]) + "\n")
         ofile.write("\n\n")
 else:
-    wd_dict = tc.read_flist(dname + "/wpdoc_freq_" + corpus_type + "_t" + str(topics_count) + ".txt")
-    cofreq_dict = tc.read_flist(dname + "/wpcofreq_" + corpus_type + "_t" + str(topics_count) + ".txt")
+    wd_dict = tc.read_into_dict(dname + "/wpdoc_freq_" + corpus_type + "_t" + str(topics_count) + ".txt")
+    cofreq_dict = tc.read_into_dict(dname + "/wpcofreq_" + corpus_type + "_t" + str(topics_count) + ".txt")
 
     # calculate topic coherence values for each topic with a specific number of words
     ofile = open(output + "/wptc_freq_" + str(word_count) + ".txt", "w")
@@ -128,7 +128,7 @@ else:
         t = t[:word_count]
         subt = [wt[0] for wt in t]
         ofile.write("topic " + str(index) + "\n")
-        ctlist.append((index, tc.tc_dict(subt, wd_dict, cofreq_dict, ofile), t))
+        ctlist.append((index, tc.coherence_dict(subt, wd_dict, cofreq_dict, ofile), t))
         ofile.write("\n")
 
     # sort all topics by topic coherence

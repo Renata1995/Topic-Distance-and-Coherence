@@ -24,5 +24,5 @@ class TestTopicCoherence(TestCase):
 
     def test_topic_coherence(self):
         tlist = [3, 2, 6]
-        print self.tc.topic_coherence(tlist, self.dictc)
-        self.assertEqual(round(self.tc.topic_coherence(tlist, self.dictc), 3), -1.099)
+        print self.tc.coherence(tlist, self.dictc)
+        self.assertEqual(round(self.tc.coherence(tlist, self.dictc), 3), -1.099)

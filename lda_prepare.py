@@ -3,7 +3,7 @@ from gensim import corpora, models
 import sys
 import os
 import shutil
-from utils.BinaryCorpus import BinaryCorpus
+from utils.corpus import BinaryCorpus
 
 #
 # Prepare dictionary and three types of corpus (tfidf, bow, and binary) for LDA

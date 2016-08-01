@@ -67,7 +67,7 @@ for i in range(sample_times):
     words_list.append(keylist)
 
     # calculate topic coherence based on randomly generated words
-    result = tc.topic_coherence(random_words, corpus_dict)
+    result = tc.coherence(random_words, corpus_dict)
     tc_results.append(result)
 
 ofile.write("AVG: " + str(numpy.average(tc_results))+"\n")

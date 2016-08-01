@@ -89,7 +89,7 @@ for index, t in enumerate(tlist2):
         for key, value in dictionary.iteritems():
             if value == w:
                 subt2.append(key)
-    ctlist.append((index, tc.topic_coherence(subt2, corpus_dict), t))
+    ctlist.append((index, tc.coherence(subt2, corpus_dict), t))
 
 # sort all topics by topic coherence
 ctlist = list(reversed(sorted(ctlist, key=lambda x:x[1])))
