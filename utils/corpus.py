@@ -30,9 +30,10 @@ def arg_tfidf(bow_corpus, dictionary):
     :return: an augmented tfidf corpus
     """
     tfidf_corpus = []
-    for doc in bow_corpus:
-        max_tf = max([v[1] for v in doc])
-        tfidf_doc = []
+    for index, doc in enumerate(bow_corpus):
+        if len(doc) != 0:
+            max_tf = max([v[1] for v in doc])
+            tfidf_doc = []
 
         for wtuple in doc:
             key = wtuple[0]
