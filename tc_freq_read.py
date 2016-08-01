@@ -30,7 +30,7 @@ dname = name.get_output_dir(corpus_type, topics_count, src)
 tio = TopicIO()
 tlist = tio.read_topics(dname + name.topics_dir())
 
-ifile = open(dname+"/tc_freq_250.txt")
+ifile = open(dname+"/tc_freq_10.txt")
 
 tdict = []
 for num in range(topics_count):
@@ -49,11 +49,11 @@ for line in ifile:
 ofile = open("tc_test_2.txt","w")
 for tindex, topic in enumerate(tlist):
     topic.sort()
-    dist = topic.list_words(250)
+    dist = topic.list_words(10)
 
     ofile.write("Topic "+str(tindex)+"\n")
-    for i, m in enumerate(dist[1:]):
-        for l in dist[:i+1]:
+    for i, m in enumerate(dist):
+        for l in dist:
             if m != l:
                 mllist = list(sorted([m,l]))
                 key = " ".join(mllist)

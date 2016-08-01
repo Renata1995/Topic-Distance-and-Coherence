@@ -87,7 +87,7 @@ tc = TopicCoherence()
 tct = TfidfTC()
 
 # get all topics
-tlist = topics_io.read_topics(output + "/topics_ptipc_maxnorm")
+tlist = topics_io.read_topics(output + "/topics_norm3")
 
 # sort all words by decreasing frequency
 tlist2 = []

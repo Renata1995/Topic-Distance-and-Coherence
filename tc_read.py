@@ -130,8 +130,8 @@ if tfidf:
             ofile.write(item[0] + " : " + str(item[1]) + "\n")
         ofile.write("\n\n")
 else:
-    wd_dict = tc.read_flist(dname + "/wdoc_freq_" + corpus_type + "_t" + str(topics_count) + ".txt")
-    cofreq_dict = tc.read_flist(dname + "/cofreq_" + corpus_type + "_t" + str(topics_count) + ".txt")
+    wd_dict = tc.read_flist(dname + "/wdoc_freq_" + corpus_type + "_t" + str(topics_count) + "_start" + str(startw) + ".txt")
+    cofreq_dict = tc.read_flist(dname + "/cofreq_" + corpus_type + "_t" + str(topics_count) + "_start" + str(startw) + ".txt")
 
     # calculate topic coherence values for each topic with a specific number of words
     ofile = open(output + "/tc_freq_" + str(word_count) + "_start" + str(startw) + ".txt", "w")

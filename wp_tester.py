@@ -101,9 +101,9 @@ print len(srcfiles)
 pctotal = len(srcfiles)/float(total_words)
 print pctotal
 
-tio = TopicIO()
+tio = TopicIO() 
 tlist = tio.read_topics_wp(pctotal, output + "/topics_wp", 300)
-tio.write_topics_from_tlist(tlist, output+"/topics_ptipc")
+tio.write_topics_from_tlist(tlist, output+"/topics_norm3")
 
 
 

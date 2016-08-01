@@ -101,7 +101,6 @@ tlist2 = []
 for topic in tlist:
     topic.sort()
     tlist2.append(topic.list_words(max_wc, start=startw))
-    print str(topic.list_words(max_wc, start=startw))
 
 # construct a dictionary that contains top startw - max_wc words and their ids in each topic
 wdict = {}

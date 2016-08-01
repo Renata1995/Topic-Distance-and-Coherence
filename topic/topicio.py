@@ -104,10 +104,8 @@ class TopicIO:
         ofile = open("wptest.txt","w")
         for index, fname in enumerate(os.listdir(input_dir)):
             fname = input_dir + "/" + fname
+            ofile.write("\n\nTopic "+str(index)+"\n")
             topic_i = self.read_topic_wp_norm(pctotal, fname, ofile, words_count)
-            # i = fname.split('_')[-1].replace(".txt|topic", "")
-            # if int(i) != index:
-            #     raise TopicMissing()
             topics.append(topic_i)
         return topics
 
@@ -184,8 +182,8 @@ class TopicIO:
         return (pt/maxpt) * np.log(pctotal/pc)
 
     def ptipc_log_norm(self, pt, pc, maxpc, maxpt, pctotal, ofile):
-        ptnorm = pt
-        ipcnorm = np.log(pctotal/pc)
+        ptnorm = pctotal + (1-pctotal)*pt/maxpt
+        ipcnorm = np.log(maxpc/pc)
         value = ptnorm * ipcnorm
 
         ofile.write(str(ptnorm)+" "+str(ipcnorm)+" "+str(value)+"\n")
