@@ -82,7 +82,7 @@ for index, t in enumerate(tlist2):
         for key, value in dictionary.iteritems():
             if value == w:
                 subt2.append(key)
-    ctlist.append((index, tc.topic_coherence(subt2, corpus_dict), t))
+    ctlist.append((index, tc.coherence(subt2, corpus_dict), t))
 
 ctlist = list(reversed(sorted(ctlist, key=lambda x:x[1])))
 ofile = open(output + "/wp_ct.txt", "w")
