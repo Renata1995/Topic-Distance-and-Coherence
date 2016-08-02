@@ -16,7 +16,7 @@ class Similarity:
 
         intersection = wset1.intersection(wset2)
         union = wset1.union(wset2)
-        return float(len(intersection))/float(len(union))
+        return 1-float(len(intersection))/float(len(union))
 
     def kendall_tau(self, t1words, t2words):
         return stats.kendalltau(t1words,t2words)[0]

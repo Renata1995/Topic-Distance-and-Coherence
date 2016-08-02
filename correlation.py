@@ -85,4 +85,3 @@ for index, list1 in enumerate(rank_list[1:]):
 
 
 
-
