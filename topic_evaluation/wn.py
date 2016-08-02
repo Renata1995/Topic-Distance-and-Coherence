@@ -47,7 +47,7 @@ class WordNetEvaluator:
 
         return rsum, rmean, rmedian, results
 
-    def evaluate(self, topic, words_num, tc):
+    def evaluate(self, topic, words_num, tc, ofile):
         # Choose an evaluation method
         if tc == "lch":
             func = self.lch
@@ -71,14 +71,14 @@ class WordNetEvaluator:
         for index, m in enumerate(tlist[1:]):
             m_index = index + 1
             for l in tlist[:m_index]:
-                results.append(self.sim_words(m, l, func))
+                results.append(self.sim_words(m, l, func, ofile))
         rsum = sum(results)
         rmean = np.average(results)
         rmedian = np.median(results)
 
         return rsum, rmean, rmedian, results
 
-    def evaluate_ic(self, topic, words_num, ic, tc):
+    def evaluate_ic(self, topic, words_num, ic, tc, ofile):
         # Choose an evaluation method
         if tc == "lin":
             func = self.lin
@@ -98,7 +98,7 @@ class WordNetEvaluator:
         for index, m in enumerate(tlist[1:]):
             m_index = index + 1
             for l in tlist[:m_index]:
-                results.append(self.sim_words_ic(m, l, ic, func))
+                results.append(self.sim_words_ic(m, l, ic, func, ofile))
         rsum = sum(results)
         rmean = np.average(results)
         rmedian = np.median(results)
@@ -198,7 +198,7 @@ class WordNetEvaluator:
         for key, value in results_dict.iteritems():
             ofile.write(key + " " + str(value) + "\n")
 
-    def sim_words(self, w1, w2, func):
+    def sim_words(self, w1, w2, func, ofile):
         w1_synsets = wn.synsets(w1)
         w2_synsets = wn.synsets(w2)
 
@@ -215,15 +215,17 @@ class WordNetEvaluator:
 
         if len(simlist) == 0:
             # if the word does not exist in the wordnet
+            ofile.write("not in wn: "+ w1 + " " + w2 + "\n")
             smax = 0.0
         elif max(simlist) is None or np.isnan(max(simlist)):
+            ofile.write("no distance: " + w1 + " " + w2 + "\n")
             smax = 0.0
         else:
             smax = max(simlist)
 
         return smax
 
-    def sim_words_ic(self, w1, w2, ic, func):
+    def sim_words_ic(self, w1, w2, ic, func, ofile):
         w1_synsets = wn.synsets(w1)
         w2_synsets = wn.synsets(w2)
 
@@ -237,8 +239,10 @@ class WordNetEvaluator:
         if len(simlist) == 0:
             # if the word does not exist in the wordnet
             smax = 0.0
+            ofile.write("not in wn: " + w1 + " " + w2 + "\n")
         elif max(simlist) is None:
             smax = 0.0
+            ofile.write("not in wn: " + w1 + " " + w2 + "\n")
         elif max(simlist)>10000:
             smax = 0.0
         else:
@@ -390,3 +394,6 @@ class WordNetEvaluator:
         for lemma in lemmas:
             synonyms.extend([l.synset() for l in lemma.similar_tos()])
         return synonyms
+
+
+
