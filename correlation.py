@@ -14,8 +14,8 @@ distance_list, rank_list = [], []
 jtotal, ktotal, cos_total, kl_total, bha_total = [], [], [], [], []
 jtotal_rank, ktotal_rank, costotal_rank, kltotal_rank, bhatotal_rank = [], [], [], [], []
 
-for corpus_type in ["tfidf"]:
-    for topics_count in [3]:
+for corpus_type in ["tfidf", "bow", "binary"]:
+    for topics_count in [10,20,30,40,50]:
         dname = name.get_output_dir(corpus_type, topics_count, src)
 
         ofile = open(dname + "/sim_jaccard.txt", "r")
