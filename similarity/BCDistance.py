@@ -17,6 +17,7 @@ class BCDistance(SimABC):
         Calculate the Bhattacharyya Coefficient between two topics
         """
         if not topic1.size() == topic2.size():
+            print "length"
             raise DistsDiffer("The two topics under calculation do not have the same dictionary")
         bc_coeff = 0.0
 
@@ -24,6 +25,7 @@ class BCDistance(SimABC):
 
             topic2_dict = topic2.get(index)
             if not dict[0] == topic2_dict[0]:
+                print dict[0] + "  " + topic2_dict[0]
                 raise DistsDiffer("The two topics under calculation do not have the same dictionary")
 
             prob_product = dict[1] * topic2_dict[1]

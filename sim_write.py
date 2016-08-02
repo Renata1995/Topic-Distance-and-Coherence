@@ -31,6 +31,10 @@ dtw = name.get_output_dir(corpus_type, topics_count, src)
 
 t_1 = dtw + "/topics"
 t_list1 = topics_io.read_topics(t_1)
+
+bha_list = stl.bc_distance(t_list1, t_list1)
+cos_list = stl.cos_distance(t_list1, t_list1)
+kl_list = stl.kl_divergence(t_list1, t_list1)
 jlist = stl.jaccard(t_list1, t_list1, 500)
 
 kprepare = []
@@ -41,20 +45,19 @@ for topic in t_list1:
 klist = stl.kendall(kprepare,kprepare)
 
 
-ofname = dtw + "/self-comp_kendell.txt"
-dist_output = open(ofname, "w")
-stl.show_results_2min_self(klist, dist_output)
+ofile = open(dtw + "/sim_jaccard.txt", "w")
+stl.write_distance(jlist, ofile)
 
+ofile = open(dtw + "sim_kendall.txt", "w")
+stl.write_distance(klist, ofile)
 
-ofname = dtw + "/self-comp_rank_kendell.html"
-dist_output = open(ofname, "w")
-stl.show_results_rank_reverse(klist, dist_output)
+ofile = open(dtw + "sim_cosine.txt", "w")
+stl.write_distance(cos_list, ofile)
 
-ofname = dtw + "/self-comp_jaccard.txt"
-dist_output = open(ofname, "w")
-stl.show_results_2min_self(jlist, dist_output)
+ofile = open(dtw + "sim_kl.txt", "w")
+stl.write_distance(kl_list, ofile)
 
-ofname = dtw + "/self-comp_rank_jaccard.html"
-dist_output = open(ofname, "w")
-stl.show_results_rank_reverse(jlist, dist_output)
+ofile = open(dtw + "sim_bha.txt", "w")
+stl.write_distance(bha_list, ofile)
+
 

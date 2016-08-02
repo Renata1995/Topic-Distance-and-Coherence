@@ -495,3 +495,11 @@ class SimTopicLists:
                 else:
                     file.write('{:{w}}'.format("|   " + value, w=width))
             file.write("\n" + "-" * width * (len(distance_list[0]) + 1) + "\n")
+
+
+    def write_distance(self, distance_list, ofile):
+        for i1, sublist in enumerate(distance_list):
+            for i2, value in enumerate(sublist[i1+1:]):
+                ofile.write(str(value)+"\n")
+        
+                
