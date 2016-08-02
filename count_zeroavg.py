@@ -32,7 +32,7 @@ if len(sys.argv) <= 5:
 else:
     words_count = int(sys.argv[5])
 
-word_pairs = pow((words_count - 1),2)/2
+word_pairs = words_count*(words_count - 1)/2
 ofile = open("wn_zeros_summary.txt", "w")
 
 for tc in "path wup lch lin res jcn".split():

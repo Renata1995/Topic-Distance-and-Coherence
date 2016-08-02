@@ -505,17 +505,14 @@ class SimTopicLists:
             dist_list.append(float(line))
         return dist_list
 
-    def read_distance_rank(self, dist_list, topics_count):
+    def read_distance_rank(self, dist_list, topics_count, corpus_type):
         dist_rank = []
 
         index = 0
         for t1 in range(topics_count):
             for t2 in range(t1+1, topics_count):
-                dist_rank.append(("t"+str(t1)+"_t"+str(t2), dist_list[index]))
+                dist_rank.append((corpus_type+"_t"+str(topics_count)+ "t"+str(t1)+"_t"+str(t2), dist_list[index]))
                 index += 1
-
-        dist_rank = list(sorted(dist_rank, key=lambda x:x[1]))
-        dist_rank = [v[0] for v in dist_rank]
 
         return dist_rank
 
