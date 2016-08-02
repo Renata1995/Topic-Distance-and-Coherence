@@ -279,7 +279,6 @@ class SimTopicLists:
 
         colordiff = int(255.0 / (len(distance_list[0])))
 
-
         for index, sublist in enumerate(distance_list):
             # show column labels
             file.write("<tr><td> topic" + str(index) + "</td>")
@@ -318,7 +317,7 @@ class SimTopicLists:
             # show column labels
             file.write("<tr><td> topic" + str(index) + "</td>")
             for sub_i, value in enumerate(sublist):
-                percent = (value - min_value)/(max_value - min_value)
+                percent = (value - min_value) / (max_value - min_value)
                 colornum = str(int(255 * (1 - percent)))
                 rgbstr = "rgb(" + colornum + "," + colornum + "," + colornum + ")"
                 file.write("<td><span style='background-color: " + rgbstr + "'>")
@@ -354,10 +353,10 @@ class SimTopicLists:
             # show column labels
             file.write("<tr><td> topic" + str(index) + "</td>")
             for sub_i, value in enumerate(sublist):
-                if round(value,6) == 1.000000:
+                if round(value, 6) == 1.000000:
                     colornum = "255"
                 else:
-                    percent = (value - min_value)/(max_value - min_value)
+                    percent = (value - min_value) / (max_value - min_value)
                     colornum = str(int(255 * percent))
 
                 rgbstr = "rgb(" + colornum + "," + colornum + "," + colornum + ")"
@@ -367,7 +366,6 @@ class SimTopicLists:
                 file.write("</span></td>")
             file.write("</tr>")
         file.write("</tbody></table>")
-
 
     def show_results(self, distance_list, file):
         """
@@ -496,10 +494,28 @@ class SimTopicLists:
                     file.write('{:{w}}'.format("|   " + value, w=width))
             file.write("\n" + "-" * width * (len(distance_list[0]) + 1) + "\n")
 
-
     def write_distance(self, distance_list, ofile):
         for i1, sublist in enumerate(distance_list):
-            for i2, value in enumerate(sublist[i1+1:]):
-                ofile.write(str(value)+"\n")
-        
-                
+            for i2, value in enumerate(sublist[i1 + 1:]):
+                ofile.write(str(value) + "\n")
+
+    def read_distance_list(self, ifile):
+        dist_list = []
+        for line in ifile:
+            dist_list.append(float(line))
+        return dist_list
+
+    def read_distance_rank(self, dist_list, topics_count):
+        dist_rank = []
+
+        index = 0
+        for t1 in range(topics_count):
+            for t2 in range(t1+1, topics_count):
+                dist_rank.append(("t"+str(t1)+"_t"+str(t2), dist_list[index]))
+                index += 1
+
+        dist_rank = list(sorted(dist_rank, key=lambda x:x[1]))
+        dist_rank = [v[0] for v in dist_rank]
+
+        return dist_rank
+

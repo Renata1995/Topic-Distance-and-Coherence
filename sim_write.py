@@ -48,16 +48,16 @@ klist = stl.kendall(kprepare,kprepare)
 ofile = open(dtw + "/sim_jaccard.txt", "w")
 stl.write_distance(jlist, ofile)
 
-ofile = open(dtw + "sim_kendall.txt", "w")
+ofile = open(dtw + "/sim_kendall.txt", "w")
 stl.write_distance(klist, ofile)
 
-ofile = open(dtw + "sim_cosine.txt", "w")
+ofile = open(dtw + "/sim_cosine.txt", "w")
 stl.write_distance(cos_list, ofile)
 
-ofile = open(dtw + "sim_kl.txt", "w")
+ofile = open(dtw + "/sim_kl.txt", "w")
 stl.write_distance(kl_list, ofile)
 
-ofile = open(dtw + "sim_bha.txt", "w")
+ofile = open(dtw + "/sim_bha.txt", "w")
 stl.write_distance(bha_list, ofile)
 
 
