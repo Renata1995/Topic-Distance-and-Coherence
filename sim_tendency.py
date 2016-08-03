@@ -21,12 +21,13 @@ elif src == "pp_brown":
 else:
     x_axis = range(10,50,10)
 
+type_names = ["binary", "bow", "tfidf"]
 typelist = [[], [], []]
-for tindex, corpus_type in enumerate(["tfidf", "bow", "binary"]):
+for tindex, corpus_type in enumerate(type_names):
     for topics_count in x_axis:
         dname = name.get_output_dir(corpus_type, topics_count, src)
 
-        ifile = dname + "/sim_"+sim + ".txt"
+        ifile = open(dname + "/sim_"+sim + ".txt","r")
 
         value_list = []
         for line in ifile:
@@ -52,16 +53,16 @@ for index, tclist in enumerate(typelist):
     color[index] = 1
     linelist[index], = plt.plot(x_axis, tclist, color=(color[0], color[1], color[2]), marker="o")
     for x, y in zip(x_axis, tclist):
-        if (x / 10) % 2 == 0:
-            yoffset = 10
-        else:
+        if index == 0:
             yoffset = -15
+        elif index == 1:
+            yoffset = 20
+        elif index == 2:
+            yoffset = 10
+        plt.annotate("("+str(x)+", "+str("{:.6f}".format(float(y)))+")", xy=(x, y), color=(color[0], color[1], color[2]),
+                     xytext=(0, yoffset), textcoords='offset points')
 
-        plt.annotate(str("{:.3f}".format(float(y))), xy=(x, y), color=(color[0], color[1], color[2]),
-                     xytext=(-10, yoffset), textcoords='offset points')
-
-plt.legend([linelist[0], linelist[1], linelist[2]], ["binary", "bow", "tfidf"],
-           bbox_to_anchor=(1, -0.05), ncol=4)
+plt.legend(linelist, type_names, bbox_to_anchor=(1, -0.05), ncol=4)
 
 fig = plt.gcf()
 fig.set_size_inches(16, 12)
