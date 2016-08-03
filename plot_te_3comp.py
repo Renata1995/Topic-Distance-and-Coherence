@@ -56,7 +56,6 @@ plt.ylabel(tc.upper())
 plt.xlabel("# of words")
 
 
-# red dashes, blue squares and green triangles
 x_axis = range(start_wc, stop_wc, step_wc)
 rand_x = range(10,160,10)
 line_rand, = plt.plot(rand_x, randlist, color=(0,0,0), marker = "^")
