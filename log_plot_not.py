@@ -14,7 +14,7 @@ step_wc = 5
 # get tc values based on randomly generated numbers
 randlist = []
 for num in range(10,150,10):
-    ifile = open("reuters_LDA/tc_rand_tfidf_" + str(num) + ".txt")
+    ifile = open("reuters_LDA/tc_rand_" + str(num) + ".txt")
     avg = ifile.readline().split()[1]
     sd = ifile.readline().split()[1]
     randlist.append((avg, sd))
@@ -24,7 +24,7 @@ rand_avglist = [value[0] for value in randlist]
 # get tc values from topics
 tlist = []
 for num in range(start_wc, stop_wc, step_wc):
-    ifile = open("LDA_pp_reuters_tfidf_t" + str(topics_count) + "/top_topics_tfidf_" + str(num) + ".txt")
+    ifile = open("LDA_pp_reuters_tfidf_t" + str(topics_count) + "/top_topics_" + str(num) + "_start0.txt")
     sub_tclist = []
     for line in ifile:
         if "topic" in line:
@@ -35,7 +35,7 @@ for num in range(start_wc, stop_wc, step_wc):
 
 blist = []
 for num in range(start_wc, stop_wc, step_wc):
-    ifile = open("LDA_pp_reuters_binary_t" + str(topics_count) + "/top_topics_tfidf_" + str(num) + ".txt")
+    ifile = open("LDA_pp_reuters_binary_t" + str(topics_count) + "/top_topics_" + str(num) + "_start0.txt")
     sub_tclist = []
     for line in ifile:
         if "topic" in line:
@@ -46,7 +46,7 @@ for num in range(start_wc, stop_wc, step_wc):
 
 clist = []
 for num in range(start_wc, stop_wc, step_wc):
-    ifile = open("LDA_pp_reuters_bow_t" + str(topics_count) + "/top_topics_tfidf_" + str(num) + ".txt")
+    ifile = open("LDA_pp_reuters_bow_t" + str(topics_count) + "/top_topics_" + str(num) + "_start0.txt")
     sub_tclist = []
     for line in ifile:
         if "topic" in line:
@@ -77,7 +77,7 @@ plt.annotate("{:.2f}".format(slope), xy=(rand_x[0]-0.2, rand_avglist[0]+0.1), fo
 tlist = [np.log(-v) for v in tlist]
 slope, intersect = np.polyfit(x_axis,tlist , 1)
 line_pos, = plt.plot(x_axis, tlist,color = (0,0,0.5), marker="o")
-plt.annotate("{:.2f}".format(slope), color = (0,0,0.5), xy=(x_axis[0]-0.2, tlist[0]), fontsize=20)
+plt.annotate("{:.2f}".format(slope), color = (0,0,0.5), xy=(x_axis[0]-0.2, tlist[0]+0.1), fontsize=20)
 
 clist = [np.log(-v) for v in clist]
 slope, intersect = np.polyfit(x_axis, clist, 1)

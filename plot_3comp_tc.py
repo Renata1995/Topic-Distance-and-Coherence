@@ -60,33 +60,25 @@ for num in range(start_wc, stop_wc, step_wc):
 fig = plt.figure()
 fig.suptitle("Co-occurence Based Topic Coherence \nReuters 3 Corpus Type Comparison(3 topics)", fontsize=15)
 
-plt.ylabel("log( - topic coherence)")
-plt.xlabel("log(# of words)")
+plt.ylabel(" - topic coherence")
+plt.xlabel("# of words")
 
 # red dashes, blue squares and green triangles
 x_axis = range(start_wc, stop_wc, step_wc)
-x_axis = [np.log(v) for v in x_axis]
+
 
 rand_x = list(range(10,150,10))
-rand_x = [np.log(v) for v in rand_x]
-rand_avglist= [np.log(-float(v)) for v in rand_avglist]
-slope, intersect =np.polyfit(rand_x, rand_avglist,1)
+
 line_rand, = plt.plot(rand_x, rand_avglist, color=(0, 0, 0), marker="^")
-plt.annotate("{:.2f}".format(slope), xy=(rand_x[0]-0.2, rand_avglist[0]+0.1), fontsize=20)
 
-tlist = [np.log(-v) for v in tlist]
-slope, intersect = np.polyfit(x_axis,tlist , 1)
 line_pos, = plt.plot(x_axis, tlist,color = (0,0,0.5), marker="o")
-plt.annotate("{:.2f}".format(slope), color = (0,0,0.5), xy=(x_axis[0]-0.2, tlist[0]), fontsize=20)
 
-clist = [np.log(-v) for v in clist]
-slope, intersect = np.polyfit(x_axis, clist, 1)
+
 line_neg, = plt.plot(x_axis, clist,color=(0,0.5,0),marker="o")
-plt.annotate("{:.2f}".format(slope), color = (0,0.5,0), xy=(x_axis[0]-0.2, clist[0]+0.1), fontsize=20)
 
-blist = [np.log(-v) for v in blist]
+
 line_avg, = plt.plot(x_axis, blist, color = (0.5,0,0), marker="o")
-plt.annotate("{:.2f}".format(slope), color = (0.5,0,0), xy=(x_axis[0]-0.2, blist[0]), fontsize=20)
+
 
 plt.legend([line_rand, line_pos, line_neg, line_avg], ["random words", "tfidf", "bow", "binary"], loc="lower right")
 

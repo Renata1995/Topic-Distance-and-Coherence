@@ -3,7 +3,8 @@ import sys
 import utils.name_convention as name
 from topic.topicio import TopicIO
 from nltk.corpus import wordnet as wn
-from nltk.corpus import reuters
+from nltk.corpus import wordnet_ic
+from nltk.corpus import brown
 
 
 if len(sys.argv) <= 1:
@@ -56,12 +57,11 @@ tio = TopicIO()
 tlist = tio.read_topics(dname + name.topics_dir())
 
 # generate te file name
-fname = dname + name.te_preprocess(tc, words_count, startw)
+fname = dname + name.te_preprocess(tc, words_count, startw=startw)
 prefile = open(fname, "w")
 
 zerofile = dname + "/zeros_" + tc + "_w" + str(words_count) + ".txt"
 zerofile = open(zerofile, "w")
-
 # calculate topic evaluation values
 tclist = []
 te = WordNetEvaluator()
@@ -69,7 +69,8 @@ if not need_ic:
     for index, topic in enumerate(tlist):
         tclist.append([index, te.evaluate_write(topic, words_count, tc, prefile, zerofile, startw=startw)])
 else:
-    reuters_ic = wn.ic(reuters, False, 0.0)
+    brown_ic = wn.ic(brown, False, 0.0)
     for index, topic in enumerate(tlist):
-        tclist.append([index, te.evaluate_ic_write(topic, words_count, reuters_ic, tc, prefile, zerofile, startw=startw)])
+        tclist.append([index, te.evaluate_ic_write(topic, words_count, brown_ic, tc, prefile, zerofile, startw=startw)])
+
 

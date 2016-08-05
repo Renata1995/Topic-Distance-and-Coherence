@@ -105,7 +105,7 @@ class WordNetEvaluator:
 
         return rsum, rmean, rmedian, results
 
-    def evaluate_write(self, topic, words_num, tc, ofile, startw=0):
+    def evaluate_write(self, topic, words_num, tc, ofile, zerofile, startw=0):
         """
         Evaluate a topic by calculating a similarity score for each word pair in the topic
         :param topic: A topic including word distribution pairs
@@ -147,12 +147,12 @@ class WordNetEvaluator:
             for l in tlist[:m_index]:
                 mlstr = ''.join(list(sorted([m, l])))
                 if mlstr not in results_dict:
-                    results_dict[mlstr] = self.sim_words(m, l, func)
+                    results_dict[mlstr] = self.sim_words(m, l, func, zerofile)
 
         for key, value in results_dict.iteritems():
             ofile.write(key + " " + str(value) + "\n")
 
-    def evaluate_ic_write(self, topic, words_num, ic, tc, ofile, startw=0):
+    def evaluate_ic_write(self, topic, words_num, ic, tc, ofile, zerofile, startw=0):
         """
             Evaluate a topic by calculating a similarity score for each word pair in the topic
             An information content file is needed
@@ -193,7 +193,7 @@ class WordNetEvaluator:
             for l in tlist[:m_index]:
                 mlstr = ''.join(list(sorted([m, l])))
                 if mlstr not in results_dict:
-                    results_dict[mlstr] = self.sim_words_ic(m, l, ic, func)
+                    results_dict[mlstr] = self.sim_words_ic(m, l, ic, func, zerofile)
 
         for key, value in results_dict.iteritems():
             ofile.write(key + " " + str(value) + "\n")

@@ -3,6 +3,7 @@ import sys
 
 import numpy
 from gensim import corpora
+from utils.corpus import arg_tfidf
 
 from topic_evaluation.topic_coherence import TopicCoherence
 
@@ -36,9 +37,17 @@ else:
 dictionary = corpora.Dictionary.load(dname + "/dict.dict")
 print "Load dictionary",
 print dictionary
-corpus_fname = dname + '/bow_corpus.mm'
-print "Load Corpus File " + corpus_fname
-corpus = corpora.MmCorpus(corpus_fname)
+
+# Load corpus
+if tfidf:
+    corpus_fname = dname + "/bow_corpus.mm"
+    print "Load Corpus File " + corpus_fname
+    bow_corpus = corpora.MmCorpus(corpus_fname)
+    corpus = arg_tfidf(bow_corpus, dictionary)
+else:
+    corpus_fname = dname + '/binary_corpus.mm'
+    print "Load Corpus File " + corpus_fname
+    corpus = corpora.MmCorpus(corpus_fname)
 
 # transfer each doc in the corpus into a dictionary
 corpus_dict =[]
@@ -50,7 +59,12 @@ tc = TopicCoherence()
 
 tc_results = []
 words_list = []
-ofile = open(dname+"/tc_rand_"+str(word_count)+".txt", "w")
+if tfidf:
+    ofile = open(dname+"/tc_rand_tfidf_"+str(word_count)+".txt", "w")
+    epsilon = 0.0001
+else:
+    ofile = open(dname+"/tc_rand_"+str(word_count)+".txt", "w")
+    epsilon = 1
 
 for i in range(sample_times):
     random_words = []
@@ -67,7 +81,7 @@ for i in range(sample_times):
     words_list.append(keylist)
 
     # calculate topic coherence based on randomly generated words
-    result = tc.coherence(random_words, corpus_dict)
+    result = tc.coherence(random_words, corpus_dict, epsilon)
     tc_results.append(result)
 
 ofile.write("AVG: " + str(numpy.average(tc_results))+"\n")

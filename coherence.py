@@ -67,7 +67,7 @@ else:
     title = tc.upper() + " Coherence"
     ylabel = tc.upper()
     
-fig.suptitle(title +" \n - " + src.replace("pp_","").title() ,fontsize=15)
+fig.suptitle(title +" \n - " + src.replace("pp_","").title() ,fontsize=20)
 
 plt.ylabel(ylabel)
 plt.xlabel("# of topics")
@@ -75,17 +75,20 @@ plt.xlabel("# of topics")
 linelist = [0, 0, 0]
 for index, tclist in enumerate(typelist):
     color = [0, 0, 0]
-    color[index] = 1
+    if index == 1:
+        color[index] = 0.5
+    else:
+        color[index] = 0.9
     linelist[index], = plt.plot(x_axis, tclist, color=(color[0], color[1], color[2]), marker="o")
     for x, y in zip(x_axis, tclist):
         if index == 0:
-            yoffset = 0
+            yoffset = 10
         elif index == 1:
-            yoffset = 0
+            yoffset = 10
         elif index == 2:
             yoffset = 0
-        plt.annotate("("+str(x)+", "+str("{:.2f}".format(float(y)))+")", xy=(x, y), color=(color[0], color[1], color[2]),
-                     xytext=(0, yoffset), textcoords='offset points')
+        plt.annotate("("+str(x)+", "+str("{:.2f}".format(float(y)))+")", xy=(x, y), color=(color[0], color[1], color[2]), fontsize=20,
+                     xytext=(-25, yoffset), textcoords='offset points')
 
 plt.legend(linelist, type_names, bbox_to_anchor=(1, -0.05), ncol=4)
 

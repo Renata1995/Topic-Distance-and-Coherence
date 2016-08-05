@@ -65,10 +65,14 @@ for x, y in zip(rand_x, randlist):
 linelist = [0,0,0]
 for index, tclist in enumerate(typelist):
     color = [0,0,0]
-    color[index] = 1
+    if index == 1:
+        color[index]= 0.5
+    else:
+        color[index] = 0.9
+        
     linelist[index], = plt.plot(x_axis, tclist, color = (color[0],color[1],color[2]), marker = "o")
     for x, y in zip(x_axis, tclist):
-        if (x/10)%2 == 0:
+        if (x/5)%2 == 0:
             yoffset = 10
         else:
             yoffset = -15
