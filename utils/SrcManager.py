@@ -93,9 +93,8 @@ class SrcManager:
 
         return fname_list
 
-
-def src_to_name_list(self, src):
-    name_list = []
-    for dname in src:
-        name_list.extend([fname for fname in os.listdir(dname)])
-    return name_list
+    def src_to_name_list(self, src):
+        name_list = []
+        for dname in src:
+            name_list.extend([fname for fname in os.listdir(dname)])
+        return name_list

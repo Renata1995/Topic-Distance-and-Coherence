@@ -5,11 +5,11 @@ from gensim import corpora, models
 from topic.topicio import TopicIO
 
 #
-# Run a specific LDA
+# Run a specific LDA and save it
 # Assume the existence of the corpus and the dictionary file
 #
 
-# syntax: python lda_prepare.py <input directory name> <corpus type> <# of topics> <alpha> <eta>
+# syntax: python lda_process.py <input directory name> <corpus type> <# of topics> <alpha> <eta>
 #  <dictionary name> the name of the input dictionary
 #  <corpus type> default to bag of words. b for binary, t for tf-idf, anything else or missing for bag of words
 #  <# of topics> number of topics. default to 8

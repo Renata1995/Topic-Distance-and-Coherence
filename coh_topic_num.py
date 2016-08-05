@@ -95,5 +95,4 @@ plt.legend(linelist, type_names, bbox_to_anchor=(1, -0.05), ncol=4)
 fig = plt.gcf()
 fig.set_size_inches(16, 12)
 plt.savefig("plot_3comp_" + tc + "_" + src + ".png")
-                    
-                        
+

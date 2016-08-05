@@ -1,6 +1,6 @@
 from unittest import TestCase
 
-from topic_evaluation.topic_coherence import TopicCoherence
+from coherence.umass import TopicCoherence
 
 
 class TestTopicCoherence(TestCase):

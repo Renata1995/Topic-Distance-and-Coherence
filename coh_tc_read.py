@@ -3,8 +3,7 @@ import sys
 from gensim import corpora
 
 from topic.topicio import TopicIO
-from topic_evaluation.topic_coherence import TopicCoherence
-from topic_evaluation.tc_tfidf import TfidfTC
+from coherence.umass import TopicCoherence
 import utils.name_convention as name
 
 #

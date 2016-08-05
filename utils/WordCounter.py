@@ -1,4 +1,5 @@
 class WordCounter:
+    # Summarize word weights in the corpus
     def countWords(self, corpus, key):
         totalFrequency = 0
         for doc in corpus:

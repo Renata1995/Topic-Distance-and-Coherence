@@ -5,7 +5,7 @@ import numpy
 from gensim import corpora
 from utils.corpus import arg_tfidf
 
-from topic_evaluation.topic_coherence import TopicCoherence
+from coherence.umass import TopicCoherence
 
 # python random_tc.py <dname> <word_count> <sample_times> <output>
 # <word_count>: the number of words that need to be randomly generated

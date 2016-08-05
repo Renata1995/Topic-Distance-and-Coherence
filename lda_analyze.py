@@ -7,6 +7,7 @@ from gensim import corpora, models
 
 from topic.topicio import TopicIO
 from preprocess.DocTokenizer import DirDocTokenizer, FileDocTokenizer
+from utils.WordCounter import WordCounter
 
 #
 #  Analyze a specific LDA file and output results
@@ -21,6 +22,8 @@ from preprocess.DocTokenizer import DirDocTokenizer, FileDocTokenizer
 #  <src type> 0: a file in which each line is a document.
 #              Anything else or missing: a directory in which each file is a document
 #  <output dir> results output directory
+#  <alpha> default ot 1/# of topics
+#  <eta> default to 1/# of topics
 
 #
 # Read command line parameters
@@ -147,132 +150,116 @@ topics_io.write_topics(model=lda, orig_dir=src, num_topics=topics_count, num_wor
 
 length = len(max([fname for fname in doc_list]))
 
-#dunsorted = open(output + "/" + "unsorted_doc_topics.txt", "w")
-#dunsorted.write("Corpus Type: " + corpus_type)
-#dunsorted.write("\nTopic Count: " + str(topics_count))
+# Generate document-topic matrix
+dunsorted = open(output + "/" + "unsorted_doc_topics.txt", "w")
+dunsorted.write("Corpus Type: " + corpus_type)
+dunsorted.write("\nTopic Count: " + str(topics_count))
 
-#dsorted = open(output + "/" + "sorted_doc_topics.txt", "w")
-#dsorted.write("Corpus Type: " + corpus_type)
-#dsorted.write("\nTopic Count: " + str(topics_count))
+dsorted = open(output + "/" + "sorted_doc_topics.txt", "w")
+dsorted.write("Corpus Type: " + corpus_type)
+dsorted.write("\nTopic Count: " + str(topics_count))
 
-# doctlist = []
-# for num in range(topics_count):
-#     doctlist.append([])
+doctlist = []
+for num in range(topics_count):
+    doctlist.append([])
+
+for i, doc in enumerate(corpus_lda):
+    dunsorted.write("\n\n" + '{:{l}}'.format(doc_list[i], l=length + 3))
+    dsorted.write("\n\n" + '{:{l}}'.format(doc_list[i], l=length + 3))
+
+    #write the topic list for each doc by the topic number order
+    for value in doc:
+        dunsorted.write('{:22}'.format(" " + str(value[0]) + ": " + str('{:.15f}'.format(value[1])) + " "))
+
+    #write the topic list for each doc by a decreasing probability order
+    doc = list(reversed(sorted(doc, key=lambda x: x[1])))
+    doctlist[doc[0][0]].append(doc_list[i])
+
+    for value in doc:
+        dsorted.write('{:22}'.format("  " + str(value[0]) + ": " + str('{:.15f}'.format(value[1])) + " "))
+
+
+# topic-document matrix
+# For each topic, output documents illustrate the highest probability on it
+
+tdoc = open(output + "/" + "td_cluster.txt", "w")
+for index, sublist in enumerate(doctlist):
+    tdoc.write("topic " + str(index) + ":  ")
+    tdoc.write(str(len(sublist)))
+    for value in sublist:
+        tdoc.write("  "+value)
+    tdoc.write("\n")
+
+
+# topic-words matrix
+# For each topic, output top 300 words in the topic
+tw = open(output + "/" + "words_in_topics.txt", "w")
+tw.write("Corpus Type: " + corpus_type)
+tw.write("\nTopic Count: " + str(topics_count))
+for i in range(topics_count):
+    tw.write("\n\nTopic " + str(i) + "\n")
+    for w_tuple in lda.show_topic(i, 300):
+        tw.write(str(w_tuple[0]) + ": " + str('{:.10f}'.format(w_tuple[1])) + "\n")
+
+
+
+
+
+# Represent topic be decreasing probability difference
+# probability difference = word probability in the topic - word probability in the corpus
+wt = WordCounter()
+total_words = wt.totalWords(corpus)
 #
-# for i, doc in enumerate(corpus_lda):
-    #dunsorted.write("\n\n" + '{:{l}}'.format(doc_list[i], l=length + 3))
-    #dsorted.write("\n\n" + '{:{l}}'.format(doc_list[i], l=length + 3))
+# Build a dictionary with word frequency in the corpus and write it to a file
+freqlist = {}
+for word in dictionary:
+    word_freq = float(wt.countWords3(corpus_dict, word))/total_words
+    freqlist[dictionary.get(word)] = word_freq
 
-    # write the topic list for each doc by the topic number order
-    #for value in doc:
-        #dunsorted.write('{:22}'.format(" " + str(value[0]) + ": " + str('{:.15f}'.format(value[1])) + " "))
+# Sort words in topics by word frequency difference from the baseline frequency
+if not os.path.exists(output+"/topics_wp"):
+    os.makedirs(output+"/topics_wp")
+
+for i in range(topics_count):
+    ofile = open(output+"/topics_wp/topic"+str(i)+".txt", "w")
+
+    wtlist = []
+    for wtuple in lda.show_topic(i, len(dictionary.keys())):
+        freq_diff = wtuple[1] - freqlist[wtuple[0]]
+        wtlist.append((wtuple[0], freq_diff, wtuple[1], freqlist[wtuple[0]]))
+    wtlist = list(reversed(sorted(wtlist, key=lambda x: x[1])))
+
+    for ftuple in wtlist:
+        ofile.write(str(ftuple[0])+" "+str(ftuple[1])+" "+str(ftuple[2])+" "+str(ftuple[3])+"\n")
+
+
+
+# words - topic matrix
+# for each word, output topics the word illustrates
+# word-topics
+wtfile = open(output + "/"+ "unsorted_wt.txt", "w")
+wtfile.write("Corpus Type: " + corpus_type)
+wtfile.write("\nTopic Count: " + str(topics_count))
+swt = open(output + "/"+ "sorted_wt.txt", "w")
+swt.write("Corpus Type: " + corpus_type)
+swt.write("\nTopic Count: " + str(topics_count))
+for word in dictionary:
+    wtfile.write('{:{l}}'.format("\n"+dictionary.get(word)+": ", l=length))
+    swt.write('{:{l}}'.format("\n" + dictionary.get(word) + ": ", l=length))
+
+    tlist = lda.get_term_topics(word)
+    for value in tlist:
+        wtfile.write('{:22}'.format("  " + str(value[0]) + ": " + str('{:.15f}'.format(value[1])) + " "))
 
     # write the topic list for each doc by a decreasing probability order
-    # doc = list(reversed(sorted(doc, key=lambda x: x[1])))
-    # doctlist[doc[0][0]].append(doc_list[i])
+    tlist = list(reversed(sorted(tlist, key=lambda x: x[1])))
 
-    #for value in doc:
-        #dsorted.write('{:22}'.format("  " + str(value[0]) + ": " + str('{:.15f}'.format(value[1])) + " "))
+    for value in tlist:
+        swt.write('{:22}'.format("  " + str(value[0]) + ": " + str('{:.15f}'.format(value[1])) + " "))
 
-# For each topic, output documents illustrate the highest probability on it
-# tdoc = open(output + "/" + "td_cluster.txt", "w")
-# for index, sublist in enumerate(doctlist):
-#     tdoc.write("topic " + str(index) + ":  ")
-#     tdoc.write(str(len(sublist)))
-#     for value in sublist:
-#         tdoc.write("  "+value)
-#     tdoc.write("\n")
+    word_frequency = wt.countWords3(corpus_dict, word)
+    freqlist.append(int(word_frequency))
 
-# tw = open(output + "/" + "words_in_topics.txt", "w")
-# tw.write("Corpus Type: " + corpus_type)
-# tw.write("\nTopic Count: " + str(topics_count))
-# for i in range(topics_count):
-#     tw.write("\n\nTopic " + str(i) + "\n")
-#     for w_tuple in lda.show_topic(i, 300):
-#         tw.write(str(w_tuple[0]) + ": " + str('{:.10f}'.format(w_tuple[1])) + "\n")
+    wtfile.write('{:10}'.format("  " + str(word_frequency) + "  ") + str('{:.15f}'.format(float(word_frequency)/total_words)))
+    swt.write('{:10}'.format("  " + str(word_frequency) + "  ") + str('{:.15f}'.format(float(word_frequency)/total_words)))
 
-# self comparison difference
-
-# stl = SimTopicLists()
-# ofname = output + "/self-comp_max.txt"
-# dist_output = open(ofname, "w")
-# t_1 = output + "/topics"
-# t_list1 = topics_io.read_topics(t_1)
-# stl.show_results_2max_self(stl.bc_distance(t_list1, t_list1), dist_output)
-#
-# ofname = output + "/self-comp_min.txt"
-# dist_output = open(ofname, "w")
-# t_1 = output + "/topics"
-# t_list1 = topics_io.read_topics(t_1)
-# stl.show_results_2min_self(stl.bc_distance(t_list1, t_list1), dist_output)
-
-# all_tokens = []
-# for sublist in token_list:
-#     all_tokens.extend(sublist)
-
-# # word-topics
-# wtfile = open(output + "/"+ "unsorted_wt.txt", "w")
-# wtfile.write("Corpus Type: " + corpus_type)
-# wtfile.write("\nTopic Count: " + str(topics_count))
-# swt = open(output + "/"+ "sorted_wt.txt", "w")
-# swt.write("Corpus Type: " + corpus_type)
-# swt.write("\nTopic Count: " + str(topics_count))
-
-#length = 30
-# wt = WordCounter()
-# total_words = wt.totalWords(corpus)
-#
-# # Build a dictionary with word frequency in the corpus and write it to a file
-# freqlist = {}
-# time1 = time()
-# for word in dictionary:
-#     word_freq = float(wt.countWords3(corpus_dict, word))/total_words
-#     freqlist[dictionary.get(word)] = word_freq
-#
-# # ofile = open(output + "/words_freq_"+corpus_type+".txt","w")
-# # for key, value in freqlist.iteritems():
-# #     ofile.write(str(key) + ": " + str(value)+"\n")
-#
-#
-# # Sort words in topics by word frequency difference from the baseline frequency
-# # os.makedirs(output+"/topics_wp")
-# for i in range(topics_count):
-#     ofile = open(output+"/topics_wp/topic"+str(i)+".txt", "w")
-#
-#     wtlist = []
-#     for wtuple in lda.show_topic(i, len(dictionary.keys())):
-#         freq_diff = wtuple[1] - freqlist[wtuple[0]]
-#         wtlist.append((wtuple[0], freq_diff, wtuple[1], freqlist[wtuple[0]]))
-#     wtlist = list(reversed(sorted(wtlist, key=lambda x: x[1])))
-#
-#     for ftuple in wtlist:
-#         ofile.write(str(ftuple[0])+" "+str(ftuple[1])+" "+str(ftuple[2])+" "+str(ftuple[3])+"\n")
-
-
-
-#for word in dictionary:
-    # wtfile.write('{:{l}}'.format("\n"+dictionary.get(word)+": ", l=length))
-    # swt.write('{:{l}}'.format("\n" + dictionary.get(word) + ": ", l=length))
-    #
-    # tlist = lda.get_term_topics(word)
-    # for value in tlist:
-    #     wtfile.write('{:22}'.format("  " + str(value[0]) + ": " + str('{:.15f}'.format(value[1])) + " "))
-    #
-    # # write the topic list for each doc by a decreasing probability order
-    # tlist = list(reversed(sorted(tlist, key=lambda x: x[1])))
-    #
-    # for value in tlist:
-    #     swt.write('{:22}'.format("  " + str(value[0]) + ": " + str('{:.15f}'.format(value[1])) + " "))
-    #
-    # word_frequency = wt.countWords3(corpus_dict, word)
-    # #word_frequency = wt.countWords2(all_tokens, dictionary.get(word))
-    # freqlist.append(int(word_frequency))
-    #
-    #
-    # wtfile.write('{:10}'.format("  " + str(word_frequency) + "  ") + str('{:.15f}'.format(float(word_frequency)/total_words)))
-    # swt.write('{:10}'.format("  " + str(word_frequency) + "  ") + str('{:.15f}'.format(float(word_frequency)/total_words)))
-
-# time2 =time()
-# print time2-time1
-# print total_words
-# print sum(freqlist.values())

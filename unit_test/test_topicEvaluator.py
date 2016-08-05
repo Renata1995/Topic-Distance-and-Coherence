@@ -1,4 +1,4 @@
-from topic_evaluation.wn import WordNetEvaluator
+from coherence.wn import WordNetEvaluator
 from unittest import TestCase
 from nltk.corpus import wordnet as wn
 from nltk.corpus import wordnet_ic

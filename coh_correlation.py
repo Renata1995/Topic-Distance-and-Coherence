@@ -93,5 +93,4 @@ for c1, co1 in enumerate(corank[1:]):
 
         ofile.write(co1[0] + "  " + co2[0] +" : ")
         ofile.write(str(stats.kendalltau(co_values1, co_values2)) + "\n")
-                    
-                
+

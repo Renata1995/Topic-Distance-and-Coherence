@@ -4,10 +4,11 @@ import sys
 import numpy
 from gensim import corpora
 
-from topic_evaluation.wn import WordNetEvaluator
+from coherence.wn import WordNetEvaluator
 from topic.topic import Topic
-from nltk.corpus import wordnet
+from nltk.corpus import wordnet as wn
 from nltk.corpus import reuters
+from nltk.corpus import brown
 # python random_tc.py <dname> <word_count> <sample_times> <output>
 # <word_count>: the number of words that need to be randomly generated
 # <sample_times>: the repetition times of the topic coherence calculation
@@ -65,7 +66,10 @@ ofilemean = open(dname + "/"+tcmethod+"_mean_rand_"+str(word_count)+".txt", "w")
 ofilemedian = open(dname + "/"+tcmethod+"_median_rand_"+str(word_count)+".txt", "w")
 
 if ic:
-    reuters_ic = reuters_ic = wordnet.ic(reuters, False, 0.0)
+    if dname == "reuters_LDA":
+        src_ic = wn.ic(reuters, False, 0.0)
+    elif dname == "brown_LDA":
+        src_ic = wn.ic(brown, False, 0.0)
 
 
 for i in range(sample_times):
@@ -88,16 +92,16 @@ for i in range(sample_times):
 
     # calculate topic coherence based on randomly generated words
     if ic:
-        result = tc.evaluate_ic(randt, word_count, reuters_ic, tcmethod)
+        result = tc.evaluate_ic(randt, word_count, src_ic, tcmethod)
     else:
         result = tc.evaluate(randt, word_count, tcmethod)
 
-    if (not numpy.isnan(result[1])) and result[1]<10000:
+    if (not numpy.isnan(result[1])) and result[1] < 10000:
         rmean = result[1]
     else:
         rmean = 0.0
 
-    if (not numpy.isnan(result[2])) and result[1]<10000:
+    if (not numpy.isnan(result[2])) and result[1] < 10000:
         rmedian = result[2]
     else:
         rmedian = 0.0
