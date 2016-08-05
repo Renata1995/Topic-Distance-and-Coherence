@@ -1,0 +1,35 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# ignore pycharm ide setting folder
+.idea
+
+# ignore data files and directories
+test
+*_LDA
+pp_*
+LDA_*
+reuters*
+brown*
+newsarchive*
+inaugural*
+data*
+*.txt
+*.html
+*.png
+binary*
+tfidf*
+bow*
+20newsgroup
+
+# ignore compressed files
+*.zip
+*.rar
+
+# ignore batch files
+*.bat
+
+# ignore all files for writing
+*write*.py
