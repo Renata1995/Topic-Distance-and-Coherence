@@ -7,7 +7,7 @@ from utils.corpus import arg_tfidf
 
 from coherence.umass import TopicCoherence
 
-# python random_tc.py <dname> <word_count> <sample_times> <output>
+# python random_tc.py <dname> <word_count> <sample_times>
 # <word_count>: the number of words that need to be randomly generated
 # <sample_times>: the repetition times of the topic coherence calculation
 

@@ -68,8 +68,9 @@ ofilemedian = open(dname + "/"+tcmethod+"_median_rand_"+str(word_count)+".txt", 
 if ic:
     if dname == "reuters_LDA":
         src_ic = wn.ic(reuters, False, 0.0)
-    elif dname == "brown_LDA":
+    else:
         src_ic = wn.ic(brown, False, 0.0)
+
 
 
 for i in range(sample_times):
@@ -92,9 +93,9 @@ for i in range(sample_times):
 
     # calculate topic coherence based on randomly generated words
     if ic:
-        result = tc.evaluate_ic(randt, word_count, src_ic, tcmethod)
+        result = tc.evaluate_ic(randt, word_count, src_ic, tcmethod, not_write=True)
     else:
-        result = tc.evaluate(randt, word_count, tcmethod)
+        result = tc.evaluate(randt, word_count, tcmethod, not_write=True)
 
     if (not numpy.isnan(result[1])) and result[1] < 10000:
         rmean = result[1]

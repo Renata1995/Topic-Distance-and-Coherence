@@ -47,7 +47,7 @@ class WordNetEvaluator:
 
         return rsum, rmean, rmedian, results
 
-    def evaluate(self, topic, words_num, tc, ofile=0, zerofile=0, startw=0):
+    def evaluate(self, topic, words_num, tc, ofile=0, zerofile=0, startw=0, not_write=False):
         """
         Evaluate a topic by calculating a similarity score for each word pair in the topic
         :param topic: A topic including word distribution pairs
@@ -95,7 +95,16 @@ class WordNetEvaluator:
             for key, value in results_dict.iteritems():
                 ofile.write(key + " " + str(value) + "\n")
 
-    def evaluate_ic(self, topic, words_num, ic, tc, ofile=0, zerofile=0, startw=0):
+        if not_write:
+            results = [value for key, value in results_dict.iteritems()]
+            rsum = sum(results)
+            rmean = np.average(results)
+            rmedian = np.median(results)
+            return rsum, rmean, rmedian, results
+
+
+
+    def evaluate_ic(self, topic, words_num, ic, tc, ofile=0, zerofile=0, startw=0, not_write=False):
         """
             Evaluate a topic by calculating a similarity score for each word pair in the topic
             An information content file is needed
@@ -141,6 +150,14 @@ class WordNetEvaluator:
         if ofile != 0:
             for key, value in results_dict.iteritems():
                 ofile.write(key + " " + str(value) + "\n")
+
+        if not_write:
+            results = [value for key, value in results_dict.iteritems()]
+            rsum = sum(results)
+            rmean = np.average(results)
+            rmedian = np.median(results)
+            return rsum, rmean, rmedian, results
+
 
     def sim_words(self, w1, w2, func, ofile=0):
         w1_synsets = wn.synsets(w1)
