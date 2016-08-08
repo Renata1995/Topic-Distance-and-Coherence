@@ -111,7 +111,7 @@ if input_type:
     doc_list, token_list = mdt.orig(src)
 else:
     fdt = FileDocTokenizer()
-    doc_list, token_list = fdt.orig(src)
+    doc_list, token_list = fdt.save_pp(src)
 
 # Load LDA
 if alpha_set:
@@ -200,9 +200,6 @@ for i in range(topics_count):
     tw.write("\n\nTopic " + str(i) + "\n")
     for w_tuple in lda.show_topic(i, 300):
         tw.write(str(w_tuple[0]) + ": " + str('{:.10f}'.format(w_tuple[1])) + "\n")
-
-
-
 
 
 # Represent topic be decreasing probability difference

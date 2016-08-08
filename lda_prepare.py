@@ -121,16 +121,13 @@ else:
     if not preprocess:
         doc_list, token_list = mdt.orig(src)
     else:
-        mtime_input = os.path.getmtime(src)
-        output_tokens = "pp_" + src
-        output_docs = "docs_pp_" + src
-        if os.path.isfile(output_tokens) and os.path.isfile(output_docs) and os.path.getmtime(output_tokens) > mtime_input and os.path.getmtime(
-                output_docs) > mtime_input:
-            print ("PreProcessed Files exist.\n")
-            token_list = mdt.orig(src)[1]
-            doc_list = mdt.read_pp_doc_list(src)
-        else:
-            doc_list, token_list = mdt.preprocess(src)
+        # mtime_input = os.path.getmtime(src)
+        # output_tokens = "pp_" + src
+        # if os.path.isfile(output_tokens) and os.path.getmtime(output_tokens) > mtime_input:
+        #     print ("PreProcessed Files exist.\n")
+        #     doc_list, token_list = mdt.save_pp(output_tokens)
+        # else:
+        doc_list, token_list = mdt.preprocess(src)
 
 # Prepare and save the dictionary
 dictionary = corpora.Dictionary(token_list)

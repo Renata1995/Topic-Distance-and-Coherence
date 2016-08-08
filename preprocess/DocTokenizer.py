@@ -128,23 +128,45 @@ class DirDocTokenizer:
 class FileDocTokenizer:
 
     def orig(self, filename):
-        # Generate self.orig_tokens and self.orig_docs_list according to the input file
-        converter = MyConvertUnicode()
+        """
+        Transfer a corpus into a list of documents string and a 2D list of word tokens
+        :param dname:the name of the input directory
+        :return:a list of document names and a 2D list of word tokens
+        """
         input_file = open(filename, "r")
         orig_tokens = []
         orig_docs_list = []
 
         for line in input_file:
             if len(line) >= 2:
-                line = converter.convert(line)
+                line =line.decode("utf8", "ignore")
                 orig_docs_list.append(line)
                 orig_tokens.append([token.lower() for token in word_tokenize(line) if token.isalpha()])
         return orig_docs_list, orig_tokens
 
+    def save_pp(self, filename):
+        """
+        Generate tokens_list and doc_list according to a save preprocessed file
+        :param filename: the name of the saved preprocessed file
+        :return: a list of doc names, a list of tokens
+        """
+        input_file = open(filename, "r")
+        pp_tokens = []
+        docs_list = []
+
+        for line in input_file:
+            tokens = [token.lower() for token in word_tokenize(line)]
+            docs_list.append(tokens[0])
+            pp_tokens.append(tokens[1:])
+        print len(pp_tokens)
+        return docs_list, pp_tokens
+
     def preprocess(self, filename):
-        # Generate self.pp_tokens and self.pp_docs_list according to the input file
-        # Write self.pp_tokens into file <pp_filename>
-        # Write self.pp_docs_list into file <docs_pp_filename>
+        """
+        Generate a 2D token list(bow corpus) and a doc list according to the input file
+        Write the token list into file <pp_filename>
+        Write the doc list into file <docs_pp_filename>
+        """
 
         # open input file and prepare PreProcessor
         input_file = open(filename, "r")
@@ -154,39 +176,29 @@ class FileDocTokenizer:
         pp_docs_list = []
         pp_tokens = []
 
-        for line in input_file:
-            l2 = mtpp.PreProcess(line)
+        for index, line in enumerate(input_file):
+            l2 = mtpp.PreProcess(line.decode("utf8", "ignore"))
             if len(l2) >= 2:
-                pp_docs_list.append(line)
+                linenum = "line"+str(index)
+                pp_docs_list.append(linenum)
                 pp_tokens.append(l2)
 
         # write files
-        self.output_pp(filename, pp_tokens)
-        self.output_pp_docs_list(filename, pp_docs_list)
-
+        self.output_pp(filename, pp_tokens, pp_docs_list)
+        print len(pp_tokens)
         return pp_docs_list, pp_tokens
 
-    def output_pp(self, filename, pp_tokens):
-        # write pp_tokens to a file <pp_filename>
+    def output_pp(self, filename, pp_tokens, pp_doc_list):
+        """
+        Output the token list and the doc list to a file
+        :param filename: the name of the output file
+        :param pp_tokens: token list
+        :param pp_doc_list: doc list
+        """
         output_name = "pp_" + filename
         output_file = open(output_name, "w")
-        for doc in pp_tokens:
+        for index, doc in enumerate(pp_tokens):
+            output_file.write(pp_doc_list[index] + " ")
             for token in doc:
                 output_file.write(token + " ")
             output_file.write("\n")
-
-    def output_pp_docs_list(self, filename, pp_docs_list):
-        # write pp_docs_list to a file <docs_pp_filename>
-        output_name = "docs_pp_" + filename
-        output_file = open(output_name, "w")
-        for line in pp_docs_list:
-            output_file.write(line)
-
-    def read_pp_docs_list(self, filename):
-        # generate pp_docs_list from a previously output file after preprocessing
-        pp_docs_list = []
-        filename = "docs_" + filename
-        input_file = open(filename, "r")
-        for line in input_file:
-            pp_docs_list.append(line)
-        return pp_docs_list
