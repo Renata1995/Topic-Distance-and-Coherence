@@ -83,6 +83,7 @@ class Similarity:
         wset1 = set(topic1.list_words(num_words))
         wset2 = set(topic2.list_words(num_words))
 
+
         intersection = wset1.intersection(wset2)
         union = wset1.union(wset2)
         return 1-float(len(intersection))/float(len(union))
@@ -112,6 +113,7 @@ class Similarity:
             dcg += add
         return dcg
 
+
     def dcg_difference(self, topic1, topic2, word_limit=0):
         """
         Calculate the difference between DCG of two topics
@@ -120,8 +122,6 @@ class Similarity:
         :param word_limit: the number of top words
         :return:the difference between DCG of two topics
         """
-        dcg_diff = np.absolute(self.dcg(topic1, word_limit) - self.dcg(topic2,word_limit))
-        return dcg_diff
 
 
 

@@ -59,8 +59,13 @@ class TopicIO:
             topic.sort()
             for wtuple in topic.list():
                 wtuple = [str(w) for w in wtuple]
+
                 oline = split_sign.join(wtuple)+"\n"
                 ofile.write(oline)
+
+                oline = ":".join(wtuple)+"\n"
+                ofile.write(oline)
+
 
     def read_topics(self, input_dir="topic_list"):
         """
