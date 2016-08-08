@@ -32,7 +32,7 @@ dtw = name.get_output_dir(corpus_type, topics_count, src)
 t_1 = dtw + "/topics"
 t_list1 = topics_io.read_topics(t_1)
 
-bha_list = stl.bc_distance(t_list1, t_list1)
+bha_list = stl.bha_distance(t_list1, t_list1)
 cos_list = stl.cos_distance(t_list1, t_list1)
 kl_list = stl.kl_divergence(t_list1, t_list1)
 jlist = stl.jaccard(t_list1, t_list1, 500)

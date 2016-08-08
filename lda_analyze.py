@@ -234,32 +234,3 @@ for i in range(topics_count):
 
 
 
-# words - topic matrix
-# for each word, output topics the word illustrates
-# word-topics
-wtfile = open(output + "/"+ "unsorted_wt.txt", "w")
-wtfile.write("Corpus Type: " + corpus_type)
-wtfile.write("\nTopic Count: " + str(topics_count))
-swt = open(output + "/"+ "sorted_wt.txt", "w")
-swt.write("Corpus Type: " + corpus_type)
-swt.write("\nTopic Count: " + str(topics_count))
-for word in dictionary:
-    wtfile.write('{:{l}}'.format("\n"+dictionary.get(word)+": ", l=length))
-    swt.write('{:{l}}'.format("\n" + dictionary.get(word) + ": ", l=length))
-
-    tlist = lda.get_term_topics(word)
-    for value in tlist:
-        wtfile.write('{:22}'.format("  " + str(value[0]) + ": " + str('{:.15f}'.format(value[1])) + " "))
-
-    # write the topic list for each doc by a decreasing probability order
-    tlist = list(reversed(sorted(tlist, key=lambda x: x[1])))
-
-    for value in tlist:
-        swt.write('{:22}'.format("  " + str(value[0]) + ": " + str('{:.15f}'.format(value[1])) + " "))
-
-    word_frequency = wt.countWords3(corpus_dict, word)
-    freqlist.append(int(word_frequency))
-
-    wtfile.write('{:10}'.format("  " + str(word_frequency) + "  ") + str('{:.15f}'.format(float(word_frequency)/total_words)))
-    swt.write('{:10}'.format("  " + str(word_frequency) + "  ") + str('{:.15f}'.format(float(word_frequency)/total_words)))
-

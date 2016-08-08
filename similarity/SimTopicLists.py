@@ -10,19 +10,9 @@ class SimTopicLists:
     """
 
     def __init__(self):
-        self.bha = BCDistance()
-        self.kl = KLDivergence()
-        self.cs = CosDistance()
         self.sim = Similarity()
 
-    # def cross_comp(self, topic_num1, topic_num2, dname, fnum=5):
-    #     tm_list1 = []
-    #     tm_list2 = []
-    #     for num in range(1, fnum+1):
-    #
-
-
-    def bc_distance(self, t_list1, t_list2):
+    def bha_distance(self, t_list1, t_list2):
         """
         Compare the Bhattacharyya Distance between each of two topics in two topic lists and store the results
         in a 2D list
@@ -31,21 +21,7 @@ class SimTopicLists:
         distance_list = []
 
         for value1 in t_list1:
-            sub_list = [self.bha.distance(value1, value2) for value2 in t_list2]
-            distance_list.append(sub_list)
-
-        return distance_list
-
-    def bc_coeff(self, t_list1, t_list2):
-        """
-        Compare the Bhattacharyya Distance between each of two topics in two topic lists and store the results
-        in a 2D list
-        :return: a 2D list stores the results
-        """
-        distance_list = []
-
-        for value1 in t_list1:
-            sub_list = [self.bha.bc_coeff(value1, value2) for value2 in t_list2]
+            sub_list = [self.sim.bha_distance(value1, value2) for value2 in t_list2]
             distance_list.append(sub_list)
 
         return distance_list
@@ -66,24 +42,24 @@ class SimTopicLists:
 
     def cos_distance(self, t_list1, t_list2):
         """
-            Compare the KL Divergence between each of two topics in two topic lists and store the results
-            in a 2D list
-            :return: a 2D list stores the results
-            """
+        Compare the cosine distance between each of two topics in two topic lists and store the results
+        in a 2D list
+        :return: a 2D list stores the results
+        """
         distance_list = []
 
         for value1 in t_list1:
-            sub_list = [self.cs.distance(value1, value2) for value2 in t_list2]
+            sub_list = [self.sim.cosine_distance(value1, value2) for value2 in t_list2]
             distance_list.append(sub_list)
 
         return distance_list
 
     def kendall(self, t_list1, t_list2):
         """
-            Compare the KL Divergence between each of two topics in two topic lists and store the results
-            in a 2D list
-            :return: a 2D list stores the results
-            """
+        Compare the kendall tau correlation between each of two topics in two topic lists and store the results
+        in a 2D list
+        :return: a 2D list stores the results
+        """
         distance_list = []
 
         for index1, value1 in enumerate(t_list1):
@@ -97,31 +73,31 @@ class SimTopicLists:
 
     def dcg(self, t_list1, t_list2, word_limit=0):
         """
-            Compare the KL Divergence between each of two topics in two topic lists and store the results
-            in a 2D list
-            :return: a 2D list stores the results
-            """
+        Compare the difference between dcg values of each two topics in two topic lists and store the results
+        in a 2D list
+        :return: a 2D list stores the results
+        """
         distance_list = []
 
         if word_limit == 0:
             word_limit = len(t_list1)
 
         for value1 in t_list1:
-            sub_list = [self.sim.dcg_similarity(value1, value2, word_limit) for value2 in t_list2]
+            sub_list = [self.sim.dcg_difference(value1, value2, word_limit) for value2 in t_list2]
             distance_list.append(sub_list)
 
         return distance_list
 
     def jaccard(self, t_list1, t_list2, threshold):
         """
-            Compare the KL Divergence between each of two topics in two topic lists and store the results
-            in a 2D list
-            :return: a 2D list stores the results
-            """
+        Compare the jaccard distance between each of two topics in two topic lists and store the results
+        in a 2D list
+        :return: a 2D list stores the results
+        """
         distance_list = []
 
         for value1 in t_list1:
-            sub_list = [self.sim.jaccard_coeff(value1, value2, threshold) for value2 in t_list2]
+            sub_list = [self.sim.jaccard_distance(value1, value2, threshold) for value2 in t_list2]
             distance_list.append(sub_list)
 
         return distance_list
@@ -510,9 +486,9 @@ class SimTopicLists:
 
         index = 0
         for t1 in range(topics_count):
-            for t2 in range(t1+1, topics_count):
-                dist_rank.append((corpus_type+"_t"+str(topics_count)+ "t"+str(t1)+"_t"+str(t2), dist_list[index]))
+            for t2 in range(t1 + 1, topics_count):
+                dist_rank.append(
+                    (corpus_type + "_t" + str(topics_count) + "t" + str(t1) + "_t" + str(t2), dist_list[index]))
                 index += 1
 
         return dist_rank
-
