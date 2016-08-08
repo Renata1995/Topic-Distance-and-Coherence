@@ -10,19 +10,15 @@ __pycache__/
 test
 *_LDA
 pp_*
-LDA_*
-reuters*
-brown*
+*reuters*
+*brown*
 newsarchive*
 inaugural*
 data*
 *.txt
 *.html
 *.png
-binary*
-tfidf*
-bow*
-20newsgroup
+*20newsgroup*
 
 # ignore compressed files
 *.zip
@@ -30,6 +26,3 @@ bow*
 
 # ignore batch files
 *.bat
-
-# ignore all files for writing
-*write*.py
