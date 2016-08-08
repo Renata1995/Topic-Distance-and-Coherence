@@ -18,6 +18,11 @@ class WordNetEvaluator:
     """
 
     def read_file_into_dict(self, ifname):
+        """
+        Read a file into a dictionary
+        :param ifname: name of the input file
+        :return: output dictionary
+        """
         ifile = open(ifname, "r")
         tcdict = {}
         for line in ifile:
@@ -27,6 +32,18 @@ class WordNetEvaluator:
         return tcdict
 
     def get_values(self, topic, words_num, ifname, startw=0):
+        """
+        Get values from a
+        :param topic: a topic
+        :param words_num: the number of top words
+        :param ifname: name of the input file
+        :param startw: start index
+        :return:
+        rsum: sum of coherence values,
+        rmean: mean coherence value,
+        rmedian: median coherence value,
+        results: a list of coherence values between each word pair
+        """
         # Get the <word_num>-word sub-list from the topic
         topic.sort()
         tlist = topic.list_words(words_num, start=startw)
@@ -58,11 +75,15 @@ class WordNetEvaluator:
         b) tc = "wup":  use WuP similarity method to evaluate the topic
         c) tc is equal to anything else or missing: use PATH similarity method to evaluate the topic
 
+        Example for words_num and startw
+        words_num=30, startw=0  top 30 words
+        words_num=30, startw=10  top 10-40 words
+
         :return:
-        rsum: the sum of the similarity value of each word pair
-        rmean: the mean of the similarity value of each word
-        rmedian: the mean of the similarity value of each word pair
-        results: a list of all similarity values
+        rsum: the sum of the coherence value of each word pair
+        rmean: the mean of the coherence value of each word
+        rmedian: the mean of the coherence value of each word pair
+        results: a list of all coherence values
         """
         # Choose an evaluation method
         if tc == "lch":
@@ -119,10 +140,10 @@ class WordNetEvaluator:
             c) tc is equal to anything else or missing: use RES similarity method to evaluate the topic
 
             :return:
-            rsum: the sum of the similarity value of each word pair
-            rmean: the mean of the similarity value of each word
-            rmedian: the mean of the similarity value of each word pair
-            results: a list of all similarity values
+            rsum: the sum of the coherence value of each word pair
+            rmean: the mean of the coherence value of each word
+            rmedian: the mean of the coherence value of each word pair
+            results: a list of all coherence values
             """
         # Choose an evaluation method
         if tc == "lin":
@@ -160,6 +181,29 @@ class WordNetEvaluator:
 
 
     def sim_words(self, w1, w2, func, ofile=0):
+        """
+        Calculate coherence between two words
+        One word has many synsets. When calculating coherence between two words,
+        the max value of similarity between all synset pairs is used
+
+        Two zero conditions:
+        1. One word is not in the wordnet
+        2. All synsets of two words do not have a close relationship
+
+        Example:
+        Input two words -  w1 - s1, s2     w2 - s1, s2
+        sim(w1_s1, w2_s1) = 0.3
+        sim(w1_s1, w2_s2) = 0.6
+        sim(w1_s2, w2_s1) = 0.2
+        sim(w1_s2, w2_s2) = 0.8  max
+        return 0.8
+
+        :param w1: word
+        :param w2: word
+        :param func: similarity method
+        :param ofile: output file for recording zero values
+        :return: coherence between two words
+        """
         w1_synsets = wn.synsets(w1)
         w2_synsets = wn.synsets(w2)
 
@@ -189,6 +233,30 @@ class WordNetEvaluator:
         return smax
 
     def sim_words_ic(self, w1, w2, ic, func, ofile=0):
+        """
+            Calculate coherence between two words
+            One word has many synsets. When calculating coherence between two words,
+            the max value of similarity between all synset pairs is used
+
+            Two zero conditions:
+            1. One word is not in the wordnet
+            2. All synsets of two words do not have a close relationship
+
+            Example:
+            Input two words -  w1 - s1, s2     w2 - s1, s2
+            sim(w1_s1, w2_s1) = 0.3
+            sim(w1_s1, w2_s2) = 0.6
+            sim(w1_s2, w2_s1) = 0.2
+            sim(w1_s2, w2_s2) = 0.8  max
+            return 0.8
+
+            :param w1: word
+            :param w2: word
+            :param ic: information content
+            :param func: similarity method
+            :param ofile: output file for recording zero values
+            :return: coherence between two words
+            """
         w1_synsets = wn.synsets(w1)
         w2_synsets = wn.synsets(w2)
 
@@ -215,6 +283,8 @@ class WordNetEvaluator:
 
         return smax
 
+    # All similarity measures between two synsets could be found in this paper
+    # https: // mimno.infosci.cornell.edu / info6150 / readings / N10 - 1012.pdf
     # Similarity measures that do not require an information content file
     def path(self, s1, s2):
         return s1.path_similarity(s2)

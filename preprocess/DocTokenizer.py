@@ -126,6 +126,8 @@ class DirDocTokenizer:
 
 
 class FileDocTokenizer:
+    # Assume a corpus is a file and each line is a document
+    #
 
     def orig(self, filename):
         """

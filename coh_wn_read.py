@@ -6,6 +6,16 @@ from nltk.corpus import wordnet as wn
 from nltk.corpus import reuters
 import os
 
+#
+# syntax: python  coh_wn_read.py <corpus type> <# of topics> <src> <word count>
+#  <corpus type> default to bag of words. b for binary, t for tf-idf, anything else or missing for bag of words
+#  <# of topics> number of topics. default to 8
+#  <src> src folder which contains documents for LDA
+#  <wordnet method> default to path
+#  <word count> the number of top words used in the calculation of topic coherence
+#  <max_words> specify the number of words the preprocessed file used
+#  <startw> the start point of collecting words
+
 if len(sys.argv) <= 1:
     corpus_type = "bow"
 else:

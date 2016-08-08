@@ -6,6 +6,15 @@ from nltk.corpus import wordnet as wn
 from nltk.corpus import reuters
 from nltk.corpus import brown
 
+# syntax: python  coh_wn_read.py <corpus type> <# of topics> <src> <word count>
+#  <corpus type> default to bag of words. b for binary, t for tf-idf, anything else or missing for bag of words
+#  <# of topics> number of topics. default to 8
+#  <src> src folder which contains documents for LDA
+#  <wordnet method> default to path
+#  <need_ic> whether the wordnet method needs ic or not. "ic": ic is needed    anything else: ic is not needed.
+#  <word count> the number of top words used in the calculation of topic coherence
+#  <startw> the start point of collecting words
+
 if len(sys.argv) <= 1:
     corpus_type = "bow"
 else:
@@ -73,6 +82,9 @@ else:
         src_ic = wn.ic(reuters, False, 0.0)
     elif src == "pp_brown":
         src_ic = wn.ic(brown, False, 0.0)
+    else:
+        print "No inoformation content for this corpus"
+        print "Create information content first"
 
-for index, topic in enumerate(tlist):
-    tclist.append([index, te.evaluate_ic(topic, words_count, src_ic, tc, prefile, zerofile, startw=startw)])
+    for index, topic in enumerate(tlist):
+        tclist.append([index, te.evaluate_ic(topic, words_count, src_ic, tc, prefile, zerofile, startw=startw)])
