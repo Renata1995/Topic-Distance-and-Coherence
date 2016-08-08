@@ -1,6 +1,6 @@
 import numpy
 
-from BCDistance import BCDistance
+from similarity import Similarity
 from topic import topicio
 
 
@@ -9,7 +9,7 @@ class BCInterpreter:
     A helper class used in the interpretation of BC Distance
     """
     def __init__(self):
-        self.bc = BCDistance()
+        self.bc = Similarity()
 
     def bc_similarity(self, seq_size, sample_size=30, sample_times=20, degree=0.1, bc_times=20):
         """
@@ -27,7 +27,7 @@ class BCInterpreter:
         for num in range(bc_times):
             dist1 = list(numpy.random.dirichlet([degree] * seq_size))
             dist2 = self.mean_rand_dist(dist1, seq_size,sample_size, sample_times)
-            bsum += self.bc.distance(self.dist_to_topic(dist1), self.dist_to_topic(dist2))
+            bsum += self.bc.bha_distance(self.dist_to_topic(dist1), self.dist_to_topic(dist2))
         return bsum/bc_times
 
     def bc_difference(self, seq_size, degree1, degree2, bc_times=20):
@@ -35,7 +35,7 @@ class BCInterpreter:
         for num in range(bc_times):
             dist1 = list(numpy.random.dirichlet([degree1] * seq_size))
             dist2 = list(numpy.random.dirichlet([degree2] * seq_size))
-            bsum += self.bc.distance(self.dist_to_topic(dist1), self.dist_to_topic(dist2))
+            bsum += self.bc.bha_distance(self.dist_to_topic(dist1), self.dist_to_topic(dist2))
         return bsum / bc_times
 
     def mean_rand_dist(self, dist, seq_size, sample_size=30, sample_times=50):

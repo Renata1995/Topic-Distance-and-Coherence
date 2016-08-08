@@ -38,19 +38,19 @@ for corpus_type in ["tfidf", "bow", "binary"]:
         bha_list = stl.read_distance_list(ofile)
         bha_total.extend(bha_list)
 
-        jrank = stl.read_distance_rank(jlist, topics_count, corpus_type)
+        jrank = stl.give_dist_names(jlist, topics_count, corpus_type)
         jtotal_rank.extend(jrank)
 
-        krank = stl.read_distance_rank(klist, topics_count, corpus_type)
+        krank = stl.give_dist_names(klist, topics_count, corpus_type)
         ktotal_rank.extend(krank)
 
-        cos_rank = stl.read_distance_rank(cos_list, topics_count, corpus_type)
+        cos_rank = stl.give_dist_names(cos_list, topics_count, corpus_type)
         costotal_rank.extend(cos_rank)
 
-        kl_rank = stl.read_distance_rank(kl_list, topics_count, corpus_type)
+        kl_rank = stl.give_dist_names(kl_list, topics_count, corpus_type)
         kltotal_rank.extend(kl_rank)
 
-        bha_rank = stl.read_distance_rank(bha_list, topics_count, corpus_type)
+        bha_rank = stl.give_dist_names(bha_list, topics_count, corpus_type)
         bhatotal_rank.extend(bha_rank)
 
 distance_list.append(("jaccard", jtotal))
