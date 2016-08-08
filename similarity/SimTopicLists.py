@@ -102,6 +102,32 @@ class SimTopicLists:
 
         return distance_list
 
+    def write_distance(self, distance_list, ofile):
+        for i1, sublist in enumerate(distance_list):
+            for i2, value in enumerate(sublist[i1 + 1:]):
+                ofile.write(str(value) + "\n")
+
+    def read_distance_list(self, ifile):
+        dist_list = []
+        for line in ifile:
+            dist_list.append(float(line))
+        return dist_list
+
+    def read_distance_rank(self, dist_list, topics_count, corpus_type):
+        dist_rank = []
+
+        index = 0
+        for t1 in range(topics_count):
+            for t2 in range(t1 + 1, topics_count):
+                dist_rank.append(
+                    (corpus_type + "_t" + str(topics_count) + "t" + str(t1) + "_t" + str(t2), dist_list[index]))
+                index += 1
+
+        return dist_rank
+
+
+
+    # Different display methods
     def find_smallest(self, num_list):
         if num_list[0] < num_list[1]:
             row_min, row_min2, i1, i2 = num_list[0], num_list[1], 0, 1
@@ -469,26 +495,3 @@ class SimTopicLists:
                 else:
                     file.write('{:{w}}'.format("|   " + value, w=width))
             file.write("\n" + "-" * width * (len(distance_list[0]) + 1) + "\n")
-
-    def write_distance(self, distance_list, ofile):
-        for i1, sublist in enumerate(distance_list):
-            for i2, value in enumerate(sublist[i1 + 1:]):
-                ofile.write(str(value) + "\n")
-
-    def read_distance_list(self, ifile):
-        dist_list = []
-        for line in ifile:
-            dist_list.append(float(line))
-        return dist_list
-
-    def read_distance_rank(self, dist_list, topics_count, corpus_type):
-        dist_rank = []
-
-        index = 0
-        for t1 in range(topics_count):
-            for t2 in range(t1 + 1, topics_count):
-                dist_rank.append(
-                    (corpus_type + "_t" + str(topics_count) + "t" + str(t1) + "_t" + str(t2), dist_list[index]))
-                index += 1
-
-        return dist_rank
