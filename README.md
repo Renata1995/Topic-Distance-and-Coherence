@@ -12,7 +12,7 @@
 
     Dr.Blei'gives an example ([see original paper](http://www.cs.princeton.edu/~blei/papers/BleiNgJordan2003.pdf)). Words in the following text are organized in four topics
 
-    ![topic model](/image/topic-models.png)
+    ![topic model](/image/topic-models.png = 300x)
 
 
 * Latent Dirichlet Allocation
