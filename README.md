@@ -15,15 +15,15 @@
 
 ## Usage
 #### Run LDA
-    Prepare for dictionary and corpus files
-    ```
-    $python lda_process.py lda_dir(default src_LDA) corpus_type num_of_topics alpha eta
-    ```
-    Run LDA
-    ```
-    $python lda_process.py lda_dir(default src_LDA) corpus_type num_of_topics alpha eta
-    ```
-    Analyze data
-    ```
-    lda_analyze.py lda_dir(default src_LDA) corpus_type num_of_topics src alpha eta
-    ```
+Prepare for dictionary and corpus files
+```
+$python lda_process.py lda_dir(default src_LDA) corpus_type num_of_topics alpha eta
+```
+Run LDA
+```
+$python lda_process.py lda_dir(default src_LDA) corpus_type num_of_topics alpha eta
+```
+Analyze data
+```
+$python lda_analyze.py lda_dir(default src_LDA) corpus_type num_of_topics src alpha eta
+```
