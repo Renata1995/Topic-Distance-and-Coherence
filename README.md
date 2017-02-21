@@ -12,7 +12,7 @@
 
     Dr.Blei'gives an example ([see original paper](http://www.cs.princeton.edu/~blei/papers/BleiNgJordan2003.pdf)). Words in the following text are organized in four topics
 
-    ![topic model](/image/topic_models.png)
+    ![topic model](/image/topic-models.png)
 
 
 * Latent Dirichlet Allocation
@@ -27,6 +27,7 @@
 
     [See LDA Paper](http://www.cs.princeton.edu/~blei/papers/BleiNgJordan2003.pdf)
 * Current Work
+
 ## Requirements
 * [Gensim: A Python library for topic Modeling](https://radimrehurek.com/gensim/)
 * [NLTK: Natural Language Toolkit](http://www.nltk.org/)
