@@ -1,2 +1,29 @@
 # Topic-Distance-and-Coherence
-Latent Dirichlet allocation (LDA), a generative topic model, is widely used to discover hidden semantical structures in large discrete data collections. For output topics, distance and coherence are two essential qualitative features. The current research varied the number of topics, the number of top words, and three corpus types (binary, bow, and tf-idf) in the implementation of LDA in order to observe corresponding changes in topic distance and topic coherence. Topic distance and coherence were measured by diverse methods emphasizing different aspects. Results indicated that binary and bow corpus types overall illustrated greater topic distance and coherence than tf-idf corpus type. When binary and bow corpus types were used, increase in the number of topics resulted in either increase or no change in topic distance and coherence. Therefore, we recommended in implementation of LDA, binary and bow corpus types with relatively large numbers of topics are preferred.  
+
+## Table of Contents
+ * Introduction
+ * Requirements
+ * Usage
+
+## Introduction
+
+## Requirements
+* [Gensim: A Python library for topic Modeling](https://radimrehurek.com/gensim/)
+* [NLTK: Natural Language Toolkit](http://www.nltk.org/)
+* [NumPy: A Python package for scientific computing](http://www.numpy.org/)
+* [Matplotlib: A Python 2D plotting library](http://matplotlib.org/)
+
+## Usage
+#### Run LDA
+    Prepare for dictionary and corpus files
+    ```
+    $python lda_process.py lda_dir(default src_LDA) corpus_type num_of_topics alpha eta
+    ```
+    Run LDA
+    ```
+    $python lda_process.py lda_dir(default src_LDA) corpus_type num_of_topics alpha eta
+    ```
+    Analyze data
+    ```
+    lda_analyze.py lda_dir(default src_LDA) corpus_type num_of_topics src alpha eta
+    ```
