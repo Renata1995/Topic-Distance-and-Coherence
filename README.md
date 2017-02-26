@@ -39,8 +39,9 @@
         * [UMass](paperhttp://dirichlet.net/pdf/mimno11optimizing.pdf)
         * [tfidf-version of UMass](http://logic.pdmi.ras.ru/~sergey/slides/N14_PhMLtalk.pdf)
         * [WordNet related methods](http://www.aclweb.org/anthology/N10-1012)
-* #### Run LDA
+
 ## Requirements
+* [Language: Python 2.7](https://www.python.org/download/releases/2.7/)
 * [Gensim: A Python library for topic Modeling](https://radimrehurek.com/gensim/)
 * [NLTK: Natural Language Toolkit](http://www.nltk.org/)
 * [NumPy: A Python package for scientific computing](http://www.numpy.org/)
@@ -104,6 +105,7 @@
     sim = SimTopicLists()
     bha_dist_t1_t2 = sim.bha_distance(t1, t2)
     ```
+
 * #####  Coherence
     *	umass - Calculate co-occurrence based topic coherence
         * [Based on bow corpus](paperhttp://dirichlet.net/pdf/mimno11optimizing.pdf)
