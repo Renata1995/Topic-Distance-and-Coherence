@@ -155,7 +155,7 @@ $python lda_analyze.py lda_dir(default src_LDA) corpus_type num_of_topics src al
 ```
 python sim_write.py <corpus_type> <num_of_topics> <src>
 ```
-Output 5 files in the output directory  LDA_<src>_<corpus_type>_t<num_of_topics>
+    Output 5 files in the output directory  LDA_<src>_<corpus_type>_t<num_of_topics>
     * sim_jaccard.txt
     * sim_kendall.txt
     * sim_cosine.txt
